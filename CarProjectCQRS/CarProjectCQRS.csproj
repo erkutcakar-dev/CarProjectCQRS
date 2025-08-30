@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="CQRSPattern\Handlers\AboutHandlers\" />
     <Folder Include="CQRSPattern\Handlers\CarHandlers\" />
     <Folder Include="CQRSPattern\Handlers\DistrictDistance\" />
     <Folder Include="CQRSPattern\Handlers\DistrictHandlersHandlers\" />
