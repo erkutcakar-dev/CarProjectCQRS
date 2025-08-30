@@ -1,6 +1,6 @@
-﻿namespace CarProjectCQRS.Entities
+﻿namespace CarProjectCQRS.CQRSPattern.Results.Car
 {
-    public class Car
+    public class GetCarQueryResult
     {
         public int CarId { get; set; }
 
@@ -23,10 +23,8 @@
         public string GearType { get; set; }      // AUTO
         public int Mileage { get; set; }          // 27000 km
 
-       
+
         public bool IsAvailable { get; set; }     // Kiralamaya uygun mu?
         public DateTime CreatedDate { get; set; }
     }
-
-
 }

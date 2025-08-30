@@ -4,37 +4,36 @@
     {
         public int AboutId { get; set; }
 
-        // Genel başlık ve açıklama
-        public string Title { get; set; }           // Örn: "Cental About"
-        public string Description { get; set; }     // Üstteki paragraf
+       
+        public string Title { get; set; }          
+        public string Description { get; set; }     
 
-        // Vizyon
-        public string VisionTitle { get; set; }     // "Our Vision"
+        
+        public string VisionTitle { get; set; }    
         public string VisionDescription { get; set; }
 
-        // Misyon
-        public string MissionTitle { get; set; }    // "Our Mission"
+       
+        public string MissionTitle { get; set; }   
         public string MissionDescription { get; set; }
 
-        // Deneyim bilgisi
+        //
         public int YearsOfExperience { get; set; }  // 17
 
-        // Deneyim maddeleri
+       
         public string ExperienceItem1 { get; set; }
         public string ExperienceItem2 { get; set; }
         public string ExperienceItem3 { get; set; }
         public string ExperienceItem4 { get; set; }
 
-        // Kurucu bilgileri
-        public string FounderName { get; set; }     // "William Burgess"
-        public string FounderTitle { get; set; }    // "Carveo Founder"
-        public string FounderImageUrl { get; set; } // Profil fotoğrafı URL
-
+       
+        public string FounderName { get; set; }     
+        public string FounderTitle { get; set; }    
+        public string FounderImageUrl { get; set; } 
         // Resimler
-        public string MainImageUrl { get; set; }    // Ana görsel (Mercedes anahtarı)
-        public string SecondaryImageUrl { get; set; } // Alt görsel (Yeşil VW araba)
+        public string MainImageUrl { get; set; }    
+        public string SecondaryImageUrl { get; set; } 
 
-        // Ortak alanlar
+    
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
     }
