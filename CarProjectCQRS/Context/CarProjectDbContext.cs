@@ -24,6 +24,7 @@ namespace CarProjectCQRS.Context
         public DbSet<About> Abouts { get; set; }
         
 
+
         
         public DbSet<Car> Cars { get; set; }
         public DbSet<Employee> Employees { get; set; }

@@ -9,3 +9,4 @@ namespace CarProjectCQRS.Entities
         public virtual ICollection<District> Districts { get; set; } = new List<District>();
     }
 }
+

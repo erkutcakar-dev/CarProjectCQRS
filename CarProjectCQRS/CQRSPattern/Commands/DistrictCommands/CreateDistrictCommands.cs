@@ -1,9 +1,10 @@
-namespace CarProjectCQRS.Entities
+﻿using CarProjectCQRS.Entities;
+
+namespace CarProjectCQRS.CQRSPattern.Commands.DistrictCommands
 {
-    public class District
+    public class CreateDistrictCommands
     {
-        public int DistrictId { get; set; }
-        public int ProvinceId { get; set; }
+      
         public string DistrictName { get; set; }
 
         // Navigation properties
@@ -12,4 +13,3 @@ namespace CarProjectCQRS.Entities
         public virtual ICollection<DistrictDistance> DistrictDistanceToDistricts { get; set; } = new List<DistrictDistance>();
     }
 }
-

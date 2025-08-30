@@ -29,7 +29,7 @@
         public string FounderName { get; set; }     
         public string FounderTitle { get; set; }    
         public string FounderImageUrl { get; set; } 
-        // Resimler
+       
         public string MainImageUrl { get; set; }    
         public string SecondaryImageUrl { get; set; } 
 

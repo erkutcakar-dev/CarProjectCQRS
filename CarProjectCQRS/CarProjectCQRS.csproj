@@ -8,18 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="CQRSPattern\Commands\DistrictCommands\" />
-    <Folder Include="CQRSPattern\Commands\DistrictDistanceCommands\" />
-    <Folder Include="CQRSPattern\Commands\EmployeeCommands\" />
-    <Folder Include="CQRSPattern\Commands\FeatureCommands\" />
-    <Folder Include="CQRSPattern\Commands\ProvinceCommands\" />
-    <Folder Include="CQRSPattern\Commands\ReservationCommands\" />
-    <Folder Include="CQRSPattern\Commands\ServiceCommands\" />
-    <Folder Include="CQRSPattern\Commands\TurkeyAirportCommands\" />
-    <Folder Include="CQRSPattern\Commands\TestimonialCommands\" />
-    <Folder Include="CQRSPattern\Commands\SliderCommands\" />
-    <Folder Include="CQRSPattern\Commands\CarCommands\" />
-    <Folder Include="CQRSPattern\Commands\AboutCommands\" />
     <Folder Include="CQRSPattern\Handlers\AboutHandlers\" />
     <Folder Include="CQRSPattern\Handlers\CarHandlers\" />
     <Folder Include="CQRSPattern\Handlers\DistrictDistance\" />
@@ -32,18 +20,6 @@
     <Folder Include="CQRSPattern\Handlers\SliderHandlers\" />
     <Folder Include="CQRSPattern\Handlers\TestimonialHandlers\" />
     <Folder Include="CQRSPattern\Handlers\TurkeyAirportHandlers\" />
-    <Folder Include="CQRSPattern\Queries\AboutQueries\" />
-    <Folder Include="CQRSPattern\Queries\CarQueries\" />
-    <Folder Include="CQRSPattern\Queries\DistrictDistanceQueries\" />
-    <Folder Include="CQRSPattern\Queries\DistrictQueries\" />
-    <Folder Include="CQRSPattern\Queries\EmployeeQueries\" />
-    <Folder Include="CQRSPattern\Queries\FeatureQueries\" />
-    <Folder Include="CQRSPattern\Queries\ProvinceQueries\" />
-    <Folder Include="CQRSPattern\Queries\ReservationQueries\" />
-    <Folder Include="CQRSPattern\Queries\ServiceQueries\" />
-    <Folder Include="CQRSPattern\Queries\SliderQueries\" />
-    <Folder Include="CQRSPattern\Queries\TestimonialQueries\" />
-    <Folder Include="CQRSPattern\Queries\TurkeyAirportQueries\" />
   </ItemGroup>
 
   <ItemGroup>

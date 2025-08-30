@@ -1,8 +1,8 @@
-﻿namespace CarProjectCQRS.Entities
+﻿namespace CarProjectCQRS.CQRSPattern.Commands.ReservationCommands
 {
-    public class Reservation
+    public class CreateReservationCommands
     {
-        public int ReservationId { get; set; }
+      
 
         // Araç bilgisi
         public int CarId { get; set; }             // Seçilen aracın ID’si
@@ -14,14 +14,12 @@
         public string airport { get; set; }
 
         // Tarih & saat ile şehir bilgisi bilgileri
-        public DateTime PickUpDate { get; set; }      
-        public DateTime DropOffDate { get; set; }       
+        public DateTime PickUpDate { get; set; }
+        public DateTime DropOffDate { get; set; }
 
-        public bool IsActive { get; set; }         
+        public bool IsActive { get; set; }
 
         // Ortak alanlar
         public DateTime CreatedDate { get; set; }
-        
     }
-
 }

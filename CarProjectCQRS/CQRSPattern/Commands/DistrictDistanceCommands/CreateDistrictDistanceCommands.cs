@@ -1,9 +1,10 @@
-namespace CarProjectCQRS.Entities
+﻿using CarProjectCQRS.Entities;
+
+namespace CarProjectCQRS.CQRSPattern.Commands.DistrictDistanceCommands
 {
-    public class DistrictDistance
+    public class CreateDistrictDistanceCommands
     {
-        public int FromDistrictId { get; set; }
-        public int ToDistrictId { get; set; }
+     
         public decimal? Distance { get; set; }
 
         // Navigation properties
@@ -11,4 +12,3 @@ namespace CarProjectCQRS.Entities
         public virtual District ToDistrict { get; set; }
     }
 }
-
