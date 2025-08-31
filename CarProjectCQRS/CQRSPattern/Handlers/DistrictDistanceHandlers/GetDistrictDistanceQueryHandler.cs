@@ -36,3 +36,4 @@ namespace CarProjectCQRS.CQRSPattern.Handlers.DistrictDistanceHandlers
         }
     }
 }
+
