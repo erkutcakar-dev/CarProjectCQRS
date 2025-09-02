@@ -1,4 +1,6 @@
 
+@model CarProjectCQRS.Models.CarouselViewModel
+
 <div class="header-carousel">
     <div id="carouselId" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
         <ol class="carousel-indicators">
@@ -24,10 +26,10 @@
                                             <div class="col-12">
                                                 <select class="form-select" aria-label="Select Car Type">
                                                     <option selected>Select Your Car type</option>
-                                                    <option value="1">VW Golf VII</option>
-                                                    <option value="2">Audi A1 S-Line</option>
-                                                    <option value="3">Toyota Camry</option>
-                                                    <option value="4">BMW 320 ModernLine</option>
+                                                    @foreach (var car in Model.Cars)
+                                                    {
+                                                        <option value="@car.CarId">@car.Brand @car.Model</option>
+                                                    }
                                                 </select>
                                             </div>
 
@@ -35,10 +37,10 @@
                                             <div class="col-12">
                                                 <select class="form-select" aria-label="Pick Up">
                                                     <option selected>Select Pick Up Location</option>
-                                                    <option value="1">New York</option>
-                                                    <option value="2">Los Angeles</option>
-                                                    <option value="3">Chicago</option>
-                                                    <option value="4">Miami</option>
+                                                    @foreach (var district in Model.Districts)
+                                                    {
+                                                        <option value="@district.DistrictId">@district.DistrictName</option>
+                                                    }
                                                 </select>
                                             </div>
 
@@ -46,10 +48,10 @@
                                             <div class="col-12">
                                                 <select class="form-select" aria-label="Drop Off">
                                                     <option selected>Select Drop Off Location</option>
-                                                    <option value="1">New York</option>
-                                                    <option value="2">Los Angeles</option>
-                                                    <option value="3">Chicago</option>
-                                                    <option value="4">Miami</option>
+                                                    @foreach (var district in Model.Districts)
+                                                    {
+                                                        <option value="@district.DistrictId">@district.DistrictName</option>
+                                                    }
                                                 </select>
                                             </div>
 
@@ -62,10 +64,10 @@
                                             <div class="col-12">
                                                 <select class="form-select" aria-label="Select Airport">
                                                     <option selected>Select Airport</option>
-                                                    <option value="1">JFK International Airport</option>
-                                                    <option value="2">LAX Airport</option>
-                                                    <option value="3">O'Hare International</option>
-                                                    <option value="4">Miami International</option>
+                                                    @foreach (var airport in Model.Airports)
+                                                    {
+                                                        <option value="@airport.AirPortId">@airport.AirportName</option>
+                                                    }
                                                 </select>
                                             </div>
 
@@ -121,10 +123,10 @@
                                             <div class="col-12">
                                                 <select class="form-select" aria-label="Select Car Type">
                                                     <option selected>Select Your Car type</option>
-                                                    <option value="1">VW Golf VII</option>
-                                                    <option value="2">Audi A1 S-Line</option>
-                                                    <option value="3">Toyota Camry</option>
-                                                    <option value="4">BMW 320 ModernLine</option>
+                                                    @foreach (var car in Model.Cars)
+                                                    {
+                                                        <option value="@car.CarId">@car.Brand @car.Model</option>
+                                                    }
                                                 </select>
                                             </div>
 
@@ -132,10 +134,10 @@
                                             <div class="col-12">
                                                 <select class="form-select" aria-label="Pick Up">
                                                     <option selected>Select Pick Up Location</option>
-                                                    <option value="1">New York</option>
-                                                    <option value="2">Los Angeles</option>
-                                                    <option value="3">Chicago</option>
-                                                    <option value="4">Miami</option>
+                                                    @foreach (var district in Model.Districts)
+                                                    {
+                                                        <option value="@district.DistrictId">@district.DistrictName</option>
+                                                    }
                                                 </select>
                                             </div>
 
@@ -143,10 +145,10 @@
                                             <div class="col-12">
                                                 <select class="form-select" aria-label="Drop Off">
                                                     <option selected>Select Drop Off Location</option>
-                                                    <option value="1">New York</option>
-                                                    <option value="2">Los Angeles</option>
-                                                    <option value="3">Chicago</option>
-                                                    <option value="4">Miami</option>
+                                                    @foreach (var district in Model.Districts)
+                                                    {
+                                                        <option value="@district.DistrictId">@district.DistrictName</option>
+                                                    }
                                                 </select>
                                             </div>
 
@@ -159,10 +161,10 @@
                                             <div class="col-12">
                                                 <select class="form-select" aria-label="Select Airport">
                                                     <option selected>Select Airport</option>
-                                                    <option value="1">JFK International Airport</option>
-                                                    <option value="2">LAX Airport</option>
-                                                    <option value="3">O'Hare International</option>
-                                                    <option value="4">Miami International</option>
+                                                    @foreach (var airport in Model.Airports)
+                                                    {
+                                                        <option value="@airport.AirPortId">@airport.AirportName</option>
+                                                    }
                                                 </select>
                                             </div>
 
