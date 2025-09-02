@@ -1,8 +1,43 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_MainUiLayout.cshtml";
+﻿@{
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
 
-<h1>Index</h1>
+<head>
+    <meta charset="utf-8">
+    <title>Cental - Car Rent Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
+    @await Component.InvokeAsync("HeadComponentPartial")
+</head>
+
+<body>
+
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+    @await Component.InvokeAsync("TopbarComponentPartial")
+    @await Component.InvokeAsync("NavbarHeroComponentPartial")
+    @await Component.InvokeAsync("CarouselComponentPartial")
+    @await Component.InvokeAsync("FeaturesComponentPartial")
+    @await Component.InvokeAsync("AboutComponentPartial")
+    @await Component.InvokeAsync("ServicesComponentPartial")
+    @await Component.InvokeAsync("CarCategoriesComponentPartial")
+    @await Component.InvokeAsync("CarStepsComponentPartial")
+    @await Component.InvokeAsync("TeamComponentPartial")
+    @await Component.InvokeAsync("TestimonialsComponentPartial")
+
+   
+
+    @await Component.InvokeAsync("FooterComponentPartial")
+
+  
+</body>
+</html>
