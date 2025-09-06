@@ -1,0 +1,142 @@
+﻿@model CarProjectCQRS.Models.AvailableCarsViewModel
+@{
+    ViewData["Title"] = "Available Cars";
+    Layout = "~/Views/Shared/_CarsBookingLayout.cshtml";
+}
+
+<div class="container-fluid categories py-5">
+    <div class="container py-5">
+        <!-- Search Criteria Display -->
+        @if (Model.SearchCriteria != null && !string.IsNullOrEmpty(Model.SearchCriteria.PickUpLocation))
+        {
+            <div class="alert alert-info mb-4">
+                <h5 class="mb-3">Search Results</h5>
+                <div class="row">
+                    <div class="col-md-3">
+                        <strong>Pick Up:</strong> @Model.SearchCriteria.PickUpLocation
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Drop Off:</strong> @Model.SearchCriteria.DropOffLocation
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Pick Up Date:</strong> @Model.SearchCriteria.PickUpDate.ToString("dd/MM/yyyy")
+                    </div>
+                    <div class="col-md-3">
+                        <strong>Drop Off Date:</strong> @Model.SearchCriteria.DropOffDate.ToString("dd/MM/yyyy")
+                    </div>
+                </div>
+                @if (Model.SearchCriteria.Distance > 0)
+                {
+                    <div class="mt-2">
+                        <strong>Distance:</strong> @Model.SearchCriteria.Distance km
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 text-capitalize mb-3">Available <span class="text-primary">Vehicles</span></h1>
+            <p class="mb-0">
+                @if (Model.AvailableCars.Any())
+                {
+                    <span>Found @Model.AvailableCars.Count() available vehicles for your search criteria.</span>
+                }
+                else
+                {
+                    <span>No vehicles found matching your search criteria. Please try different dates or locations.</span>
+                }
+            </p>
+        </div>
+
+        @if (Model.AvailableCars.Any())
+        {
+            <div class="categories-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
+                @foreach (var car in Model.AvailableCars)
+                {
+                    <div class="categories-item p-4">
+                        <div class="categories-item-inner">
+                            <div class="categories-img rounded-top">
+                                <img src="@car.ImageUrl" class="img-fluid w-100 rounded-top" alt="@car.Brand @car.Model">
+                            </div>
+                            <div class="categories-content rounded-bottom p-4">
+                                <h4>@car.Brand @car.Model</h4>
+                                <div class="categories-review mb-4">
+                                    <div class="me-3">@car.ReviewScore.ToString("0.0") Review</div>
+                                    <div class="d-flex justify-content-center text-secondary">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= car.ReviewScore)
+                                            {
+                                                <i class="fas fa-star text-warning"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-star text-body"></i>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="bg-white text-primary rounded-pill py-2 px-4 mb-0">
+                                        $@car.DailyPrice.ToString("0.00")/Day
+                                    </h4>
+                                    @if (Model.TotalDays > 1)
+                                    {
+                                        <small class="text-muted">Total for @Model.TotalDays days: $@((car.DailyPrice * Model.TotalDays).ToString("0.00"))</small>
+                                    }
+                                </div>
+                                <div class="row gy-2 gx-0 text-center mb-4">
+                                    <div class="col-4 border-end border-white">
+                                        <i class="fa fa-users text-dark"></i> 
+                                        <span class="text-body ms-1">@car.SeatCount Seat</span>
+                                    </div>
+                                    <div class="col-4 border-end border-white">
+                                        <i class="fa fa-car text-dark"></i> 
+                                        <span class="text-body ms-1">@car.TransmissionType</span>
+                                    </div>
+                                    <div class="col-4">
+                                        <i class="fa fa-gas-pump text-dark"></i> 
+                                        <span class="text-body ms-1">@car.FuelType</span>
+                                    </div>
+                                    <div class="col-4 border-end border-white">
+                                        <i class="fa fa-car text-dark"></i> 
+                                        <span class="text-body ms-1">@car.ModelYear</span>
+                                    </div>
+                                    <div class="col-4 border-end border-white">
+                                        <i class="fa fa-cogs text-dark"></i> 
+                                        <span class="text-body ms-1">@car.GearType</span>
+                                    </div>
+                                    <div class="col-4">
+                                        <i class="fa fa-road text-dark"></i> 
+                                        <span class="text-body ms-1">@(car.Mileage / 1000)K</span>
+                                    </div>
+                                </div>
+                                <form method="post" action="@Url.Action("ConfirmBooking", "Booking")">
+                                    <input type="hidden" name="CarId" value="@car.CarId" />
+                                    <input type="hidden" name="PickUpLocation" value="@Model.SearchCriteria.PickUpLocation" />
+                                    <input type="hidden" name="DropOffLocation" value="@Model.SearchCriteria.DropOffLocation" />
+                                    <input type="hidden" name="PickUpDate" value="@Model.SearchCriteria.PickUpDate.ToString("yyyy-MM-dd")" />
+                                    <input type="hidden" name="DropOffDate" value="@Model.SearchCriteria.DropOffDate.ToString("yyyy-MM-dd")" />
+                                    <input type="hidden" name="AirportId" value="@Model.SearchCriteria.AirportId" />
+                                    <button type="submit" class="btn btn-primary rounded-pill d-flex justify-content-center py-3 w-100">
+                                        Book This Car
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <i class="fas fa-car text-muted" style="font-size: 4rem;"></i>
+                <h4 class="text-muted mt-3">No Available Cars</h4>
+                <p class="text-muted">Please try different search criteria or contact us for assistance.</p>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back to Search</a>
+            </div>
+        }
+    </div>
+</div>
+

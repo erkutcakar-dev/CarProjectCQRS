@@ -227,35 +227,8 @@ namespace CarProjectCQRS.Controllers
             return RedirectToAction("CarList");
         }
 
-        public async Task<IActionResult> CarListUI()
-        {
-            try
-            {
-                var values = await _getCarQueryHandler.Handle();
-                return View(values.Select(x => new Car
-                {
-                    CarId = x.CarId,
-                    Brand = x.Brand,
-                    Model = x.Model,
-                    ImageUrl = x.ImageUrl,
-                    ReviewScore = x.ReviewScore,
-                    DailyPrice = x.DailyPrice,
-                    SeatCount = x.SeatCount,
-                    TransmissionType = x.TransmissionType,
-                    FuelType = x.FuelType,
-                    ModelYear = x.ModelYear,
-                    GearType = x.GearType,
-                    Mileage = x.Mileage,
-                    IsAvailable = x.IsAvailable,
-                    CreatedDate = x.CreatedDate
-                }).ToList());
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "An error occurred while loading the car list.";
-                return View(new List<Car>());
-            }
-        }
+   
+        
 
     }
 }
