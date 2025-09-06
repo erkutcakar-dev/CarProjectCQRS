@@ -20,10 +20,10 @@ namespace CarProjectCQRS.CQRSPattern.Handlers.ReservationHandlers
                 if (query == null)
                     throw new ArgumentNullException(nameof(query), "Query cannot be null");
 
-                if (query.Id <= 0)
-                    throw new ArgumentException("Invalid ID provided", nameof(query.Id));
+                if (query.ReservationId <= 0)
+                    throw new ArgumentException("Invalid ID provided", nameof(query.ReservationId));
 
-                var values = await _context.Reservations.FindAsync(query.Id);
+                var values = await _context.Reservations.FindAsync(query.ReservationId);
 
                 if (values == null)
                     return null;

@@ -7,10 +7,9 @@ using CarProjectCQRS.CQRSPattern.Handlers.ServiceHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.SliderHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.TestimonialHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.ReservationHandlers;
-using CarProjectCQRS.CQRSPattern.Handlers.ProvinceHandlers;
-using CarProjectCQRS.CQRSPattern.Handlers.DistrictHandlers;
-using CarProjectCQRS.CQRSPattern.Handlers.DistrictDistanceHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.TurkeyAirportHandlers;
+using CarProjectCQRS.CQRSPattern.Handlers.DistanceHandlers;
+using CarProjectCQRS.ViewComponents.MainUiViewComponents;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// HttpClient servisi ekle (FuelPrice/AdminController için)
+// HttpClient servisi ekle (FuelPrice/AdminController iÃ§in)
 builder.Services.AddHttpClient();
 
 // Entity Framework DbContext Configuration
@@ -81,27 +80,22 @@ builder.Services.AddScoped<CreateReservationCommandHandler>();
 builder.Services.AddScoped<UpdateReservationCommandHandler>();
 builder.Services.AddScoped<RemoveReservationCommandHandler>();
 
-// Province Handlers
-builder.Services.AddScoped<GetProvinceQueryHandler>();
-builder.Services.AddScoped<GetProvinceByIdQueryHandler>();
-builder.Services.AddScoped<CreateProvinceCommandHandler>();
-builder.Services.AddScoped<UpdateProvinceCommandHandler>();
-builder.Services.AddScoped<RemoveProvinceCommandHandler>();
-
-// District Handlers
-builder.Services.AddScoped<GetDistrictQueryHandler>();
-builder.Services.AddScoped<GetDistrictByIdQueryHandler>();
-builder.Services.AddScoped<CreateDistrictCommandHandler>();
-builder.Services.AddScoped<UpdateDistrictCommandHandler>();
-builder.Services.AddScoped<RemoveDistrictCommandHandler>();
-
-// DistrictDistance Handlers
-builder.Services.AddScoped<GetDistrictDistanceQueryHandler>();
-builder.Services.AddScoped<CreateDistrictDistanceCommandHandler>();
-
 // TurkeyAirport Handlers
 builder.Services.AddScoped<GetTurkeyAirportQueryHandler>();
+builder.Services.AddScoped<GetTurkeyAirportByIdQueryHandler>();
 builder.Services.AddScoped<CreateTurkeyAirportCommandHandler>();
+builder.Services.AddScoped<UpdateTurkeyAirportCommandHandler>();
+builder.Services.AddScoped<RemoveTurkeyAirportCommandHandler>();
+
+// Distance Handlers
+builder.Services.AddScoped<GetDistanceQueryHandler>();
+builder.Services.AddScoped<GetDistanceByIdQueryHandler>();
+builder.Services.AddScoped<CreateDistanceCommandHandler>();
+builder.Services.AddScoped<UpdateDistanceCommandHandler>();
+builder.Services.AddScoped<RemoveDistanceCommandHandler>();
+
+// ViewComponents
+builder.Services.AddScoped<CarouselComponentPartial>();
 
 var app = builder.Build();
 

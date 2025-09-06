@@ -1,0 +1,88 @@
+@model CarProjectCQRS.Entities.Testimonial
+
+@{
+    ViewData["Title"] = "Add Testimonial";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard / Testimonial Management /</span> Add New Testimonial
+    </h4>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Add New Testimonial</h5>
+                    <a href="@Url.Action("TestimonialList", "Testimonial")" class="btn btn-outline-secondary">
+                        <i class="bx bx-arrow-back me-2"></i>Back to List
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddTestimonial" method="post">
+                        <div class="row">
+                            <!-- Customer Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="TestimonialName" class="form-label">Customer Name <span class="text-danger">*</span></label>
+                                <input asp-for="TestimonialName" class="form-control" placeholder="Enter customer name" />
+                                <span asp-validation-for="TestimonialName" class="text-danger"></span>
+                            </div>
+
+                            <!-- Rating -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Rating" class="form-label">Rating <span class="text-danger">*</span></label>
+                                <select asp-for="Rating" class="form-select">
+                                    <option value="">Select Rating</option>
+                                    <option value="1">1 Star</option>
+                                    <option value="2">2 Stars</option>
+                                    <option value="3">3 Stars</option>
+                                    <option value="4">4 Stars</option>
+                                    <option value="5">5 Stars</option>
+                                </select>
+                                <span asp-validation-for="Rating" class="text-danger"></span>
+                            </div>
+
+                            <!-- Comment -->
+                            <div class="col-12 mb-3">
+                                <label asp-for="Comment" class="form-label">Comment <span class="text-danger">*</span></label>
+                                <textarea asp-for="Comment" class="form-control" rows="4" placeholder="Enter customer comment"></textarea>
+                                <span asp-validation-for="Comment" class="text-danger"></span>
+                            </div>
+
+                            <!-- Image URL -->
+                            <div class="col-12 mb-3">
+                                <label asp-for="ImageUrl" class="form-label">Customer Image URL</label>
+                                <input asp-for="ImageUrl" class="form-control" placeholder="Enter customer image URL" />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
+                                    <label asp-for="IsActive" class="form-check-label">Active Status</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bx bx-save me-2"></i>Save Testimonial
+                                </button>
+                                <a href="@Url.Action("TestimonialList", "Testimonial")" class="btn btn-outline-secondary">
+                                    <i class="bx bx-x me-2"></i>Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

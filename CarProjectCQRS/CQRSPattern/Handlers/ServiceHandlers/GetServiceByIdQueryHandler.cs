@@ -20,10 +20,10 @@ namespace CarProjectCQRS.CQRSPattern.Handlers.ServiceHandlers
                 if (query == null)
                     throw new ArgumentNullException(nameof(query), "Query cannot be null");
 
-                if (query.Id <= 0)
-                    throw new ArgumentException("Invalid ID provided", nameof(query.Id));
+                if (query.ServiceId <= 0)
+                    throw new ArgumentException("Invalid ID provided", nameof(query.ServiceId));
 
-                var values = await _context.Services.FindAsync(query.Id);
+                var values = await _context.Services.FindAsync(query.ServiceId);
 
                 if (values == null)
                     return null;

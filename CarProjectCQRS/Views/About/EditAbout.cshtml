@@ -1,0 +1,157 @@
+﻿
+@model CarProjectCQRS.Entities.About
+
+@{
+    ViewData["Title"] = "Edit About";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard / About Management /</span> Edit About
+    </h4>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Edit About Information</h5>
+                    <a href="@Url.Action("AboutList", "About")" class="btn btn-outline-secondary">
+                        <i class="bx bx-arrow-back me-2"></i>Back to List
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditAbout" method="post">
+                        <input asp-for="AboutId" type="hidden" />
+                        
+                        <div class="row">
+                            <!-- Basic Information -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Title" class="form-label">Title <span class="text-danger">*</span></label>
+                                <input asp-for="Title" class="form-control" placeholder="Enter about title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="YearsOfExperience" class="form-label">Years of Experience <span class="text-danger">*</span></label>
+                                <input asp-for="YearsOfExperience" type="number" class="form-control" placeholder="e.g. 15" />
+                                <span asp-validation-for="YearsOfExperience" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label asp-for="Description" class="form-label">Description <span class="text-danger">*</span></label>
+                                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter about description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <!-- Vision Section -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="VisionTitle" class="form-label">Vision Title</label>
+                                <input asp-for="VisionTitle" class="form-control" placeholder="Enter vision title" />
+                                <span asp-validation-for="VisionTitle" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="MissionTitle" class="form-label">Mission Title</label>
+                                <input asp-for="MissionTitle" class="form-control" placeholder="Enter mission title" />
+                                <span asp-validation-for="MissionTitle" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="VisionDescription" class="form-label">Vision Description</label>
+                                <textarea asp-for="VisionDescription" class="form-control" rows="3" placeholder="Enter vision description"></textarea>
+                                <span asp-validation-for="VisionDescription" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="MissionDescription" class="form-label">Mission Description</label>
+                                <textarea asp-for="MissionDescription" class="form-control" rows="3" placeholder="Enter mission description"></textarea>
+                                <span asp-validation-for="MissionDescription" class="text-danger"></span>
+                            </div>
+
+                            <!-- Experience Items -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ExperienceItem1" class="form-label">Experience Item 1</label>
+                                <input asp-for="ExperienceItem1" class="form-control" placeholder="First experience item" />
+                                <span asp-validation-for="ExperienceItem1" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ExperienceItem2" class="form-label">Experience Item 2</label>
+                                <input asp-for="ExperienceItem2" class="form-control" placeholder="Second experience item" />
+                                <span asp-validation-for="ExperienceItem2" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ExperienceItem3" class="form-label">Experience Item 3</label>
+                                <input asp-for="ExperienceItem3" class="form-control" placeholder="Third experience item" />
+                                <span asp-validation-for="ExperienceItem3" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ExperienceItem4" class="form-label">Experience Item 4</label>
+                                <input asp-for="ExperienceItem4" class="form-control" placeholder="Fourth experience item" />
+                                <span asp-validation-for="ExperienceItem4" class="text-danger"></span>
+                            </div>
+
+                            <!-- Founder Information -->
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="FounderName" class="form-label">Founder Name</label>
+                                <input asp-for="FounderName" class="form-control" placeholder="Enter founder name" />
+                                <span asp-validation-for="FounderName" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="FounderTitle" class="form-label">Founder Title</label>
+                                <input asp-for="FounderTitle" class="form-control" placeholder="Enter founder title" />
+                                <span asp-validation-for="FounderTitle" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="FounderImageUrl" class="form-label">Founder Image URL</label>
+                                <input asp-for="FounderImageUrl" class="form-control" placeholder="Enter founder image URL" />
+                                <span asp-validation-for="FounderImageUrl" class="text-danger"></span>
+                            </div>
+
+                            <!-- Image URLs -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="MainImageUrl" class="form-label">Main Image URL</label>
+                                <input asp-for="MainImageUrl" class="form-control" placeholder="Enter main image URL" />
+                                <span asp-validation-for="MainImageUrl" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="SecondaryImageUrl" class="form-label">Secondary Image URL</label>
+                                <input asp-for="SecondaryImageUrl" class="form-control" placeholder="Enter secondary image URL" />
+                                <span asp-validation-for="SecondaryImageUrl" class="text-danger"></span>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                    <label asp-for="IsActive" class="form-check-label">Active Status</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bx bx-save me-2"></i>Update About
+                                </button>
+                                <a href="@Url.Action("AboutList", "About")" class="btn btn-outline-secondary">
+                                    <i class="bx bx-x me-2"></i>Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

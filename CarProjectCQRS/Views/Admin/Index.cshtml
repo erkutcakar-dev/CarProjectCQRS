@@ -1,50 +1,215 @@
-﻿@model List<CarProjectCQRS.Models.EiaDataPoint>
+﻿@model CarProjectCQRS.Models.DashboardViewModel
 
 @{
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard /</span> Overview
+    </h4>
 
-<h2>ABD Ortalama Benzin Fiyatları</h2>
-
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-lg-4 col-md-6 mb-4">
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-4">
             <div class="card">
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <div class="avatar flex-shrink-0">
-                            <img src="/sneat-1.0.0/assets/img/icons/unicons/chart-success.png"
-                                 alt="chart success"
-                                 class="rounded" />
+                            <img src="https://cdn.langeek.co/photo/26014/original/about?type=png" alt="chart success" class="rounded" />
                         </div>
                         <div class="dropdown">
-                            <button class="btn p-0"
-                                    type="button"
-                                    id="cardOpt@item.period"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
+                            <button class="btn p-0" type="button" id="cardOpt1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt@item.period">
-                                <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt1">
+                                <a class="dropdown-item" href="@Url.Action("AboutList", "About")">View About</a>
+                                <a class="dropdown-item" href="@Url.Action("AddAbout", "About")">Add New</a>
                             </div>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Week: @item.period</span>
-                    <h3 class="card-title mb-2">
-                        @(((item.value / 2.55m) * 41.10m).ToString("0.00")) ₺ (Türk Lirası)
-                    </h3>
-
-
-
-                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> Price updated</small>
+                    <span class="fw-semibold d-block mb-1">Distances</span>
+                    <h3 class="card-title mb-2">@Model.DistanceCount</h3>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> City with kilometer information </small>
                 </div>
             </div>
         </div>
-    }
+
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <img src="https://www.thebalancemoney.com/thmb/uXjxYodqH6S3LZNZ2qix_JpDt4s=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/is-my-car-totaled-527100-Final-5c4751d246e0fb0001b417d2.png" alt="car" class="rounded" />
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn p-0" type="button" id="cardOpt2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt2">
+                                <a class="dropdown-item" href="@Url.Action("CarList", "Car")">View Cars</a>
+                                <a class="dropdown-item" href="@Url.Action("AddCar", "Car")">Add New</a>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="fw-semibold d-block mb-1">Total Cars</span>
+                    <h3 class="card-title mb-2">@Model.CarCount</h3>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +2%</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <img src="http://sincanogretmenevi.meb.k12.tr/meb_iys_dosyalar/06/22/971020/resimler/2017_03/k_13203814_rezervasyon1.png" alt="calendar" class="rounded" />
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                <a class="dropdown-item" href="@Url.Action("ReservationList", "Reservation")">View Reservations</a>
+                                <a class="dropdown-item" href="@Url.Action("AddReservation", "Reservation")">Add New</a>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="fw-semibold d-block mb-1">Reservations</span>
+                    <h3 class="card-title mb-2">@Model.ReservationsCount</h3>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +15.3%</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <img src="https://img.freepik.com/premium-vector/business-characters-team-work-office-people-corporate-employee-cartoon-teamwork-communication-business-team-illustration_176516-369.jpg" alt="user" class="rounded" />
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+                                <a class="dropdown-item" href="@Url.Action("EmployeeList", "Employee")">View Employees</a>
+                                <a class="dropdown-item" href="@Url.Action("AddEmployee", "Employee")">Add New</a>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="fw-semibold d-block mb-1">Employees</span>
+                    <h3 class="card-title mb-2">@Model.EmployeesCount</h3>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +5.7%</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fuel Price Section -->
+ 
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">API Data - Fuel Prices & Weather</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 justify-content-center">
+                        <!-- Sadece buraya justify-content-center eklendi -->
+                        <!-- Fuel Price Cards -->
+                        @if (Model.FuelPrices != null && Model.FuelPrices.Any())
+                        {
+                            @foreach (var item in Model.FuelPrices)
+                            {
+                                <div class="col-lg-4 col-md-6 d-flex">
+                                    <div class="card border-primary flex-fill">
+                                        <!-- flex-fill eklendi -->
+                                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                                            <i class="bx bx-gas-pump text-primary mb-2" style="font-size: 2rem;"></i>
+                                            <h6 class="card-title">Week: @item.period</h6>
+                                            <h4 class="text-primary mb-2">
+                                                @(((item.value / 2.55m) * Model.UsdToTry).ToString("0.00")) ₺
+                                            </h4>
+                                            <small class="text-muted">Per Liter (TRY)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                        <!-- Weather Cards -->
+                        @if (Model.WeatherData != null && Model.WeatherData.Any())
+                        {
+                            @foreach (var item in Model.WeatherData)
+                            {
+                                <div class="col-lg-4 col-md-6 d-flex">
+                                    <div class="card border-success flex-fill">
+                                        <!-- flex-fill eklendi -->
+                                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                                            <i class="bx bx-cloud-light-rain text-success mb-2" style="font-size: 2rem;"></i>
+                                            <h6 class="card-title">@item.City</h6>
+                                            <h4 class="text-success mb-2">@item.TemperatureC.ToString("0.0") °C</h4>
+                                            <small class="text-muted">@item.Condition</small>
+                                            <p class="text-muted mt-2 mb-0">Wind: @item.WindKph Kph | Humidity: @item.Humidity %</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                        <!-- No Data Message -->
+                        @if ((Model.FuelPrices == null || !Model.FuelPrices.Any()) && (Model.WeatherData == null || !Model.WeatherData.Any()))
+                        {
+                            <div class="col-12 text-center">
+                                <i class="bx bx-error-circle text-warning mb-2" style="font-size: 3rem;"></i>
+                                <h6 class="text-muted">API data is currently unavailable</h6>
+                                <p class="text-muted">Please check your internet connection or try again later.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="@Url.Action("AddCar", "Car")" class="btn btn-outline-primary w-100">
+                                <i class="bx bx-plus me-2"></i>Add New Car
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="@Url.Action("AddReservation", "Reservation")" class="btn btn-outline-success w-100">
+                                <i class="bx bx-calendar-plus me-2"></i>New Reservation
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="@Url.Action("AddEmployee", "Employee")" class="btn btn-outline-info w-100">
+                                <i class="bx bx-user-plus me-2"></i>Add Employee
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="@Url.Action("AddService", "Service")" class="btn btn-outline-warning w-100">
+                                <i class="bx bx-cog me-2"></i>Add Service
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

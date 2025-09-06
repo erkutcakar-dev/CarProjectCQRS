@@ -20,10 +20,10 @@ namespace CarProjectCQRS.CQRSPattern.Handlers.SliderHandlers
                 if (query == null)
                     throw new ArgumentNullException(nameof(query), "Query cannot be null");
 
-                if (query.Id <= 0)
-                    throw new ArgumentException("Invalid ID provided", nameof(query.Id));
+                if (query.SliderId <= 0)
+                    throw new ArgumentException("Invalid ID provided", nameof(query.SliderId));
 
-                var values = await _context.Sliders.FindAsync(query.Id);
+                var values = await _context.Sliders.FindAsync(query.SliderId);
 
                 if (values == null)
                     return null;

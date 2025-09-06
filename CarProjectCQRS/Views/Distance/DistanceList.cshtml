@@ -1,0 +1,87 @@
+@model List<CarProjectCQRS.Entities.Distance>
+
+@{
+    ViewData["Title"] = "Distance Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard /</span> Distance Management
+    </h4>
+
+    <!-- Add Distance Button -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <a href="@Url.Action("AddDistance", "Distance")" class="btn btn-primary">
+                <i class="bx bx-plus me-2"></i>Add New Distance
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h5 class="card-header">Distance List</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Distance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <i class="bx bx-map-pin text-primary me-3"></i>
+                                    <strong>@item.From</strong>
+                                    <i class="bx bx-right-arrow-alt mx-2 text-muted"></i>
+                                    <strong>@item.Destination</strong>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bx bx-road text-warning me-2"></i>
+                                        <div>
+                                            <strong>@item.DistanceValue km</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="@Url.Action("EditDistance", "Distance", new { id = item.DistanceId })">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("DeleteDistance", "Distance", new { id = item.DistanceId })" onclick="return confirm('Are you sure you want to delete this distance record?')">
+                                                <i class="bx bx-trash me-1"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center py-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bx bx-info-circle display-4 text-muted mb-2"></i>
+                                    <h6 class="text-muted">No Distance records found</h6>
+                                    <p class="text-muted">Click "Add New Distance" to create your first record.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -2,11 +2,15 @@
 {
     public class GetServiceByIdQueries
     {
-        public int Id { get; set; }
-
-        public GetServiceByIdQueries(int id)
+        public int ServiceId { get; set; }
+        
+        public GetServiceByIdQueries()
         {
-            Id = id;
+        }
+        
+        public GetServiceByIdQueries(int serviceId)
+        {
+            ServiceId = serviceId;
         }
     }
 }

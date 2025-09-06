@@ -2,10 +2,15 @@
 {
     public class GetReservationByIdQueries
     {
-        public int Id { get; set; }
-        public GetReservationByIdQueries(int id)
+        public int ReservationId { get; set; }
+        
+        public GetReservationByIdQueries()
         {
-            Id = id;
+        }
+        
+        public GetReservationByIdQueries(int reservationId)
+        {
+            ReservationId = reservationId;
         }
     }
 }

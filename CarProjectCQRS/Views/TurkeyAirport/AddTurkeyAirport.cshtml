@@ -1,0 +1,59 @@
+@model CarProjectCQRS.Entities.TurkeyAirport
+
+@{
+    ViewData["Title"] = "Add Turkey Airport";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard / Turkey Airport Management /</span> Add New Turkey Airport
+    </h4>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Add New Turkey Airport</h5>
+                    <a href="@Url.Action("TurkeyAirportList", "TurkeyAirport")" class="btn btn-outline-secondary">
+                        <i class="bx bx-arrow-back me-2"></i>Back to List
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddTurkeyAirport" method="post">
+                        <div class="row">
+                            <!-- Province -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Province" class="form-label">Province <span class="text-danger">*</span></label>
+                                <input asp-for="Province" class="form-control" placeholder="Enter province name" />
+                                <span asp-validation-for="Province" class="text-danger"></span>
+                            </div>
+
+                            <!-- Airport Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="AirportName" class="form-label">Airport Name <span class="text-danger">*</span></label>
+                                <input asp-for="AirportName" class="form-control" placeholder="Enter airport name" />
+                                <span asp-validation-for="AirportName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bx bx-save me-2"></i>Save Turkey Airport
+                                </button>
+                                <a href="@Url.Action("TurkeyAirportList", "TurkeyAirport")" class="btn btn-outline-secondary">
+                                    <i class="bx bx-x me-2"></i>Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -4,6 +4,10 @@
     {
         public int AboutId { get; set; }
 
+        public RemoveAboutCommands()
+        {
+        }
+
         public RemoveAboutCommands(int aboutId)
         {
             AboutId = aboutId;

@@ -19,6 +19,8 @@ namespace CarProjectCQRS.CQRSPattern.Handlers.CarHandlers
             {
                 var values = await _context.Cars.ToListAsync();
                 
+                Console.WriteLine($"GetCarQueryHandler: Found {values?.Count ?? 0} cars");
+                
                 if (values == null)
                     return new List<GetCarQueryResult>();
 
@@ -42,6 +44,7 @@ namespace CarProjectCQRS.CQRSPattern.Handlers.CarHandlers
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"GetCarQueryHandler Error: {ex.Message}");
                 throw new InvalidOperationException("An error occurred while retrieving car records", ex);
             }
         }

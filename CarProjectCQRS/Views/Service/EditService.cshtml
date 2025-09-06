@@ -1,0 +1,90 @@
+@model CarProjectCQRS.Entities.Service
+
+@{
+    ViewData["Title"] = "Edit Service";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard / Service Management /</span> Edit Service
+    </h4>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Edit Service Information</h5>
+                    <a href="@Url.Action("ServiceList", "Service")" class="btn btn-outline-secondary">
+                        <i class="bx bx-arrow-back me-2"></i>Back to List
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditService" method="post">
+                        <input asp-for="ServiceId" type="hidden" />
+                        
+                        <div class="row">
+                            <!-- Title -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Title" class="form-label">Title <span class="text-danger">*</span></label>
+                                <input asp-for="Title" class="form-control" placeholder="Enter service title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+
+                            <!-- Icon -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Icon" class="form-label">Icon Class</label>
+                                <input asp-for="Icon" class="form-control" placeholder="e.g. bx bx-support" />
+                                <span asp-validation-for="Icon" class="text-danger"></span>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12 mb-3">
+                                <label asp-for="Description" class="form-label">Description <span class="text-danger">*</span></label>
+                                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter service description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <!-- Icon Title -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="IconTitle" class="form-label">Icon Title</label>
+                                <input asp-for="IconTitle" class="form-control" placeholder="Enter icon title" />
+                                <span asp-validation-for="IconTitle" class="text-danger"></span>
+                            </div>
+
+                            <!-- Icon Subtitle -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="IconSubtitle" class="form-label">Icon Subtitle</label>
+                                <input asp-for="IconSubtitle" class="form-control" placeholder="Enter icon subtitle" />
+                                <span asp-validation-for="IconSubtitle" class="text-danger"></span>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                    <label asp-for="IsActive" class="form-check-label">Active Status</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bx bx-save me-2"></i>Update Service
+                                </button>
+                                <a href="@Url.Action("ServiceList", "Service")" class="btn btn-outline-secondary">
+                                    <i class="bx bx-x me-2"></i>Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

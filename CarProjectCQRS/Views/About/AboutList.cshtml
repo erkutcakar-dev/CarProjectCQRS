@@ -1,0 +1,128 @@
+﻿@model List<CarProjectCQRS.Entities.About>
+
+@{
+    ViewData["Title"] = "About Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard /</span> About Management
+    </h4>
+
+    <!-- Add About Button -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <a href="@Url.Action("AddAbout", "About")" class="btn btn-primary">
+                <i class="bx bx-plus me-2"></i>Add New About
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h5 class="card-header">About List</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Founder</th>
+                        <th>Experience</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="@(item.IsActive ? "table-success" : "table-secondary")">
+                                <td>
+                                    <i class="fab fa-sketch fa-lg text-warning me-3"></i>
+                                    <strong>@item.Title</strong>
+                                    <br>
+                                    <small class="text-muted">@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</small>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (!string.IsNullOrEmpty(item.FounderImageUrl))
+                                        {
+                                            <img src="@item.FounderImageUrl" alt="@item.FounderName" class="rounded-circle me-2" width="40" height="40" />
+                                        }
+                                        else
+                                        {
+                                            <div class="avatar avatar-sm me-2">
+                                                <span class="avatar-initial bg-label-primary rounded-circle">@(item.FounderName?.Substring(0, 1).ToUpper())</span>
+                                            </div>
+                                        }
+                                        <div>
+                                            <strong>@item.FounderName</strong>
+                                            <br>
+                                            <small class="text-muted">@item.FounderTitle</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bx bx-trophy text-warning me-2"></i>
+                                        <div>
+                                            <strong>@item.YearsOfExperience Years</strong>
+                                            <br>
+                                            <small class="text-muted">Experience</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge bg-label-success me-2">Active</span>
+                                            <a href="@Url.Action("ToggleStatus", "About", new { id = item.AboutId })" class="btn btn-sm btn-outline-warning" title="Deactivate" onclick="return confirm('Are you sure you want to deactivate this item?')">
+                                                <i class="bx bx-toggle-right"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-label-secondary me-2">Inactive</span>
+                                            <a href="@Url.Action("ToggleStatus", "About", new { id = item.AboutId })" class="btn btn-sm btn-outline-success" title="Activate" onclick="return confirm('Are you sure you want to activate this item?')">
+                                                <i class="bx bx-toggle-left"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="@Url.Action("EditAbout", "About", new { id = item.AboutId })">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("DeleteAbout", "About", new { id = item.AboutId })" onclick="return confirm('Are you sure you want to delete this item?')">
+                                                <i class="bx bx-trash me-1"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bx bx-info-circle display-4 text-muted mb-2"></i>
+                                    <h6 class="text-muted">No About records found</h6>
+                                    <p class="text-muted">Click "Add New About" to create your first record.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

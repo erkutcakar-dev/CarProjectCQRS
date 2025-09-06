@@ -2,8 +2,15 @@
 {
     public class RemoveTurkeyAirportCommands
     {
+        public byte AirPortId { get; set; }
         
-        public string Province { get; set; }
-      
+        public RemoveTurkeyAirportCommands()
+        {
+        }
+        
+        public RemoveTurkeyAirportCommands(int airPortId)
+        {
+            AirPortId = (byte)airPortId;
+        }
     }
 }

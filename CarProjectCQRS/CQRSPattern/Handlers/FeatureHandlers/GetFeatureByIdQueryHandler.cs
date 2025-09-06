@@ -13,17 +13,17 @@ namespace CarProjectCQRS.CQRSPattern.Handlers.FeatureHandlers
             _context = context;
         }
 
-        public async Task<GetFeatureByIdQueryResult> Handle(GetEmployeeByIdQueries query)
+        public async Task<GetFeatureByIdQueryResult> Handle(GetFeatureByIdQuery query)
         {
             try
             {
                 if (query == null)
                     throw new ArgumentNullException(nameof(query), "Query cannot be null");
 
-                if (query.Id <= 0)
-                    throw new ArgumentException("Invalid ID provided", nameof(query.Id));
+                if (query.FeatureId <= 0)
+                    throw new ArgumentException("Invalid ID provided", nameof(query.FeatureId));
 
-                var values = await _context.Features.FindAsync(query.Id);
+                var values = await _context.Features.FindAsync(query.FeatureId);
 
                 if (values == null)
                     return null;

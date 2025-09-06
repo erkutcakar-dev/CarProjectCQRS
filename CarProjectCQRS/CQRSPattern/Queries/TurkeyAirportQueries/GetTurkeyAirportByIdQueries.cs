@@ -2,10 +2,15 @@
 {
     public class GetTurkeyAirportByIdQueries
     {
-        public int Id { get; set; }
-        public GetTurkeyAirportByIdQueries(int id)
+        public byte AirPortId { get; set; }
+        
+        public GetTurkeyAirportByIdQueries()
         {
-            Id = id;
+        }
+        
+        public GetTurkeyAirportByIdQueries(int airPortId)
+        {
+            AirPortId = (byte)airPortId;
         }
     }
 }

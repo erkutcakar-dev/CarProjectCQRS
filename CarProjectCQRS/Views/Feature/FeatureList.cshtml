@@ -1,0 +1,132 @@
+@model List<CarProjectCQRS.Entities.Feature>
+
+@{
+    ViewData["Title"] = "Feature Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard /</span> Feature Management
+    </h4>
+
+    <!-- Add Feature Button -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <a href="@Url.Action("AddFeature", "Feature")" class="btn btn-primary">
+                <i class="bx bx-plus me-2"></i>Add New Feature
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h5 class="card-header">Feature List</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Icon</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="@(item.IsActive ? "table-success" : "table-secondary")">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                        {
+                                            <img src="@item.ImageUrl" alt="@item.Title" class="rounded me-3" width="50" height="50" />
+                                        }
+                                        else
+                                        {
+                                            <div class="avatar avatar-sm me-3">
+                                                <span class="avatar-initial bg-label-primary rounded">@(item.Title?.Substring(0, 1).ToUpper())</span>
+                                            </div>
+                                        }
+                                        <div>
+                                            <strong>@item.Title</strong>
+                                            <br>
+                                            <small class="text-muted">ID: @item.FeatureId</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (!string.IsNullOrEmpty(item.Icon))
+                                        {
+                                            <i class="@item.Icon text-primary me-2"></i>
+                                        }
+                                        <div>
+                                            <strong>@item.IconTitle</strong>
+                                            <br>
+                                            <small class="text-muted">@item.IconSubtitle</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <strong>@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge bg-label-success me-2">Active</span>
+                                            <a href="@Url.Action("ToggleStatus", "Feature", new { id = item.FeatureId })" class="btn btn-sm btn-outline-warning" title="Deactivate" onclick="return confirm('Are you sure you want to deactivate this feature?')">
+                                                <i class="bx bx-toggle-right"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-label-secondary me-2">Inactive</span>
+                                            <a href="@Url.Action("ToggleStatus", "Feature", new { id = item.FeatureId })" class="btn btn-sm btn-outline-success" title="Activate" onclick="return confirm('Are you sure you want to activate this feature?')">
+                                                <i class="bx bx-toggle-left"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="@Url.Action("EditFeature", "Feature", new { id = item.FeatureId })">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("DeleteFeature", "Feature", new { id = item.FeatureId })" onclick="return confirm('Are you sure you want to delete this feature?')">
+                                                <i class="bx bx-trash me-1"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bx bx-info-circle display-4 text-muted mb-2"></i>
+                                    <h6 class="text-muted">No Feature records found</h6>
+                                    <p class="text-muted">Click "Add New Feature" to create your first record.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

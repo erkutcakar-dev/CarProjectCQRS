@@ -1,0 +1,100 @@
+@model CarProjectCQRS.Entities.Reservation
+
+@{
+    ViewData["Title"] = "Edit Reservation";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard / Reservation Management /</span> Edit Reservation
+    </h4>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Edit Reservation Information</h5>
+                    <a href="@Url.Action("ReservationList", "Reservation")" class="btn btn-outline-secondary">
+                        <i class="bx bx-arrow-back me-2"></i>Back to List
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditReservation" method="post">
+                        <input asp-for="ReservationId" type="hidden" />
+                        
+                        <div class="row">
+                            <!-- Car Information -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CarId" class="form-label">Car ID <span class="text-danger">*</span></label>
+                                <input asp-for="CarId" type="number" class="form-control" placeholder="Enter car ID" />
+                                <span asp-validation-for="CarId" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CarType" class="form-label">Car Type <span class="text-danger">*</span></label>
+                                <input asp-for="CarType" class="form-control" placeholder="Enter car type" />
+                                <span asp-validation-for="CarType" class="text-danger"></span>
+                            </div>
+
+                            <!-- Location Information -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PickUpLocation" class="form-label">Pick Up Location <span class="text-danger">*</span></label>
+                                <input asp-for="PickUpLocation" class="form-control" placeholder="Enter pick up location" />
+                                <span asp-validation-for="PickUpLocation" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DropOffLocation" class="form-label">Drop Off Location <span class="text-danger">*</span></label>
+                                <input asp-for="DropOffLocation" class="form-control" placeholder="Enter drop off location" />
+                                <span asp-validation-for="DropOffLocation" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label asp-for="airport" class="form-label">Airport</label>
+                                <input asp-for="airport" class="form-control" placeholder="Enter airport name" />
+                                <span asp-validation-for="airport" class="text-danger"></span>
+                            </div>
+
+                            <!-- Date Information -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PickUpDate" class="form-label">Pick Up Date <span class="text-danger">*</span></label>
+                                <input asp-for="PickUpDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="PickUpDate" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DropOffDate" class="form-label">Drop Off Date <span class="text-danger">*</span></label>
+                                <input asp-for="DropOffDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="DropOffDate" class="text-danger"></span>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                    <label asp-for="IsActive" class="form-check-label">Active Status</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bx bx-save me-2"></i>Update Reservation
+                                </button>
+                                <a href="@Url.Action("ReservationList", "Reservation")" class="btn btn-outline-secondary">
+                                    <i class="bx bx-x me-2"></i>Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

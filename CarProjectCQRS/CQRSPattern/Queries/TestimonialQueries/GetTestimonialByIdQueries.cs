@@ -2,10 +2,15 @@
 {
     public class GetTestimonialByIdQueries
     {
-        public int Id { get; set; }
-        public GetTestimonialByIdQueries(int id)
+        public int TestimonialId { get; set; }
+        
+        public GetTestimonialByIdQueries()
         {
-            Id = id;
+        }
+        
+        public GetTestimonialByIdQueries(int testimonialId)
+        {
+            TestimonialId = testimonialId;
         }
     }
 }

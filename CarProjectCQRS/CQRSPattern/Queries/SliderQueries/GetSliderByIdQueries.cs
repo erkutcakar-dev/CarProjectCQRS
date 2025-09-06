@@ -2,10 +2,15 @@
 {
     public class GetSliderByIdQueries
     {
-        public int Id { get; set; }
-        public GetSliderByIdQueries(int id)
+        public int SliderId { get; set; }
+        
+        public GetSliderByIdQueries()
         {
-            Id = id;
+        }
+        
+        public GetSliderByIdQueries(int sliderId)
+        {
+            SliderId = sliderId;
         }
     }
 }
