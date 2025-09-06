@@ -31,6 +31,12 @@
                         <strong>Distance:</strong> @Model.SearchCriteria.Distance km
                     </div>
                 }
+                @if (!string.IsNullOrEmpty(Model.SearchCriteria.Brand) && !string.IsNullOrEmpty(Model.SearchCriteria.Model))
+                {
+                    <div class="mt-2">
+                        <strong>Selected Car Type:</strong> @Model.SearchCriteria.Brand @Model.SearchCriteria.Model
+                    </div>
+                }
             </div>
         }
 

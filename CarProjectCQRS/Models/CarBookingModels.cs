@@ -24,3 +24,4 @@ namespace CarProjectCQRS.Models
         public decimal TotalPrice { get; set; }
     }
 }
+

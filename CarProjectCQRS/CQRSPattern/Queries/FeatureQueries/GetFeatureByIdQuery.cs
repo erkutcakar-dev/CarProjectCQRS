@@ -14,3 +14,4 @@ namespace CarProjectCQRS.CQRSPattern.Queries.FeatureQueries
         }
     }
 }
+

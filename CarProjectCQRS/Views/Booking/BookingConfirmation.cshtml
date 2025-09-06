@@ -71,18 +71,27 @@
                         }
                     </div>
                     <div class="card-footer">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <a href="@Url.Action("AvailableCars")" class="btn btn-outline-secondary w-100">
-                                    <i class="fas fa-arrow-left me-2"></i>Back to Cars
-                                </a>
+                        <form method="post" action="@Url.Action("ConfirmBooking", "Booking")">
+                            <input type="hidden" name="CarId" value="@Model.SearchCriteria.CarId" />
+                            <input type="hidden" name="PickUpLocation" value="@Model.SearchCriteria.PickUpLocation" />
+                            <input type="hidden" name="DropOffLocation" value="@Model.SearchCriteria.DropOffLocation" />
+                            <input type="hidden" name="PickUpDate" value="@Model.SearchCriteria.PickUpDate.ToString("yyyy-MM-dd")" />
+                            <input type="hidden" name="DropOffDate" value="@Model.SearchCriteria.DropOffDate.ToString("yyyy-MM-dd")" />
+                            <input type="hidden" name="AirportId" value="@Model.SearchCriteria.AirportId" />
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("AvailableCars")" class="btn btn-outline-secondary w-100">
+                                        <i class="fas fa-arrow-left me-2"></i>Back to Cars
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-success w-100" onclick="return confirmBooking()">
+                                        <i class="fas fa-check me-2"></i>Confirm Booking
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <button class="btn btn-success w-100" onclick="confirmBooking()">
-                                    <i class="fas fa-check me-2"></i>Confirm Booking
-                                </button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -90,12 +99,90 @@
     </div>
 </div>
 
+<!-- SweetAlert2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
 <script>
     function confirmBooking() {
-        if (confirm('Are you sure you want to confirm this booking?')) {
-            // Burada gerçek rezervasyon işlemini yapabilirsin
-            alert('Booking confirmed successfully! You will receive a confirmation email shortly.');
-            window.location.href = '@Url.Action("Index", "Home")';
+        // SweetAlert2'nin yüklenip yüklenmediğini kontrol et
+        if (typeof Swal === 'undefined') {
+            // SweetAlert2 yüklenmemişse normal confirm kullan
+            if (confirm('Are you sure you want to confirm this booking? This action cannot be undone.')) {
+                document.querySelector('form').submit();
+            }
+            return false;
         }
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Are you sure you want to confirm this booking? This action cannot be undone.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Yes, confirm booking!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.querySelector('form').submit();
+            }
+        });
+        
+        return false;
     }
+    
+    // SweetAlert2'yi dinamik olarak yükle
+    function loadSweetAlert() {
+        return new Promise((resolve, reject) => {
+            if (typeof Swal !== 'undefined') {
+                resolve();
+                return;
+            }
+            
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
+    
+    // Sayfa yüklendiğinde
+    document.addEventListener('DOMContentLoaded', function() {
+        loadSweetAlert().then(() => {
+            // TempData'dan gelen başarı mesajını kontrol et
+            @if (TempData["Success"] != null)
+            {
+                <text>
+                Swal.fire({
+                    title: 'Reservation Successful!',
+                    text: '@Html.Raw(TempData["Success"])',
+                    icon: 'success',
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '@Url.Action("Index", "MainUi")';
+                    }
+                });
+                </text>
+            }
+            
+            @if (TempData["Error"] != null)
+            {
+                <text>
+                Swal.fire({
+                    title: 'Error!',
+                    text: '@Html.Raw(TempData["Error"])',
+                    icon: 'error',
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'OK'
+                });
+                </text>
+            }
+        }).catch(() => {
+            console.log('SweetAlert2 yüklenemedi, normal alert kullanılacak');
+        });
+    });
 </script>
+

@@ -2,6 +2,8 @@ using CarProjectCQRS.Models;
 using CarProjectCQRS.CQRSPattern.Handlers.CarHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.DistanceHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.TurkeyAirportHandlers;
+using CarProjectCQRS.CQRSPattern.Handlers.ReservationHandlers;
+using CarProjectCQRS.CQRSPattern.Commands.ReservationCommands;
 using CarProjectCQRS.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +14,18 @@ namespace CarProjectCQRS.Controllers
         private readonly GetCarQueryHandler _getCarQueryHandler;
         private readonly GetDistanceQueryHandler _getDistanceQueryHandler;
         private readonly GetTurkeyAirportQueryHandler _getTurkeyAirportQueryHandler;
+        private readonly CreateReservationCommandHandler _createReservationCommandHandler;
 
         public BookingController(
             GetCarQueryHandler getCarQueryHandler,
             GetDistanceQueryHandler getDistanceQueryHandler,
-            GetTurkeyAirportQueryHandler getTurkeyAirportQueryHandler)
+            GetTurkeyAirportQueryHandler getTurkeyAirportQueryHandler,
+            CreateReservationCommandHandler createReservationCommandHandler)
         {
             _getCarQueryHandler = getCarQueryHandler;
             _getDistanceQueryHandler = getDistanceQueryHandler;
             _getTurkeyAirportQueryHandler = getTurkeyAirportQueryHandler;
+            _createReservationCommandHandler = createReservationCommandHandler;
         }
 
         [HttpPost]
@@ -45,6 +50,11 @@ namespace CarProjectCQRS.Controllers
                             c.Model == selectedCarType.Model).ToList();
                     }
                 }
+                else
+                {
+                    // Araç seçilmemişse tüm müsait araçları göster
+                    filteredCars = allCars.Where(c => c.IsAvailable).ToList();
+                }
 
                 // Mesafe hesapla
                 var distances = await _getDistanceQueryHandler.Handle();
@@ -63,6 +73,17 @@ namespace CarProjectCQRS.Controllers
 
                 // Toplam fiyatı hesapla
                 var totalPrice = filteredCars.Sum(c => c.DailyPrice * totalDays);
+
+                // Seçilen araç tipinin bilgilerini model'e ekle
+                if (model.CarId > 0)
+                {
+                    var selectedCar = allCars.FirstOrDefault(c => c.CarId == model.CarId);
+                    if (selectedCar != null)
+                    {
+                        model.Brand = selectedCar.Brand;
+                        model.Model = selectedCar.Model;
+                    }
+                }
 
                 var viewModel = new AvailableCarsViewModel
                 {
@@ -143,22 +164,49 @@ namespace CarProjectCQRS.Controllers
         {
             try
             {
-                // Burada rezervasyon onay sayfasına yönlendirebilirsin
-                // Şimdilik basit bir başarı mesajı gösterelim
-                TempData["Success"] = $"Booking confirmed for Car ID: {model.CarId} from {model.PickUpLocation} to {model.DropOffLocation}";
+                // Araç bilgilerini al
+                var cars = await _getCarQueryHandler.Handle();
+                var selectedCar = cars.FirstOrDefault(c => c.CarId == model.CarId);
                 
-                // Rezervasyon onay sayfasına yönlendir
-                return RedirectToAction("BookingConfirmation", new { 
-                    carId = model.CarId,
-                    pickUpLocation = model.PickUpLocation,
-                    dropOffLocation = model.DropOffLocation,
-                    pickUpDate = model.PickUpDate,
-                    dropOffDate = model.DropOffDate
-                });
+                if (selectedCar == null)
+                {
+                    TempData["Error"] = "Selected car not found.";
+                    return RedirectToAction("AvailableCars");
+                }
+
+                // Havalimanı bilgisini al
+                string airportName = "";
+                if (model.AirportId.HasValue && model.AirportId > 0)
+                {
+                    var airports = await _getTurkeyAirportQueryHandler.Handle();
+                    var selectedAirport = airports.FirstOrDefault(a => a.AirPortId == model.AirportId);
+                    airportName = selectedAirport?.AirportName ?? "";
+                }
+
+                // Rezervasyon kaydı oluştur
+                var reservationCommand = new CreateReservationCommands
+                {
+                    CarId = model.CarId,
+                    CarType = $"{selectedCar.Brand} {selectedCar.Model}",
+                    PickUpLocation = model.PickUpLocation,
+                    DropOffLocation = model.DropOffLocation,
+                    airport = airportName,
+                    PickUpDate = model.PickUpDate,
+                    DropOffDate = model.DropOffDate,
+                    IsActive = true,
+                    CreatedDate = DateTime.Now
+                };
+
+                await _createReservationCommandHandler.Handle(reservationCommand);
+
+                TempData["Success"] = "Reservation successful!";
+                
+                // Ana sayfaya yönlendir
+                return RedirectToAction("Index", "MainUi");
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "An error occurred while confirming the booking.";
+                TempData["Error"] = $"An error occurred while confirming the booking: {ex.Message}";
                 return RedirectToAction("AvailableCars");
             }
         }

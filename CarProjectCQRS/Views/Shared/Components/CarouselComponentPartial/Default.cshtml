@@ -19,13 +19,13 @@
                             <div class="col-lg-6 fadeInLeft animated" data-animation="fadeInLeft" data-delay="1s" style="animation-delay: 1s;">
                                 <div class="bg-secondary rounded p-5">
                                     <h4 class="text-white mb-4">CONTINUE CAR RESERVATION</h4>
-                                    <form>
+                                    <form method="post" action="@Url.Action("Search", "Booking")">
                                         <div class="row g-3">
 
                                             <!-- Car Type -->
                                             <div class="col-12">
-                                                <select class="form-select" aria-label="Select Car Type">
-                                                    <option selected>Select Your Car type</option>
+                                                <select name="CarId" class="form-select" aria-label="Select Car Type">
+                                                    <option value="0">Select Your Car type</option>
                                                     @foreach (var car in Model.Cars)
                                                     {
                                                         <option value="@car.CarId">@car.Brand @car.Model</option>
@@ -35,8 +35,8 @@
 
                                             <!-- Pick Up Dropdown -->
                                             <div class="col-6">
-                                                <select class="form-select" id="pickUpSelect" aria-label="Pick Up">
-                                                    <option selected>Select Pick Up Location</option>
+                                                <select name="PickUpLocation" class="form-select" id="pickUpSelect" aria-label="Pick Up">
+                                                    <option value="">Select Pick Up Location</option>
                                                     @foreach (var distance in Model.Distances.Select(d => d.From).Distinct())
                                                     {
                                                         <option value="@distance">@distance</option>
@@ -46,8 +46,8 @@
 
                                             <!-- Drop Off Dropdown -->
                                             <div class="col-6">
-                                                <select class="form-select" id="dropOffSelect" aria-label="Drop Off">
-                                                    <option selected>Select Drop Off Location</option>
+                                                <select name="DropOffLocation" class="form-select" id="dropOffSelect" aria-label="Drop Off">
+                                                    <option value="">Select Drop Off Location</option>
                                                     @foreach (var distance in Model.Distances.Select(d => d.Destination).Distinct())
                                                     {
                                                         <option value="@distance">@distance</option>
@@ -69,8 +69,8 @@
 
                                             <!-- Airport Dropdown -->
                                             <div class="col-12">
-                                                <select class="form-select" aria-label="Select Airport">
-                                                    <option selected>Select Airport</option>
+                                                <select name="AirportId" class="form-select" aria-label="Select Airport">
+                                                    <option value="0">Select Airport</option>
                                                     @foreach (var airport in Model.Airports)
                                                     {
                                                         <option value="@airport.AirPortId">@airport.AirportName</option>
@@ -81,18 +81,18 @@
                                             <!-- Pick Up Date -->
                                             <div class="col-6">
                                                 <label class="text-white">Pick Up Date</label>
-                                                <input class="form-control" type="date" aria-label="Pick Up Date">
+                                                <input name="PickUpDate" class="form-control" type="date" aria-label="Pick Up Date" required>
                                             </div>
 
                                             <!-- Drop Off Date -->
                                             <div class="col-6">
                                                 <label class="text-white">Drop Off Date</label>
-                                                <input class="form-control" type="date" aria-label="Drop Off Date">
+                                                <input name="DropOffDate" class="form-control" type="date" aria-label="Drop Off Date" required>
                                             </div>
 
                                             <!-- Book Now Button -->
                                             <div class="col-12">
-                                                <a href="/Booking/BookingConfirmation/" class="btn btn-light w-100 py-2">Book Now</a>
+                                                <button type="submit" class="btn btn-light w-100 py-2">Search Available Cars</button>
                                             </div>
 
 
@@ -197,7 +197,7 @@
 
                                             <!-- Book Now Button -->
                                             <div class="col-12">
-                                                <button class="btn btn-light w-100 py-2">Book Now</button>
+                                                <button type="submit" class="btn btn-light w-100 py-2">Search Available Cars</button>
                                             </div>
 
                                         </div>
@@ -273,12 +273,11 @@
         // Event handlers for first carousel
         $('#pickUpSelect, #dropOffSelect').change(function() {
             var fromLocation = $('#pickUpSelect').val();
-            
             var toLocation = $('#dropOffSelect').val();
             
             console.log('Location changed - From:', fromLocation, 'To:', toLocation);
             
-            if (fromLocation && toLocation && fromLocation !== 'Select Pick Up Location' && toLocation !== 'Select Drop Off Location') {
+            if (fromLocation && toLocation && fromLocation !== '' && toLocation !== '') {
                 calculateDistance(fromLocation, toLocation, '#distanceDisplay');
             }
         });
@@ -290,9 +289,38 @@
             
             console.log('Location 2 changed - From:', fromLocation, 'To:', toLocation);
             
-            if (fromLocation && toLocation && fromLocation !== 'Select Pick Up Location' && toLocation !== 'Select Drop Off Location') {
+            if (fromLocation && toLocation && fromLocation !== '' && toLocation !== '') {
                 calculateDistance(fromLocation, toLocation, '#distanceDisplay2');
             }
+        });
+        
+        // Form validation
+        $('form').on('submit', function(e) {
+            var carId = $(this).find('select[name="CarId"]').val();
+            var pickUpLocation = $(this).find('select[name="PickUpLocation"]').val();
+            var dropOffLocation = $(this).find('select[name="DropOffLocation"]').val();
+            var pickUpDate = $(this).find('input[name="PickUpDate"]').val();
+            var dropOffDate = $(this).find('input[name="DropOffDate"]').val();
+            
+            if (!pickUpLocation || !dropOffLocation || !pickUpDate || !dropOffDate) {
+                e.preventDefault();
+                alert('Please fill in all required fields (Pick Up Location, Drop Off Location, Pick Up Date, Drop Off Date)');
+                return false;
+            }
+            
+            if (new Date(pickUpDate) >= new Date(dropOffDate)) {
+                e.preventDefault();
+                alert('Drop Off Date must be after Pick Up Date');
+                return false;
+            }
+            
+            console.log('Form submitted with:', {
+                carId: carId,
+                pickUpLocation: pickUpLocation,
+                dropOffLocation: dropOffLocation,
+                pickUpDate: pickUpDate,
+                dropOffDate: dropOffDate
+            });
         });
     }
     
