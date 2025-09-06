@@ -201,8 +201,14 @@ namespace CarProjectCQRS.Controllers
 
                 TempData["Success"] = "Reservation successful!";
                 
-                // Ana sayfaya yönlendir
-                return RedirectToAction("Index", "MainUi");
+                // BookingConfirmation sayfasına geri dön (Sweet Alert için)
+                return RedirectToAction("BookingConfirmation", new { 
+                    carId = model.CarId,
+                    pickUpLocation = model.PickUpLocation,
+                    dropOffLocation = model.DropOffLocation,
+                    pickUpDate = model.PickUpDate,
+                    dropOffDate = model.DropOffDate
+                });
             }
             catch (Exception ex)
             {
