@@ -26,9 +26,9 @@
                                             <div class="col-12">
                                                 <select name="CarId" class="form-select" aria-label="Select Car Type">
                                                     <option value="0">Select Your Car type</option>
-                                                    @foreach (var car in Model.Cars)
+                                                    @foreach (var car in Model.Cars.GroupBy(c => c.Brand).Select(g => g.First()))
                                                     {
-                                                        <option value="@car.CarId">@car.Brand @car.Model</option>
+                                                        <option value="@car.CarId">@car.Brand</option>
                                                     }
                                                 </select>
                                             </div>

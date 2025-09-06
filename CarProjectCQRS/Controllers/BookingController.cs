@@ -41,13 +41,13 @@ namespace CarProjectCQRS.Controllers
                 
                 if (model.CarId > 0)
                 {
-                    // Belirli bir araç seçilmişse sadece o araç tipini göster
+                    // Belirli bir araç seçilmişse o markaya ait tüm araçları göster
                     var selectedCarType = allCars.FirstOrDefault(c => c.CarId == model.CarId);
                     if (selectedCarType != null)
                     {
+                        // Sadece Brand'e göre filtrele (aynı markaya ait tüm araçlar)
                         filteredCars = filteredCars.Where(c => 
-                            c.Brand == selectedCarType.Brand && 
-                            c.Model == selectedCarType.Model).ToList();
+                            c.Brand == selectedCarType.Brand).ToList();
                     }
                 }
                 else
