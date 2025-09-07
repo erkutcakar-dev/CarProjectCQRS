@@ -1,0 +1,16 @@
+﻿@model List<CarProjectCQRS.CQRSPattern.Results.About.GetAboutQueryResult>
+
+<div class="row g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-6">
+            <div class="about-item-inner border p-4">
+                <div class="about-icon mb-4">
+                    <img src="/Cental-1.0.0/img/about-icon-1.png" class="img-fluid w-50 h-50" alt="Icon">
+                </div>
+                <h5 class="mb-3">@item.VisionTitle</h5>
+                <p class="mb-0">@item.VisionDescription</p>
+            </div>
+        </div>
+    }
+</div>

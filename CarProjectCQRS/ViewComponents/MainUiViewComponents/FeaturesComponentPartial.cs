@@ -1,8 +1,10 @@
 ﻿using CarProjectCQRS.CQRSPattern.Handlers.FeatureHandlers;
 using CarProjectCQRS.CQRSPattern.Results.Feature;
-using CarProjectCQRS.Entities;
+using CarProjectCQRS.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
 {
@@ -15,12 +17,13 @@ namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
             _getFeatureQueryHandler = getFeatureQueryHandler;
         }
 
-        public  async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
+           
             var values = await _getFeatureQueryHandler.Handle() ?? new List<GetFeatureQueryResult>();
-            var activeValues = values.Where(f => f.IsActive).ToList();
-            return View(activeValues);
+            var activeValues = values.Where(f => f.IsActive).Take(4).ToList(); 
 
+            return View(activeValues);
         }
 
     }

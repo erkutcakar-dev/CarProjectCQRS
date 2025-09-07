@@ -26,7 +26,6 @@
     <Folder Include="CQRSPattern\Handlers\SliderHandlers\" />
     <Folder Include="CQRSPattern\Handlers\TestimonialHandlers\" />
     <Folder Include="CQRSPattern\Handlers\TurkeyAirportHandlers\" />
-    <Folder Include="Views\Shared\Components\" />
   </ItemGroup>
 
   <ItemGroup>
