@@ -11,6 +11,7 @@ using CarProjectCQRS.CQRSPattern.Handlers.TurkeyAirportHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.DistanceHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.MessageHandlers;
 using CarProjectCQRS.ViewComponents.MainUiViewComponents;
+using CarProjectCQRS.Services;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 
@@ -24,6 +25,9 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 
 // HttpClient servisi ekle (FuelPrice/AdminController için)
 builder.Services.AddHttpClient();
+
+// MailService servisi ekle
+builder.Services.AddScoped<MailService>();
 
 // Entity Framework DbContext Configuration
 builder.Services.AddDbContext<CarProjectDbContext>(options =>
