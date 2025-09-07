@@ -54,6 +54,52 @@
 .categories-content form {
     margin-top: auto !important;
 }
+
+/* Search Criteria Card Styling */
+.search-criteria-card .card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-criteria-card .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+
+.search-criteria-card .card-header {
+    background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%) !important;
+    border: none;
+    padding: 1.25rem 1.5rem;
+}
+
+.search-criteria-card .criteria-item {
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.search-criteria-card .criteria-item:hover {
+    background-color: #f8f9fa;
+}
+
+.search-criteria-card .criteria-item i {
+    font-size: 1.1rem;
+}
+
+.search-criteria-card .criteria-item span {
+    font-size: 0.9rem;
+}
+
+.search-criteria-card .criteria-item p {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.search-criteria-card hr {
+    border-color: #e9ecef;
+    opacity: 0.5;
+}
 </style>
 
 <div class="container-fluid categories py-5">
@@ -61,34 +107,86 @@
         <!-- Search Criteria Display -->
         @if (Model.SearchCriteria != null && !string.IsNullOrEmpty(Model.SearchCriteria.PickUpLocation))
         {
-            <div class="alert alert-info mb-4">
-                <h5 class="mb-3">Search Results</h5>
-                <div class="row">
-                    <div class="col-md-3">
-                        <strong>Pick Up:</strong> @Model.SearchCriteria.PickUpLocation
+            <div class="search-criteria-card mb-5">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-search me-2"></i>
+                            <h5 class="mb-0">Search Results</h5>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <strong>Drop Off:</strong> @Model.SearchCriteria.DropOffLocation
-                    </div>
-                    <div class="col-md-3">
-                        <strong>Pick Up Date:</strong> @Model.SearchCriteria.PickUpDate.ToString("dd/MM/yyyy")
-                    </div>
-                    <div class="col-md-3">
-                        <strong>Drop Off Date:</strong> @Model.SearchCriteria.DropOffDate.ToString("dd/MM/yyyy")
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="criteria-item">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                        <span class="fw-bold text-dark">Pick Up Location</span>
+                                    </div>
+                                    <p class="mb-0 text-muted">@Model.SearchCriteria.PickUpLocation</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="criteria-item">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-flag-checkered text-primary me-2"></i>
+                                        <span class="fw-bold text-dark">Drop Off Location</span>
+                                    </div>
+                                    <p class="mb-0 text-muted">@Model.SearchCriteria.DropOffLocation</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="criteria-item">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                        <span class="fw-bold text-dark">Pick Up Date</span>
+                                    </div>
+                                    <p class="mb-0 text-muted">@Model.SearchCriteria.PickUpDate.ToString("dd MMM yyyy")</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="criteria-item">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-calendar-check text-primary me-2"></i>
+                                        <span class="fw-bold text-dark">Drop Off Date</span>
+                                    </div>
+                                    <p class="mb-0 text-muted">@Model.SearchCriteria.DropOffDate.ToString("dd MMM yyyy")</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        @if (Model.SearchCriteria.Distance > 0 || (!string.IsNullOrEmpty(Model.SearchCriteria.Brand) && !string.IsNullOrEmpty(Model.SearchCriteria.Model)))
+                        {
+                            <hr class="my-4">
+                            <div class="row g-4">
+                                @if (Model.SearchCriteria.Distance > 0)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="criteria-item">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-route text-primary me-2"></i>
+                                                <span class="fw-bold text-dark">Total Distance</span>
+                                            </div>
+                                            <p class="mb-0 text-muted">@Model.SearchCriteria.Distance km</p>
+                                        </div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SearchCriteria.Brand) && !string.IsNullOrEmpty(Model.SearchCriteria.Model))
+                                {
+                                    <div class="col-md-6">
+                                        <div class="criteria-item">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-car text-primary me-2"></i>
+                                                <span class="fw-bold text-dark">Preferred Vehicle</span>
+                                            </div>
+                                            <p class="mb-0 text-muted">@Model.SearchCriteria.Brand @Model.SearchCriteria.Model</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
-                @if (Model.SearchCriteria.Distance > 0)
-                {
-                    <div class="mt-2">
-                        <strong>Distance:</strong> @Model.SearchCriteria.Distance km
-                    </div>
-                }
-                @if (!string.IsNullOrEmpty(Model.SearchCriteria.Brand) && !string.IsNullOrEmpty(Model.SearchCriteria.Model))
-                {
-                    <div class="mt-2">
-                        <strong>Selected Car Brand:</strong> @Model.SearchCriteria.Brand
-                    </div>
-                }
             </div>
         }
 
