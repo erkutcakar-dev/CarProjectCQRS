@@ -23,5 +23,7 @@ namespace CarProjectCQRS.Models
         public int TotalDays { get; set; }
         public decimal TotalPrice { get; set; }
     }
+
+
 }
 

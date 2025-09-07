@@ -17,7 +17,8 @@ namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var values = await _getTestimonialQueryHandler.Handle() ?? new List<GetTestimonialQueryResult>();
-            var activeValues = values.Where(s => s.IsActive).Take(10).ToList();
+            // Tüm testimonial'ları göster (IsActive kontrolü kaldırıldı)
+            var activeValues = values.Take(10).ToList();
 
             return View(activeValues);
         }

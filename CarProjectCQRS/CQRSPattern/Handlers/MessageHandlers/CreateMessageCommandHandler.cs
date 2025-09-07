@@ -32,15 +32,14 @@ namespace CarProjectCQRS.CQRSPattern.Handlers.MessageHandlers
             _context.Messages.Add(message);
             await _context.SaveChangesAsync(cancellationToken);
 
-            // Otomatik cevap maili gönder
+            // Otomatik cevap maili gönder//
             try
             {
                 await _mailService.SendContactResponseMailAsync(request.SenderMail, "Değerli Müşterimiz");
             }
             catch (Exception ex)
             {
-                // Mail gönderiminde hata olsa bile mesaj kaydedildiği için işlemi devam ettir
-                // Log the exception if needed
+                
             }
 
             return new CreateMessageCommandResult

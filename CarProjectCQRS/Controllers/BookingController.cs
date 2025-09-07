@@ -275,6 +275,8 @@ namespace CarProjectCQRS.Controllers
                 TempData["Error"] = "An error occurred while loading booking confirmation.";
                 return RedirectToAction("AvailableCars");
             }
+
+
         }
     }
 }
