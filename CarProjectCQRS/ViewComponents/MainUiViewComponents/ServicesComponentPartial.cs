@@ -1,12 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using CarProjectCQRS.CQRSPattern.Handlers.ServiceHandlers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
 {
     public class ServicesComponentPartial : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        private  readonly GetServiceQueryHandler _getServiceQueryHandler;
+
+        public ServicesComponentPartial(GetServiceQueryHandler getServiceQueryHandler)
         {
-            return View();
+            _getServiceQueryHandler = getServiceQueryHandler;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var values = await _getServiceQueryHandler.Handle();
+            var activeValues = values.Where(s => s.IsActive).Take(1).ToList();
+            return View(activeValues);
         }
 
     }

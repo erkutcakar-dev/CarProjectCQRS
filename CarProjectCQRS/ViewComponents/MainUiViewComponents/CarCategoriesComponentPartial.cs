@@ -1,13 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using CarProjectCQRS.CQRSPattern.Handlers.CarHandlers;
+using CarProjectCQRS.CQRSPattern.Results.Car;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
 {
     public class CarCategoriesComponentPartial : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        private readonly GetCarQueryHandler _getCarQueryHandler;
+
+        
+        public CarCategoriesComponentPartial(GetCarQueryHandler getCarQueryHandler)
         {
-            return View();
+            _getCarQueryHandler = getCarQueryHandler;
         }
-    
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+         
+            var values = await _getCarQueryHandler.Handle() ?? new List<GetCarQueryResult>();
+
+          
+            var activeValues = values.Where(c => c.IsAvailable).ToList();
+
+            return View(activeValues);
+        }
     }
 }
