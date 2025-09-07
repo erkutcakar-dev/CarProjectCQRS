@@ -1,66 +1,24 @@
 ﻿@model List<CarProjectCQRS.CQRSPattern.Results.Feature.GetFeatureQueryResult>
 
+
 <div class="container-fluid feature py-5">
     <div class="container py-5">
+		
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            @foreach (var item in Model)
+            {
+				var words = item.Title.Split(' ');
+				var firstWord = words.Length > 0 ? words[0] : "";
+				var secondWord = words.Length > 1 ? words[1] : "";
+                <h1 class="display-5 text-capitalize mb-3">@firstWord <span class="text-primary">@secondWord</span></h1>
+                <p class="mb-0">
+                    @item.Description
+                </p>
 
-        <!-- Başlık (ilk item) -->
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-            <h1 class="display-5 text-capitalize mb-3">
-                @Model.FirstOrDefault()?.Title <span class="text-primary">Features</span>
-            </h1>
-            <p>@Model.FirstOrDefault()?.Description</p>
-        </div>
-
-        <div class="row g-4 align-items-center">
-
-            <!-- Sol taraftaki 2 özellik -->
-            <div class="col-xl-4">
-                <div class="row gy-4 gx-0">
-                    @foreach (var item in Model.Take(2))
-                    {
-                        <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <span class="@item.Icon fa-2x"></span>
-                                </div>
-                                <div class="ms-4">
-                                    <h5 class="mb-3">@item.Title</h5>
-                                    <p class="mb-0">@item.Description</p>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
+            }       
             </div>
 
-            <!-- Ortadaki resim -->
-            <div class="col-lg-12 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
-                <img src="/Cental-1.0.0/img/features-img.png"
-                     class="img-fluid w-100"
-                     style="object-fit: cover;"
-                     alt="Features Image">
-            </div>
 
-            <!-- Sağ taraftaki 2 özellik -->
-            <div class="col-xl-4">
-                <div class="row gy-4 gx-0">
-                    @foreach (var item in Model.Skip(2).Take(2))
-                    {
-                        <div class="col-12 wow fadeInUp" data-wow-delay="0.3s">
-                            <div class="feature-item justify-content-end">
-                                <div class="text-end me-4">
-                                    <h5 class="mb-3">@item.Title</h5>
-                                    <p class="mb-0">@item.Description</p>
-                                </div>
-                                <div class="feature-icon">
-                                    <span class="@item.Icon fa-2x"></span>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-
-        </div>
+        @await Component.InvokeAsync("FeaturesIconComponentPartial")
     </div>
 </div>
