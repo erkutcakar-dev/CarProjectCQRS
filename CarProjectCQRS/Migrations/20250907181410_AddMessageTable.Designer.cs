@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarProjectCQRS.Migrations
 {
     [DbContext(typeof(CarProjectDbContext))]
-    [Migration("20250830115353_UpdatedContextWithAllTables")]
-    partial class UpdatedContextWithAllTables
+    [Migration("20250907181410_AddMessageTable")]
+    partial class AddMessageTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,7 +123,7 @@ namespace CarProjectCQRS.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DailyPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("FuelType")
                         .IsRequired()
@@ -163,6 +163,35 @@ namespace CarProjectCQRS.Migrations
                     b.HasKey("CarId");
 
                     b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("CarProjectCQRS.Entities.Distance", b =>
+                {
+                    b.Property<short>("DistanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("DistanceId"));
+
+                    b.Property<string>("Destination")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Destination");
+
+                    b.Property<short>("DistanceValue")
+                        .HasColumnType("smallint")
+                        .HasColumnName("DistanceValue");
+
+                    b.Property<string>("From")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("From");
+
+                    b.HasKey("DistanceId");
+
+                    b.ToTable("Distances", (string)null);
                 });
 
             modelBuilder.Entity("CarProjectCQRS.Entities.Employee", b =>
@@ -240,6 +269,37 @@ namespace CarProjectCQRS.Migrations
                     b.ToTable("Features");
                 });
 
+            modelBuilder.Entity("CarProjectCQRS.Entities.Message", b =>
+                {
+                    b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SenderMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MessageId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("CarProjectCQRS.Entities.Reservation", b =>
                 {
                     b.Property<int>("ReservationId")
@@ -277,7 +337,8 @@ namespace CarProjectCQRS.Migrations
 
                     b.Property<string>("airport")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("airport");
 
                     b.HasKey("ReservationId");
 
@@ -390,6 +451,24 @@ namespace CarProjectCQRS.Migrations
                     b.HasKey("TestimonialId");
 
                     b.ToTable("Testimonials");
+                });
+
+            modelBuilder.Entity("CarProjectCQRS.Entities.TurkeyAirport", b =>
+                {
+                    b.Property<byte>("AirPortId")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("AirportName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.ToTable("TurkeyAirport", (string)null);
                 });
 #pragma warning restore 612, 618
         }

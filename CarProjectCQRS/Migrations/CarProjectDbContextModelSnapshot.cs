@@ -162,51 +162,33 @@ namespace CarProjectCQRS.Migrations
                     b.ToTable("Cars");
                 });
 
-            modelBuilder.Entity("CarProjectCQRS.Entities.District", b =>
+            modelBuilder.Entity("CarProjectCQRS.Entities.Distance", b =>
                 {
-                    b.Property<int>("DistrictId")
+                    b.Property<short>("DistanceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("DistrictID");
+                        .HasColumnType("smallint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DistrictId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("DistanceId"));
 
-                    b.Property<string>("DistrictName")
+                    b.Property<string>("Destination")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Destination");
 
-                    b.Property<int>("ProvinceId")
-                        .HasColumnType("int")
-                        .HasColumnName("ProvinceID");
+                    b.Property<short>("DistanceValue")
+                        .HasColumnType("smallint")
+                        .HasColumnName("DistanceValue");
 
-                    b.HasKey("DistrictId")
-                        .HasName("PK__District__85FDA4A6A983361B");
+                    b.Property<string>("From")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("From");
 
-                    b.HasIndex("ProvinceId");
+                    b.HasKey("DistanceId");
 
-                    b.ToTable("Districts");
-                });
-
-            modelBuilder.Entity("CarProjectCQRS.Entities.DistrictDistance", b =>
-                {
-                    b.Property<int>("FromDistrictId")
-                        .HasColumnType("int")
-                        .HasColumnName("FromDistrictID");
-
-                    b.Property<int>("ToDistrictId")
-                        .HasColumnType("int")
-                        .HasColumnName("ToDistrictID");
-
-                    b.Property<decimal?>("Distance")
-                        .HasColumnType("decimal(7, 2)");
-
-                    b.HasKey("FromDistrictId", "ToDistrictId")
-                        .HasName("PK__District__71EE95DC3D504E6B");
-
-                    b.HasIndex("ToDistrictId");
-
-                    b.ToTable("DistrictDistances");
+                    b.ToTable("Distances", (string)null);
                 });
 
             modelBuilder.Entity("CarProjectCQRS.Entities.Employee", b =>
@@ -284,24 +266,35 @@ namespace CarProjectCQRS.Migrations
                     b.ToTable("Features");
                 });
 
-            modelBuilder.Entity("CarProjectCQRS.Entities.Province", b =>
+            modelBuilder.Entity("CarProjectCQRS.Entities.Message", b =>
                 {
-                    b.Property<int>("ProvinceId")
+                    b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ProvinceID");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProvinceId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
 
-                    b.Property<string>("ProvinceName")
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MessageText")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProvinceId")
-                        .HasName("PK__Province__FD0A6FA3282EAF9A");
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("datetime2");
 
-                    b.ToTable("Provinces");
+                    b.Property<string>("SenderMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MessageId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("CarProjectCQRS.Entities.Reservation", b =>
@@ -473,48 +466,6 @@ namespace CarProjectCQRS.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.ToTable("TurkeyAirport", (string)null);
-                });
-
-            modelBuilder.Entity("CarProjectCQRS.Entities.District", b =>
-                {
-                    b.HasOne("CarProjectCQRS.Entities.Province", "Province")
-                        .WithMany("Districts")
-                        .HasForeignKey("ProvinceId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Districts__Provi__60A75C0F");
-
-                    b.Navigation("Province");
-                });
-
-            modelBuilder.Entity("CarProjectCQRS.Entities.DistrictDistance", b =>
-                {
-                    b.HasOne("CarProjectCQRS.Entities.District", "FromDistrict")
-                        .WithMany("DistrictDistanceFromDistricts")
-                        .HasForeignKey("FromDistrictId")
-                        .IsRequired()
-                        .HasConstraintName("FK__DistrictD__FromD__6383C8BA");
-
-                    b.HasOne("CarProjectCQRS.Entities.District", "ToDistrict")
-                        .WithMany("DistrictDistanceToDistricts")
-                        .HasForeignKey("ToDistrictId")
-                        .IsRequired()
-                        .HasConstraintName("FK__DistrictD__ToDis__6477ECF3");
-
-                    b.Navigation("FromDistrict");
-
-                    b.Navigation("ToDistrict");
-                });
-
-            modelBuilder.Entity("CarProjectCQRS.Entities.District", b =>
-                {
-                    b.Navigation("DistrictDistanceFromDistricts");
-
-                    b.Navigation("DistrictDistanceToDistricts");
-                });
-
-            modelBuilder.Entity("CarProjectCQRS.Entities.Province", b =>
-                {
-                    b.Navigation("Districts");
                 });
 #pragma warning restore 612, 618
         }

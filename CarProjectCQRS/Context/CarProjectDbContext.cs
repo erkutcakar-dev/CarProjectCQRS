@@ -31,6 +31,8 @@ namespace CarProjectCQRS.Context
         public DbSet<Testimonial> Testimonials { get; set; }
         public DbSet<TurkeyAirport> TurkeyAirports { get; set; }
         public DbSet<Distance> Distances { get; set; }
+        public DbSet<Message> Messages { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,0 +1,92 @@
+﻿@model List<CarProjectCQRS.Entities.Message>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard /</span> Contact Messages
+    </h4>
+
+    <div class="card">
+        <h5 class="card-header">Message List</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sender Email</th>
+                        <th>Telephone</th>
+                        <th>Message</th>
+                        <th>Send Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="@(item.IsRead ? "table-secondary" : "table-success")">
+                                <td>
+                                    <strong>@item.SenderMail</strong>
+                                </td>
+                                <td>
+                                    @item.Telephone
+                                </td>
+                                <td>
+                                    @(item.MessageText.Length > 50 ? item.MessageText.Substring(0, 50) + "..." : item.MessageText)
+                                </td>
+                                <td>
+                                    @item.SendDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+                                </td>
+                                <td>
+                                    @if (item.IsRead)
+                                    {
+                                        <span class="badge bg-label-secondary me-2">Read</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-label-success me-2">Unread</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            @if (!item.IsRead)
+                                            {
+                                                <a class="dropdown-item" href="@Url.Action("MarkAsRead", "AdminMessage", new { id = item.MessageId })">
+                                                    <i class="bx bx-check me-1"></i> Mark as Read
+                                                </a>
+                                            }
+                                            <a class="dropdown-item" href="@Url.Action("DeleteMessage", "AdminMessage", new { id = item.MessageId })" onclick="return confirm('Are you sure you want to delete this message?')">
+                                                <i class="bx bx-trash me-1"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bx bx-info-circle display-4 text-muted mb-2"></i>
+                                    <h6 class="text-muted">No messages found</h6>
+                                    <p class="text-muted">Messages sent via the contact form will appear here.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
