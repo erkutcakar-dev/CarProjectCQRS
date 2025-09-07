@@ -92,33 +92,3 @@
 <!-- Back to Top -->
 <a href="#" class="btn btn-secondary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
-<!-- Ajax Form Script -->
-<script>
-    $(document).ready(function(){
-        // Spinner'ı gizle
-        setTimeout(function() {
-            $('#spinner').addClass('d-none');
-        }, 1000);
-
-        $("#footerContactForm").submit(function(e){
-            e.preventDefault();
-
-            $.ajax({
-                type: "POST",
-                url: "/Message/SendMessage",
-                data: $(this).serialize(),
-                success: function(response){
-                    if(response.success){
-                        alert(response.message);
-                        $("#footerContactForm")[0].reset();
-                    } else {
-                        alert(response.message);
-                    }
-                },
-                error: function(){
-                    alert("An error occurred while sending the message.");
-                }
-            });
-        });
-    });
-</script>

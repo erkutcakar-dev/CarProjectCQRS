@@ -227,8 +227,103 @@ namespace CarProjectCQRS.Controllers
             return RedirectToAction("CarList");
         }
 
-   
-        
+        // Test verileri ekleme (geliştirme amaçlı)
+        public async Task<IActionResult> AddTestData()
+        {
+            try
+            {
+                var testCars = new List<CreateCarCommands>
+                {
+                    new CreateCarCommands
+                    {
+                        Brand = "Toyota",
+                        Model = "Corolla",
+                        ImageUrl = "/Cental-1.0.0/img/car-1.png",
+                        ReviewScore = 4.5,
+                        DailyPrice = 50.00m,
+                        SeatCount = 5,
+                        TransmissionType = "Automatic",
+                        FuelType = "Gasoline",
+                        ModelYear = 2020,
+                        GearType = "Manual",
+                        Mileage = 20000,
+                        IsAvailable = true
+                    },
+                    new CreateCarCommands
+                    {
+                        Brand = "Honda",
+                        Model = "Civic",
+                        ImageUrl = "/Cental-1.0.0/img/car-2.png",
+                        ReviewScore = 4.3,
+                        DailyPrice = 55.00m,
+                        SeatCount = 5,
+                        TransmissionType = "Manual",
+                        FuelType = "Gasoline",
+                        ModelYear = 2021,
+                        GearType = "Automatic",
+                        Mileage = 15000,
+                        IsAvailable = true
+                    },
+                    new CreateCarCommands
+                    {
+                        Brand = "Ford",
+                        Model = "Focus",
+                        ImageUrl = "/Cental-1.0.0/img/car-3.png",
+                        ReviewScore = 4.6,
+                        DailyPrice = 60.00m,
+                        SeatCount = 5,
+                        TransmissionType = "Automatic",
+                        FuelType = "Diesel",
+                        ModelYear = 2019,
+                        GearType = "Manual",
+                        Mileage = 30000,
+                        IsAvailable = true
+                    },
+                    new CreateCarCommands
+                    {
+                        Brand = "BMW",
+                        Model = "3 Series",
+                        ImageUrl = "/Cental-1.0.0/img/car-4.png",
+                        ReviewScore = 4.8,
+                        DailyPrice = 120.00m,
+                        SeatCount = 5,
+                        TransmissionType = "Automatic",
+                        FuelType = "Gasoline",
+                        ModelYear = 2022,
+                        GearType = "Automatic",
+                        Mileage = 10000,
+                        IsAvailable = true
+                    },
+                    new CreateCarCommands
+                    {
+                        Brand = "Mercedes",
+                        Model = "C-Class",
+                        ImageUrl = "/Cental-1.0.0/img/car-1.png",
+                        ReviewScore = 4.7,
+                        DailyPrice = 150.00m,
+                        SeatCount = 5,
+                        TransmissionType = "Automatic",
+                        FuelType = "Gasoline",
+                        ModelYear = 2023,
+                        GearType = "Automatic",
+                        Mileage = 5000,
+                        IsAvailable = true
+                    }
+                };
+
+                foreach (var car in testCars)
+                {
+                    await _createCarCommandHandler.Handle(car);
+                }
+
+                TempData["Success"] = "Test car data has been successfully added.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "An error occurred while adding test data.";
+            }
+            return RedirectToAction("CarList");
+        }
 
     }
 }

@@ -16,10 +16,9 @@ namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var values = await  _getAboutQueryHandler.Handle() ?? new List<GetAboutQueryResult>();
-            var ActiveValues = values.Where(a => a.IsActive).Take(1).ToList();
-            return View(ActiveValues);
-
+            var values = await _getAboutQueryHandler.Handle() ?? new List<GetAboutQueryResult>();
+            // IsActive filtresini kaldırdık - tüm about verilerini göster
+            return View(values.Take(1).ToList());
         }
 
     }

@@ -17,9 +17,9 @@ namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var values = await _getEmployeeQueryHandler.Handle() ??new List<GetEmployeeQueryResult>();
-            var activeValues = values.Where(s => s.IsActive).Take(10).ToList();
-            return View(activeValues);
+            var values = await _getEmployeeQueryHandler.Handle() ?? new List<GetEmployeeQueryResult>();
+            // IsActive filtresini kaldırdık - tüm çalışanları göster
+            return View(values.Take(10).ToList());
         }
     }
 }

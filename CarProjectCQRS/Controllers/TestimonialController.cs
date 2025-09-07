@@ -191,6 +191,69 @@ namespace CarProjectCQRS.Controllers
             }
             return RedirectToAction("TestimonialList");
         }
+
+        // Test verileri ekleme (geliştirme amaçlı)
+        public async Task<IActionResult> AddTestData()
+        {
+            try
+            {
+                var testTestimonials = new List<CreateTestimonialCommands>
+                {
+                    new CreateTestimonialCommands
+                    {
+                        TestimonialName = "John Smith",
+                        Comment = "Excellent car rental service! The vehicle was clean, well-maintained, and the staff was very professional. I highly recommend this company for your car rental needs.",
+                        Rating = 5,
+                        ImageUrl = "/Cental-1.0.0/img/testimonial-1.jpg",
+                        IsActive = true
+                    },
+                    new CreateTestimonialCommands
+                    {
+                        TestimonialName = "Sarah Johnson",
+                        Comment = "Great experience with this car rental company. The booking process was easy and the car was exactly as described. Will definitely use again!",
+                        Rating = 4,
+                        ImageUrl = "/Cental-1.0.0/img/testimonial-2.jpg",
+                        IsActive = true
+                    },
+                    new CreateTestimonialCommands
+                    {
+                        TestimonialName = "Michael Brown",
+                        Comment = "Outstanding service from start to finish. The car was in perfect condition and the customer service team was very helpful throughout the entire process.",
+                        Rating = 5,
+                        ImageUrl = "/Cental-1.0.0/img/testimonial-3.jpg",
+                        IsActive = true
+                    },
+                    new CreateTestimonialCommands
+                    {
+                        TestimonialName = "Emily Davis",
+                        Comment = "Very satisfied with the rental experience. The car was clean, fuel-efficient, and the pricing was very reasonable. Highly recommended!",
+                        Rating = 4,
+                        ImageUrl = "/Cental-1.0.0/img/testimonial-1.jpg",
+                        IsActive = true
+                    },
+                    new CreateTestimonialCommands
+                    {
+                        TestimonialName = "David Wilson",
+                        Comment = "Professional service and great value for money. The car was delivered on time and in excellent condition. Will book again for future trips.",
+                        Rating = 5,
+                        ImageUrl = "/Cental-1.0.0/img/testimonial-2.jpg",
+                        IsActive = true
+                    }
+                };
+
+                foreach (var testimonial in testTestimonials)
+                {
+                    await _createTestimonialCommandHandler.Handle(testimonial);
+                }
+
+                TempData["Success"] = "Test testimonial data has been successfully added.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "An error occurred while adding test data.";
+            }
+            return RedirectToAction("TestimonialList");
+        }
     }
 }
 

@@ -111,6 +111,18 @@ builder.Services.AddScoped<RemoveMessageCommandHandler>();
 
 // ViewComponents
 builder.Services.AddScoped<CarouselComponentPartial>();
+builder.Services.AddScoped<FeaturesComponentPartial>();
+builder.Services.AddScoped<AboutComponentPartial>();
+builder.Services.AddScoped<ServicesComponentPartial>();
+builder.Services.AddScoped<CarCategoriesComponentPartial>();
+builder.Services.AddScoped<CarStepsComponentPartial>();
+builder.Services.AddScoped<TeamComponentPartial>();
+builder.Services.AddScoped<EmployeesComponentPartial>();
+builder.Services.AddScoped<TestimonialsComponentPartial>();
+builder.Services.AddScoped<TopbarComponentPartial>();
+builder.Services.AddScoped<NavbarHeroComponentPartial>();
+builder.Services.AddScoped<FooterComponentPartial>();
+builder.Services.AddScoped<HeadComponentPartial>();
 
 var app = builder.Build();
 

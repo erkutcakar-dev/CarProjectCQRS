@@ -17,13 +17,9 @@ namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-         
             var values = await _getCarQueryHandler.Handle() ?? new List<GetCarQueryResult>();
-
-          
-            var activeValues = values.Where(c => c.IsAvailable).ToList();
-
-            return View(activeValues);
+            // IsAvailable filtresini kaldırdık - tüm araçları göster
+            return View(values);
         }
     }
 }

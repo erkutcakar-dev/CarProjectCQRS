@@ -10,32 +10,51 @@
         </div>
 
         <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
-            @foreach (var item in Model)
+            @if (Model != null && Model.Any())
             {
-                <div class="testimonial-item">
+                @foreach (var item in Model)
+                {
+                <div class="testimonial-item" style="height: 100%; display: flex; flex-direction: column;">
                     <div class="testimonial-quote">
                         <i class="fa fa-quote-right fa-2x"></i>
                     </div>
 
-                    <div class="testimonial-inner d-flex p-4 align-items-start">
-                        <img src="@item.ImageUrl" class="img-fluid rounded-circle"
-                             style="width: 80px; height: 80px; object-fit: cover; object-position: center;" alt="">
-                        <div class="ms-4">
-                            <h4>@item.TestimonialName</h4>
-                            <p>@item.Comment</p>
-                            <div class="d-flex text-primary">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star text-body"></i>
+                    <div class="testimonial-inner d-flex p-4 align-items-start flex-grow-1">
+                        <div class="testimonial-img-container me-4">
+                            <img src="@item.ImageUrl" class="img-fluid rounded-circle"
+                                 style="width: 80px; height: 80px; object-fit: cover; object-position: center; flex-shrink: 0;" alt="">
+                        </div>
+                        <div class="testimonial-content flex-grow-1">
+                            <h4 class="mb-2">@item.TestimonialName</h4>
+                            <div class="d-flex text-primary mb-2">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= item.Rating)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-star text-body"></i>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
-
-                   
+                    <div class="border-top rounded-bottom p-4 mt-auto">
+                        <p class="mb-0">@item.Comment</p>
+                    </div>
+                </div>
+                }
+            }
+            else
+            {
+                <div class="text-center p-4">
+                    <p class="text-muted">No testimonials available. Please add some testimonials from the admin panel.</p>
                 </div>
             }
         </div>
     </div>
 </div>
+
+

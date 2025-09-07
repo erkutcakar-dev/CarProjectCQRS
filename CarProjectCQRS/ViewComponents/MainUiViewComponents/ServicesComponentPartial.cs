@@ -16,8 +16,8 @@ namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var values = await _getServiceQueryHandler.Handle();
-            var activeValues = values.Where(s => s.IsActive).Take(1).ToList();
-            return View(activeValues);
+            // IsActive filtresini kaldırdık - tüm servisleri göster
+            return View(values.Take(1).ToList());
         }
 
     }

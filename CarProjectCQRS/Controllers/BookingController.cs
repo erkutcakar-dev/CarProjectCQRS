@@ -37,7 +37,7 @@ namespace CarProjectCQRS.Controllers
                 var allCars = await _getCarQueryHandler.Handle();
                 
                 // Seçilen araç tipine göre filtrele (eğer seçilmişse)
-                var filteredCars = allCars.Where(c => c.IsAvailable).ToList();
+                var filteredCars = allCars.ToList(); // IsAvailable filtresini kaldırdık
                 
                 if (model.CarId > 0)
                 {
@@ -52,8 +52,8 @@ namespace CarProjectCQRS.Controllers
                 }
                 else
                 {
-                    // Araç seçilmemişse tüm müsait araçları göster
-                    filteredCars = allCars.Where(c => c.IsAvailable).ToList();
+                    // Araç seçilmemişse tüm araçları göster
+                    filteredCars = allCars.ToList();
                 }
 
                 // Mesafe hesapla

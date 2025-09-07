@@ -32,9 +32,36 @@
     @await Component.InvokeAsync("CarCategoriesComponentPartial")
     @await Component.InvokeAsync("CarStepsComponentPartial")
     @await Component.InvokeAsync("TeamComponentPartial")
-    @await Component.InvokeAsync("EmployeesComponentPartial")  
+    @await Component.InvokeAsync("EmployeesComponentPartial")
+    @await Component.InvokeAsync("TestimonialsComponentPartial")
     @await Component.InvokeAsync("FooterComponentPartial")
 
-  
+    <!-- Ajax Form Script -->
+    <script>
+        $(document).ready(function(){
+            // Footer contact form AJAX
+            $("#footerContactForm").submit(function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Message/SendMessage",
+                    data: $(this).serialize(),
+                    success: function(response){
+                        if(response.success){
+                            alert(response.message);
+                            $("#footerContactForm")[0].reset();
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(){
+                        alert("An error occurred while sending the message.");
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
