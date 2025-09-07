@@ -18,7 +18,7 @@ namespace CarProjectCQRS.ViewComponents.MainUiViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var values = await _getEmployeeQueryHandler.Handle() ?? new List<GetEmployeeQueryResult>();
-            var activeValues = values.Where(e => e.IsActive).Take(10).ToList();
+            var activeValues = values.Where(e => e.IsActive).Take(4).ToList();
             return View(activeValues);
         }
     }
