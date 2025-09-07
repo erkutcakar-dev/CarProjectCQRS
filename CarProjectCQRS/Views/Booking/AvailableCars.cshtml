@@ -4,6 +4,58 @@
     Layout = "~/Views/Shared/_CarsBookingLayout.cshtml";
 }
 
+<style>
+/* Booking sayfası için kart düzenlemeleri */
+.categories-carousel .owl-stage {
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+.categories-carousel .owl-item {
+    display: flex !important;
+    height: 100% !important;
+}
+
+.categories-item {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.categories-item-inner {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.categories-content {
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.categories-img {
+    height: 220px !important;
+    overflow: hidden !important;
+}
+
+.categories-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+/* Kart içeriği için flexbox düzenlemesi */
+.categories-content .row.gy-2 {
+    flex-grow: 1 !important;
+}
+
+.categories-content form {
+    margin-top: auto !important;
+}
+</style>
+
 <div class="container-fluid categories py-5">
     <div class="container py-5">
         <!-- Search Criteria Display -->
@@ -65,7 +117,10 @@
                                 <img src="@car.ImageUrl" class="img-fluid w-100 rounded-top" alt="@car.Brand @car.Model">
                             </div>
                             <div class="categories-content rounded-bottom p-4">
-                                <h4>@car.Brand @car.Model</h4>
+                                <div class="mb-3">
+                                    <h4 class="mb-1">@car.Brand</h4>
+                                    <h5 class="mb-0 text-muted">@car.Model</h5>
+                                </div>
                                 <div class="categories-review mb-4">
                                     <div class="me-3">@car.ReviewScore.ToString("0.0") Review</div>
                                     <div class="d-flex justify-content-center text-secondary">
@@ -83,12 +138,12 @@
                                     </div>
                                 </div>
                                 <div class="mb-4">
-                                    <h4 class="bg-white text-primary rounded-pill py-2 px-4 mb-0">
+                                    <h4 class="bg-white text-primary rounded-pill py-2 px-4 mb-0 text-center">
                                         $@car.DailyPrice.ToString("0.00")/Day
                                     </h4>
                                     @if (Model.TotalDays > 1)
                                     {
-                                        <small class="text-muted">Total for @Model.TotalDays days: $@((car.DailyPrice * Model.TotalDays).ToString("0.00"))</small>
+                                        <small class="text-muted text-center d-block mt-1">Total for @Model.TotalDays days: $@((car.DailyPrice * Model.TotalDays).ToString("0.00"))</small>
                                     }
                                 </div>
                                 <div class="row gy-2 gx-0 text-center mb-4">
@@ -117,17 +172,19 @@
                                         <span class="text-body ms-1">@(car.Mileage / 1000)K</span>
                                     </div>
                                 </div>
-                                <form method="post" action="@Url.Action("ConfirmBooking", "Booking")">
-                                    <input type="hidden" name="CarId" value="@car.CarId" />
-                                    <input type="hidden" name="PickUpLocation" value="@Model.SearchCriteria.PickUpLocation" />
-                                    <input type="hidden" name="DropOffLocation" value="@Model.SearchCriteria.DropOffLocation" />
-                                    <input type="hidden" name="PickUpDate" value="@Model.SearchCriteria.PickUpDate.ToString("yyyy-MM-dd")" />
-                                    <input type="hidden" name="DropOffDate" value="@Model.SearchCriteria.DropOffDate.ToString("yyyy-MM-dd")" />
-                                    <input type="hidden" name="AirportId" value="@Model.SearchCriteria.AirportId" />
-                                    <button type="submit" class="btn btn-primary rounded-pill d-flex justify-content-center py-3 w-100">
-                                        Book This Car
-                                    </button>
-                                </form>
+                                <div>
+                                    <form method="post" action="@Url.Action("ConfirmBooking", "Booking")">
+                                        <input type="hidden" name="CarId" value="@car.CarId" />
+                                        <input type="hidden" name="PickUpLocation" value="@Model.SearchCriteria.PickUpLocation" />
+                                        <input type="hidden" name="DropOffLocation" value="@Model.SearchCriteria.DropOffLocation" />
+                                        <input type="hidden" name="PickUpDate" value="@Model.SearchCriteria.PickUpDate.ToString("yyyy-MM-dd")" />
+                                        <input type="hidden" name="DropOffDate" value="@Model.SearchCriteria.DropOffDate.ToString("yyyy-MM-dd")" />
+                                        <input type="hidden" name="AirportId" value="@Model.SearchCriteria.AirportId" />
+                                        <button type="submit" class="btn btn-primary rounded-pill d-flex justify-content-center py-3 w-100">
+                                            Book This Car
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
