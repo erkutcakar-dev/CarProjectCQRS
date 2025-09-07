@@ -1,16 +1,17 @@
-﻿using CarProjectCQRS.Context;
-using CarProjectCQRS.Entities;
+﻿using CarProjectCQRS.CQRSPattern.Commands.MessageCommands;
+using CarProjectCQRS.CQRSPattern.Handlers.MessageHandlers;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarProjectCQRS.Controllers
 {
     public class MessageController : Controller
     {
-        private readonly CarProjectDbContext _context;
+        private readonly IMediator _mediator;
 
-        public MessageController(CarProjectDbContext context)
+        public MessageController(IMediator mediator)
         {
-            _context = context;
+            _mediator = mediator;
         }
 
         [HttpPost]
@@ -21,20 +22,17 @@ namespace CarProjectCQRS.Controllers
                 return Json(new { success = false, message = "Email and Message are required." });
             }
 
-            var newMessage = new Message
+            var command = new CreateMessageCommand
             {
                 SenderMail = SenderMail,
                 Telephone = Telephone,
                 MessageText = Message
             };
 
-            _context.Messages.Add(newMessage);
-            await _context.SaveChangesAsync();
+            var result = await _mediator.Send(command);
 
-            return Json(new { success = true, message = "Message sent successfully!" });
+            return Json(new { success = result.Success, message = result.Message });
         }
-
-        
     }
 }
 

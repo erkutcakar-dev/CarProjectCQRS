@@ -95,12 +95,17 @@
 <!-- Ajax Form Script -->
 <script>
     $(document).ready(function(){
+        // Spinner'ı gizle
+        setTimeout(function() {
+            $('#spinner').addClass('d-none');
+        }, 1000);
+
         $("#footerContactForm").submit(function(e){
             e.preventDefault();
 
             $.ajax({
                 type: "POST",
-                url: "/Contact/SendMessage",
+                url: "/Message/SendMessage",
                 data: $(this).serialize(),
                 success: function(response){
                     if(response.success){

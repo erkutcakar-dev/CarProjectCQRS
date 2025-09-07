@@ -9,13 +9,18 @@ using CarProjectCQRS.CQRSPattern.Handlers.TestimonialHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.ReservationHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.TurkeyAirportHandlers;
 using CarProjectCQRS.CQRSPattern.Handlers.DistanceHandlers;
+using CarProjectCQRS.CQRSPattern.Handlers.MessageHandlers;
 using CarProjectCQRS.ViewComponents.MainUiViewComponents;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// MediatR servisi ekle
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 // HttpClient servisi ekle (FuelPrice/AdminController için)
 builder.Services.AddHttpClient();
@@ -93,6 +98,12 @@ builder.Services.AddScoped<GetDistanceByIdQueryHandler>();
 builder.Services.AddScoped<CreateDistanceCommandHandler>();
 builder.Services.AddScoped<UpdateDistanceCommandHandler>();
 builder.Services.AddScoped<RemoveDistanceCommandHandler>();
+
+// Message Handlers
+builder.Services.AddScoped<CreateMessageCommandHandler>();
+builder.Services.AddScoped<GetMessageQueryHandler>();
+builder.Services.AddScoped<UpdateMessageCommandHandler>();
+builder.Services.AddScoped<RemoveMessageCommandHandler>();
 
 // ViewComponents
 builder.Services.AddScoped<CarouselComponentPartial>();

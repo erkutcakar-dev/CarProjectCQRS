@@ -1,73 +1,224 @@
-﻿@model List<CarProjectCQRS.Entities.Message>
+@model List<CarProjectCQRS.CQRSPattern.Results.Message.GetMessageQueryResult>
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Contact Messages";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Dashboard /</span> Contact Messages
     </h4>
 
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title text-white">Total Messages</h6>
+                            <h3 class="mb-0">@Model.Count</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bx bx-message-dots display-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title text-white">Unread</h6>
+                            <h3 class="mb-0">@Model.Count(m => !m.IsRead)</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bx bx-envelope display-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title text-white">Read</h6>
+                            <h3 class="mb-0">@Model.Count(m => m.IsRead)</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bx bx-check-circle display-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title text-white">Today</h6>
+                            <h3 class="mb-0">@Model.Count(m => m.SendDate.Date == DateTime.Today)</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bx bx-calendar display-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card">
-        <h5 class="card-header">Message List</h5>
-        <div class="table-responsive text-nowrap">
-            <table class="table">
-                <thead>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Message List</h5>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="markAllAsRead()">
+                    <i class="bx bx-check-double me-1"></i> Mark All Read
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteAllRead()">
+                    <i class="bx bx-trash me-1"></i> Delete Read
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
                     <tr>
-                        <th>Sender Email</th>
-                        <th>Telephone</th>
-                        <th>Message</th>
-                        <th>Send Date</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th width="5%">
+                            <input type="checkbox" id="selectAll" class="form-check-input">
+                        </th>
+                        <th width="18%">Sender</th>
+                        <th width="12%">Contact</th>
+                        <th width="40%">Message</th>
+                        <th width="12%">Date & Time</th>
+                        <th width="8%">Status</th>
+                        <th width="15%">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="table-border-bottom-0">
+                <tbody>
                     @if (Model != null && Model.Any())
                     {
                         @foreach (var item in Model)
                         {
-                            <tr class="@(item.IsRead ? "table-secondary" : "table-success")">
+                            <tr class="@(item.IsRead ? "" : "table-warning")" data-message-id="@item.MessageId">
                                 <td>
-                                    <strong>@item.SenderMail</strong>
+                                    <input type="checkbox" class="form-check-input message-checkbox" value="@item.MessageId">
                                 </td>
                                 <td>
-                                    @item.Telephone
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-sm me-3">
+                                            <span class="avatar-initial rounded-circle bg-label-primary">
+                                                @item.SenderMail.Substring(0, 1).ToUpper()
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">@item.SenderMail</h6>
+                                            <small class="text-muted">@item.SendDate.ToLocalTime().ToString("HH:mm")</small>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
-                                    @(item.MessageText.Length > 50 ? item.MessageText.Substring(0, 50) + "..." : item.MessageText)
+                                    <div>
+                                        <i class="bx bx-phone me-1"></i>
+                                        <span>@item.Telephone</span>
+                                    </div>
                                 </td>
                                 <td>
-                                    @item.SendDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+                                    <div class="message-preview" style="max-width: 100%;">
+                                        <div class="border rounded p-3 bg-light" style="min-height: 60px;">
+                                            <p class="mb-2 fw-medium text-dark" style="line-height: 1.4;">
+                                                @if (item.MessageText.Length > 100)
+                                                {
+                                                    @item.MessageText.Substring(0, 100)
+                                                    <span class="text-muted">...</span>
+                                                }
+                                                else
+                                                {
+                                                    @item.MessageText
+                                                }
+                                            </p>
+                                            @if (item.MessageText.Length > 100)
+                                            {
+                                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#messageModal" onclick="showFullMessage('@item.MessageId', '@Html.Raw(Html.Encode(item.MessageText))', '@item.SenderMail', '@item.Telephone', '@item.SendDate.ToString("yyyy-MM-dd HH:mm")')">
+                                                    <i class="bx bx-show me-1"></i>Read Full Message
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="fw-semibold">@item.SendDate.ToLocalTime().ToString("MMM dd")</div>
+                                        <small class="text-muted">@item.SendDate.ToLocalTime().ToString("HH:mm")</small>
+                                    </div>
                                 </td>
                                 <td>
                                     @if (item.IsRead)
                                     {
-                                        <span class="badge bg-label-secondary me-2">Read</span>
+                                        <span class="badge bg-label-success">
+                                            <i class="bx bx-check me-1"></i>Read
+                                        </span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-label-success me-2">Unread</span>
+                                        <span class="badge bg-label-warning">
+                                            <i class="bx bx-envelope me-1"></i>Unread
+                                        </span>
                                     }
                                 </td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#messageModal" onclick="showFullMessage('@item.MessageId', '@Html.Raw(Html.Encode(item.MessageText))', '@item.SenderMail', '@item.Telephone', '@item.SendDate.ToString("yyyy-MM-dd HH:mm")')">
+                                            <i class="bx bx-show"></i>
                                         </button>
-                                        <div class="dropdown-menu">
-                                            @if (!item.IsRead)
-                                            {
-                                                <a class="dropdown-item" href="@Url.Action("MarkAsRead", "AdminMessage", new { id = item.MessageId })">
-                                                    <i class="bx bx-check me-1"></i> Mark as Read
-                                                </a>
-                                            }
-                                            <a class="dropdown-item" href="@Url.Action("DeleteMessage", "AdminMessage", new { id = item.MessageId })" onclick="return confirm('Are you sure you want to delete this message?')">
-                                                <i class="bx bx-trash me-1"></i> Delete
-                                            </a>
-                                        </div>
+                                        
+                                        @if (!item.IsRead)
+                                        {
+                                            <form method="post" action="@Url.Action("MarkAsRead", "AdminMessage")" style="display: inline;">
+                                                <input type="hidden" name="id" value="@item.MessageId" />
+                                                <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Read">
+                                                    <i class="bx bx-check"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form method="post" action="@Url.Action("MarkAsUnread", "AdminMessage")" style="display: inline;">
+                                                <input type="hidden" name="id" value="@item.MessageId" />
+                                                <button type="submit" class="btn btn-sm btn-outline-warning" title="Mark as Unread">
+                                                    <i class="bx bx-envelope"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        
+                                        <form method="post" action="@Url.Action("DeleteMessage", "AdminMessage")" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this message?')">
+                                            <input type="hidden" name="id" value="@item.MessageId" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -76,10 +227,10 @@
                     else
                     {
                         <tr>
-                            <td colspan="6" class="text-center py-4">
+                            <td colspan="7" class="text-center py-5">
                                 <div class="d-flex flex-column align-items-center">
-                                    <i class="bx bx-info-circle display-4 text-muted mb-2"></i>
-                                    <h6 class="text-muted">No messages found</h6>
+                                    <i class="bx bx-message-dots display-1 text-muted mb-3"></i>
+                                    <h5 class="text-muted">No messages found</h5>
                                     <p class="text-muted">Messages sent via the contact form will appear here.</p>
                                 </div>
                             </td>
@@ -90,3 +241,96 @@
         </div>
     </div>
 </div>
+
+<!-- Message Detail Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Message Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">From:</label>
+                        <p class="form-control-plaintext" id="modalSender"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Phone:</label>
+                        <p class="form-control-plaintext" id="modalPhone"></p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Date:</label>
+                        <p class="form-control-plaintext" id="modalDate"></p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Message:</label>
+                    <div class="border rounded p-3 bg-light" id="modalMessage"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="replyToMessage()">
+                    <i class="bx bx-reply me-1"></i>Reply
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showFullMessage(id, message, sender, phone, date) {
+        document.getElementById('modalSender').textContent = sender;
+        document.getElementById('modalPhone').textContent = phone;
+        document.getElementById('modalDate').textContent = date;
+        document.getElementById('modalMessage').textContent = message;
+    }
+
+    function replyToMessage() {
+        const sender = document.getElementById('modalSender').textContent;
+        window.location.href = `mailto:${sender}?subject=Re: Your Message`;
+    }
+
+    function markAllAsRead() {
+        const checkboxes = document.querySelectorAll('.message-checkbox:checked');
+        if (checkboxes.length === 0) {
+            alert('Please select messages to mark as read.');
+            return;
+        }
+        
+        if (confirm('Mark selected messages as read?')) {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '@Url.Action("MarkMultipleAsRead", "AdminMessage")';
+            
+            checkboxes.forEach(checkbox => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids';
+                input.value = checkbox.value;
+                form.appendChild(input);
+            });
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+
+    function deleteAllRead() {
+        if (confirm('Delete all read messages? This action cannot be undone.')) {
+            window.location.href = '@Url.Action("DeleteAllRead", "AdminMessage")';
+        }
+    }
+
+    // Select all functionality
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.message-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+</script>
