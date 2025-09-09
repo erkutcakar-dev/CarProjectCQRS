@@ -10,7 +10,7 @@
         <span class="text-muted fw-light">Dashboard /</span> AI Car Search & Recommendation
     </h4>
 
-    <!-- AI Recommendation Section - Always Visible -->
+    <!-- AI Recommendation Section -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
@@ -25,8 +25,8 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label for="aiRequirements" class="form-label">Tell us what you need:</label>
-                                <textarea id="aiRequirements" class="form-control" rows="3" 
-                                    placeholder="e.g., I need a fuel-efficient car for city driving with 4 seats, budget around $200 per day..."></textarea>
+                                <textarea id="aiRequirements" class="form-control" rows="3"
+                                          placeholder="e.g., I need a fuel-efficient car for city driving with 4 seats, budget around $200 per day..."></textarea>
                             </div>
                         </div>
                         <div class="col-md-4 d-flex align-items-end">
@@ -35,22 +35,24 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- AI Recommendation Result -->
                     <div id="aiRecommendation" class="mt-3" style="display: none;">
                         <div class="alert alert-info">
                             <h6><i class="bx bx-lightbulb me-2"></i>AI Recommendation:</h6>
                             <div id="recommendationText"></div>
                         </div>
                     </div>
-                    
-                    <!-- Recommended Cars List - Hidden Initially -->
+
+                    <!-- Recommended Cars List -->
                     <div id="recommendedCarsList" class="mt-3" style="display: none;">
                         <div class="alert alert-success">
                             <h6><i class="bx bx-car me-2"></i>Recommended Cars:</h6>
                             <div id="carsList"></div>
                         </div>
                     </div>
-                    
-                    <!-- AI Recommendation Summary - Hidden Initially -->
+
+                    <!-- AI Recommendation Summary -->
                     <div id="aiRecommendationSummary" class="mt-3" style="display: none;">
                         <div class="alert alert-warning">
                             <h6><i class="bx bx-info-circle me-2"></i>AI Analysis Summary:</h6>
@@ -61,15 +63,13 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
 @section Scripts {
     <script>
         $(document).ready(function() {
-            // Store all cars data
-            var allCars = @Html.Raw(Json.Serialize(Model.Select(c => new {
+            var allCars = @Html.Raw(Json.Serialize(Model.Select(c => new
+            {
                 CarId = c.CarId,
                 Brand = c.Brand,
                 Model = c.Model,
@@ -85,36 +85,32 @@
                 IsAvailable = c.IsAvailable
             })));
 
-            // AI Recommendation functionality
             $('#getRecommendation').click(function() {
                 var requirements = $('#aiRequirements').val().trim();
-                
                 if (!requirements) {
                     alert('Please enter your requirements first.');
                     return;
                 }
-                
                 var button = $(this);
                 var originalText = button.html();
                 button.html('<i class="bx bx-loader-alt bx-spin me-2"></i>Getting Recommendation...');
                 button.prop('disabled', true);
-                
+
                 $.ajax({
                     url: '@Url.Action("GetAIRecommendation")',
                     type: 'POST',
                     data: { requirements: requirements },
                     success: function(response) {
                         if (response.success) {
-                            $('#recommendationText').html(response.recommendation);
+                            var formattedText = formatAIRecommendationText(response.recommendation);
+                            $('#recommendationText').html(formattedText);
                             $('#aiRecommendation').show();
-                            
-                            // Parse AI recommendation and show recommended cars list
+
                             var recommendedCars = parseAIRecommendation(response.recommendation);
                             displayRecommendedCarsList(recommendedCars);
                             $('#recommendedCarsList').show();
-                            
-                            // Show AI summary at the bottom
-                            $('#recommendationSummary').html(response.recommendation);
+
+                            $('#recommendationSummary').html(formattedText);
                             $('#aiRecommendationSummary').show();
                         } else {
                             alert(response.message);
@@ -129,106 +125,111 @@
                     }
                 });
             });
+             // İlk öneri full width/card başlangıç
+                       function formatAIRecommendationText(text) {
+            var recommendations = text.split(/\d+\.\s/).filter(r => r.trim() !== '');
+            var cardsHtml = '';
+
+            // İlk öneri full width
+            if (recommendations.length > 0) {
+                var firstRec = recommendations[0];
+                var firstTitleMatch = firstRec.match(/\*\*([^*]+)\*\*/);
+                var firstTitle = firstTitleMatch ? firstTitleMatch[1] : firstRec.split('\n')[0];
+                var firstDescription = firstRec.replace(/\*\*([^*]+)\*\*/, '').trim();
+
+                cardsHtml += `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">${firstTitle}</h5>
+                                    <p class="card-text text-muted">
+                                        ${firstDescription.replace(/\n/g, '<br>')}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Kalan öneriler 3 sütun
+            if (recommendations.length > 1) {
+                cardsHtml += '<div class="row">';
+                for (var i = 1; i < recommendations.length; i++) {
+                    var rec = recommendations[i];
+                    var titleMatch = rec.match(/\*\*([^*]+)\*\*/);
+                    var title = titleMatch ? titleMatch[1] : rec.split('\n')[0];
+                    var description = rec.replace(/\*\*([^*]+)\*\*/, '').trim();
+
+                    cardsHtml += `
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title text-primary">${title}</h5>
+                                    <p class="card-text text-muted" style="flex-grow:1;">
+                                        ${description.replace(/\n/g, '<br>')}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                cardsHtml += '</div>';
+            }
+
+            return cardsHtml;
+        }
+
+
+
+        //Card Bitiş Alanı //
 
             function parseAIRecommendation(recommendationText) {
-                console.log('AI Recommendation Text:', recommendationText);
                 var recommendedCars = [];
                 var text = recommendationText.toLowerCase();
-                
-                // Enhanced parsing - look for numbered lists and specific car mentions
                 var lines = recommendationText.split('\n');
                 var carMatches = [];
-                
-                // Look for patterns like "1. Toyota Corolla", "2. Honda Civic", etc.
+
                 lines.forEach(function(line) {
                     var lineLower = line.toLowerCase();
-                    
-                    // Check for numbered patterns
                     var numberedMatch = lineLower.match(/(\d+)\.\s*([a-z\s]+)/);
                     if (numberedMatch) {
                         var carName = numberedMatch[2].trim();
                         carMatches.push(carName);
                     }
-                    
-                    // Check for bullet points or dashes
                     var bulletMatch = lineLower.match(/[-•]\s*([a-z\s]+)/);
                     if (bulletMatch) {
                         var carName = bulletMatch[1].trim();
                         carMatches.push(carName);
                     }
                 });
-                
-                console.log('Car matches found:', carMatches);
-                
-                // Try to match car names with database cars
+
                 carMatches.forEach(function(carName) {
                     allCars.forEach(function(car) {
                         var brandModel = (car.Brand + ' ' + car.Model).toLowerCase();
-                        var brandOnly = car.Brand.toLowerCase();
-                        var modelOnly = car.Model.toLowerCase();
-                        
-                        // Check various matching patterns
-                        if (carName.includes(brandModel) || 
-                            carName.includes(brandOnly) || 
-                            carName.includes(modelOnly) ||
-                            brandModel.includes(carName) ||
-                            brandOnly.includes(carName) ||
-                            modelOnly.includes(carName)) {
-                            
-                            // Avoid duplicates
+                        if (carName.includes(brandModel) || brandModel.includes(carName)) {
                             var exists = recommendedCars.some(function(existing) {
                                 return existing.CarId === car.CarId;
                             });
-                            
                             if (!exists) {
-                                console.log('Found matching car:', car.Brand, car.Model);
                                 recommendedCars.push(car);
                             }
                         }
                     });
                 });
-                
-                // If still no matches, try broader search
+
                 if (recommendedCars.length === 0) {
-                    allCars.forEach(function(car) {
-                        var brandModel = (car.Brand + ' ' + car.Model).toLowerCase();
-                        var brandOnly = car.Brand.toLowerCase();
-                        var modelOnly = car.Model.toLowerCase();
-                        
-                        if (text.includes(brandModel) || 
-                            text.includes(brandOnly) || 
-                            text.includes(modelOnly)) {
-                            
-                            var exists = recommendedCars.some(function(existing) {
-                                return existing.CarId === car.CarId;
-                            });
-                            
-                            if (!exists) {
-                                console.log('Found matching car (broad search):', car.Brand, car.Model);
-                                recommendedCars.push(car);
-                            }
-                        }
-                    });
-                }
-                
-                console.log('Recommended cars found:', recommendedCars.length);
-                
-                // If no specific cars found, return top 3 cars by rating
-                if (recommendedCars.length === 0) {
-                    console.log('No specific cars found, showing top 3 by rating');
                     recommendedCars = allCars
                         .sort(function(a, b) { return b.ReviewScore - a.ReviewScore; })
                         .slice(0, 3);
                 }
-                
-                // Limit to 3 cars maximum
                 return recommendedCars.slice(0, 3);
             }
 
             function displayRecommendedCarsList(cars) {
                 if (cars.length > 0) {
                     var html = '<div class="row">';
-                    
                     cars.forEach(function(car, index) {
                         var stars = '';
                         for (var i = 1; i <= 5; i++) {
@@ -240,87 +241,30 @@
                                 stars += '<i class="bx bx-star text-muted"></i>';
                             }
                         }
-                        
-                        var imageHtml = car.ImageUrl ? 
+                        var imageHtml = car.ImageUrl ?
                             `<img src="${car.ImageUrl}" class="card-img-top" alt="${car.Brand} ${car.Model}" style="height: 200px; object-fit: cover;">` :
                             `<div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;"><i class="bx bx-car text-muted" style="font-size: 3rem;"></i></div>`;
-                        
+
                         html += `
-                            <div class="col-md-6 col-lg-4 mb-4 car-item" data-brand="${car.Brand}" data-model="${car.Model}" data-fuel-type="${car.FuelType}" data-gear-type="${car.GearType}" data-seat-count="${car.SeatCount}" data-daily-price="${car.DailyPrice}" data-model-year="${car.ModelYear}" data-review-score="${car.ReviewScore}">
+                            <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card h-100">
                                     ${imageHtml}
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">${index + 1}. ${car.Brand} ${car.Model}</h5>
                                         <p class="card-text text-muted">${car.ModelYear} Model</p>
-                                        
-                                        <div class="row mb-3">
-                                            <div class="col-6">
-                                                <small class="text-muted">Fuel Type</small>
-                                                <div class="fw-bold">${car.FuelType}</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <small class="text-muted">Gear Type</small>
-                                                <div class="fw-bold">${car.GearType}</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="row mb-3">
-                                            <div class="col-6">
-                                                <small class="text-muted">Seats</small>
-                                                <div class="fw-bold">${car.SeatCount}</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <small class="text-muted">Mileage</small>
-                                                <div class="fw-bold">${car.Mileage.toLocaleString()} km</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="row mb-3">
-                                            <div class="col-6">
-                                                <small class="text-muted">Daily Price</small>
-                                                <div class="fw-bold text-primary">$${car.DailyPrice.toFixed(2)}</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <small class="text-muted">Rating</small>
-                                                <div class="fw-bold">
-                                                    ${stars}
-                                                    <span class="ms-1">${car.ReviewScore.toFixed(1)}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="mt-auto">
-                                            <div class="d-grid gap-2">
-                                                <a href="/Car/EditCar/${car.CarId}" class="btn btn-primary">
-                                                    <i class="bx bx-edit me-2"></i>Edit Car
-                                                </a>
-                                            </div>
-                                        </div>
+                                        <div class="fw-bold text-primary">$${car.DailyPrice.toFixed(2)}</div>
+                                        <div class="fw-bold">${stars} <span class="ms-1">${car.ReviewScore.toFixed(1)}</span></div>
                                     </div>
                                 </div>
                             </div>
                         `;
                     });
-                    
                     html += '</div>';
                     $('#carsList').html(html);
                 } else {
-                    $('#carsList').html(`
-                        <div class="text-center py-3">
-                            <i class="bx bx-car text-muted" style="font-size: 2rem;"></i>
-                            <p class="text-muted mt-2">No specific cars found in AI recommendation.</p>
-                        </div>
-                    `);
+                    $('#carsList').html(`<div class="text-center py-3"><i class="bx bx-car text-muted" style="font-size: 2rem;"></i><p class="text-muted mt-2">No specific cars found in AI recommendation.</p></div>`);
                 }
             }
-            
-            // Car selection functionality
-            window.selectCar = function(carId) {
-                if (confirm('Are you sure you want to select this car?')) {
-                    alert('Car selected! Car ID: ' + carId);
-                    // Example: window.location.href = '@Url.Action("BookCar", "Booking")' + '?carId=' + carId;
-                }
-            };
         });
     </script>
 }

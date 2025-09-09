@@ -119,12 +119,39 @@ namespace CarProjectCQRS.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AvailableCars()
+        public async Task<IActionResult> AvailableCars(int? carId = null, string pickUpLocation = null, string dropOffLocation = null, DateTime? pickUpDate = null, DateTime? dropOffDate = null, int? airportId = null)
         {
             try
             {
                 var allCars = await _getCarQueryHandler.Handle();
                 var availableCars = allCars.Where(c => c.IsAvailable).ToList();
+
+                // Eğer parametreler varsa filtreleme yap
+                if (carId.HasValue && carId > 0)
+                {
+                    var selectedCarType = allCars.FirstOrDefault(c => c.CarId == carId);
+                    if (selectedCarType != null)
+                    {
+                        availableCars = availableCars.Where(c => c.Brand == selectedCarType.Brand).ToList();
+                    }
+                }
+
+                var totalDays = 1;
+                if (pickUpDate.HasValue && dropOffDate.HasValue)
+                {
+                    totalDays = (dropOffDate.Value - pickUpDate.Value).Days;
+                    if (totalDays <= 0) totalDays = 1;
+                }
+
+                var searchCriteria = new CarBookingSearchModel
+                {
+                    CarId = carId ?? 0,
+                    PickUpLocation = pickUpLocation ?? "",
+                    DropOffLocation = dropOffLocation ?? "",
+                    PickUpDate = pickUpDate ?? DateTime.Now,
+                    DropOffDate = dropOffDate ?? DateTime.Now.AddDays(1),
+                    AirportId = airportId
+                };
 
                 var viewModel = new AvailableCarsViewModel
                 {
@@ -145,9 +172,9 @@ namespace CarProjectCQRS.Controllers
                         IsAvailable = x.IsAvailable,
                         CreatedDate = x.CreatedDate
                     }).ToList(),
-                    SearchCriteria = new CarBookingSearchModel(),
-                    TotalDays = 1,
-                    TotalPrice = availableCars.Sum(c => c.DailyPrice)
+                    SearchCriteria = searchCriteria,
+                    TotalDays = totalDays,
+                    TotalPrice = availableCars.Sum(c => c.DailyPrice * totalDays)
                 };
 
                 return View(viewModel);
@@ -207,7 +234,8 @@ namespace CarProjectCQRS.Controllers
                     pickUpLocation = model.PickUpLocation,
                     dropOffLocation = model.DropOffLocation,
                     pickUpDate = model.PickUpDate,
-                    dropOffDate = model.DropOffDate
+                    dropOffDate = model.DropOffDate,
+                    airportId = model.AirportId
                 });
             }
             catch (Exception ex)
@@ -218,7 +246,7 @@ namespace CarProjectCQRS.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> BookingConfirmation(int carId, string pickUpLocation, string dropOffLocation, DateTime pickUpDate, DateTime dropOffDate)
+        public async Task<IActionResult> BookingConfirmation(int carId, string pickUpLocation, string dropOffLocation, DateTime pickUpDate, DateTime dropOffDate, int? airportId = null)
         {
             try
             {
@@ -262,7 +290,8 @@ namespace CarProjectCQRS.Controllers
                         PickUpLocation = pickUpLocation,
                         DropOffLocation = dropOffLocation,
                         PickUpDate = pickUpDate,
-                        DropOffDate = dropOffDate
+                        DropOffDate = dropOffDate,
+                        AirportId = airportId
                     },
                     TotalDays = totalDays,
                     TotalPrice = selectedCar.DailyPrice * totalDays

@@ -77,11 +77,18 @@
                             <input type="hidden" name="DropOffLocation" value="@Model.SearchCriteria.DropOffLocation" />
                             <input type="hidden" name="PickUpDate" value="@Model.SearchCriteria.PickUpDate.ToString("yyyy-MM-dd")" />
                             <input type="hidden" name="DropOffDate" value="@Model.SearchCriteria.DropOffDate.ToString("yyyy-MM-dd")" />
-                            <input type="hidden" name="AirportId" value="@Model.SearchCriteria.AirportId" />
+                            <input type="hidden" name="AirportId" value="@(Model.SearchCriteria.AirportId ?? 0)" />
                             
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a href="@Url.Action("AvailableCars")" class="btn btn-outline-secondary w-100">
+                                    <a href="@Url.Action("AvailableCars", "Booking", new { 
+                                        carId = Model.SearchCriteria.CarId,
+                                        pickUpLocation = Model.SearchCriteria.PickUpLocation,
+                                        dropOffLocation = Model.SearchCriteria.DropOffLocation,
+                                        pickUpDate = Model.SearchCriteria.PickUpDate,
+                                        dropOffDate = Model.SearchCriteria.DropOffDate,
+                                        airportId = Model.SearchCriteria.AirportId
+                                    })" class="btn btn-outline-secondary w-100">
                                         <i class="fas fa-arrow-left me-2"></i>Back to Cars
                                     </a>
                                 </div>

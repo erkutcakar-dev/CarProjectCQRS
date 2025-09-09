@@ -1,303 +1,328 @@
 ﻿@model CarProjectCQRS.Models.AvailableCarsViewModel
 @{
-    ViewData["Title"] = "Available Cars";
-    Layout = "~/Views/Shared/_CarsBookingLayout.cshtml";
+	ViewData["Title"] = "Available Cars";
+	Layout = "~/Views/Shared/_CarsBookingLayout.cshtml";
 }
 
 <style>
-/* Booking sayfası için kart düzenlemeleri */
-.categories-carousel .owl-stage {
-    display: flex !important;
-    align-items: stretch !important;
-}
+	/* Booking sayfası için kart düzenlemeleri */
+	.categories-carousel .owl-stage {
+		display: flex !important;
+		align-items: stretch !important;
+	}
 
-.categories-carousel .owl-item {
-    display: flex !important;
-    height: 100% !important;
-}
+	.categories-carousel .owl-item {
+		display: flex !important;
+		height: 100% !important;
+	}
 
-.categories-item {
-    height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
+	.categories-item {
+		height: 100% !important;
+		display: flex !important;
+		flex-direction: column !important;
+	}
 
-.categories-item-inner {
-    height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
+	.categories-item-inner {
+		height: 100% !important;
+		display: flex !important;
+		flex-direction: column !important;
+	}
 
-.categories-content {
-    flex-grow: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
+	.categories-content {
+		flex-grow: 1 !important;
+		display: flex !important;
+		flex-direction: column !important;
+	}
 
-.categories-img {
-    height: 220px !important;
-    overflow: hidden !important;
-}
+	.categories-img {
+		height: 220px !important;
+		overflow: hidden !important;
+	}
 
-.categories-img img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: center !important;
-}
+		.categories-img img {
+			width: 100% !important;
+			height: 100% !important;
+			object-fit: cover !important;
+			object-position: center !important;
+		}
 
-/* Kart içeriği için flexbox düzenlemesi */
-.categories-content .row.gy-2 {
-    flex-grow: 1 !important;
-}
+	/* Kart içeriği için flexbox düzenlemesi */
+	.categories-content .row.gy-2 {
+		flex-grow: 1 !important;
+	}
 
-.categories-content form {
-    margin-top: auto !important;
-}
+	.categories-content form {
+		margin-top: auto !important;
+	}
 
-/* Search Criteria Card Styling */
-.search-criteria-card .card {
-    border-radius: 15px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+	/* Search Criteria Card Styling */
+	.search-criteria-card .card {
+		border-radius: 15px;
+		overflow: hidden;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
 
-.search-criteria-card .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
-}
+		.search-criteria-card .card:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+		}
 
-.search-criteria-card .card-header {
-    background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%) !important;
-    border: none;
-    padding: 1.25rem 1.5rem;
-}
+	.search-criteria-card .card-header {
+		background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%) !important;
+		border: none;
+		padding: 1.25rem 1.5rem;
+	}
 
-.search-criteria-card .criteria-item {
-    padding: 0.75rem;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-}
+	.search-criteria-card .criteria-item {
+		padding: 0.75rem;
+		border-radius: 8px;
+		transition: background-color 0.3s ease;
+	}
 
-.search-criteria-card .criteria-item:hover {
-    background-color: #f8f9fa;
-}
+		.search-criteria-card .criteria-item:hover {
+			background-color: #f8f9fa;
+		}
 
-.search-criteria-card .criteria-item i {
-    font-size: 1.1rem;
-}
+		.search-criteria-card .criteria-item i {
+			font-size: 1.1rem;
+		}
 
-.search-criteria-card .criteria-item span {
-    font-size: 0.9rem;
-}
+		.search-criteria-card .criteria-item span {
+			font-size: 0.9rem;
+		}
 
-.search-criteria-card .criteria-item p {
-    font-size: 1rem;
-    font-weight: 500;
-}
+		.search-criteria-card .criteria-item p {
+			font-size: 1rem;
+			font-weight: 500;
+		}
 
-.search-criteria-card hr {
-    border-color: #e9ecef;
-    opacity: 0.5;
-}
+	.search-criteria-card hr {
+		border-color: #e9ecef;
+		opacity: 0.5;
+	}
 </style>
 
 <div class="container-fluid categories py-5">
-    <div class="container py-5">
-        <!-- Search Criteria Display -->
-        @if (Model.SearchCriteria != null && !string.IsNullOrEmpty(Model.SearchCriteria.PickUpLocation))
-        {
-            <div class="search-criteria-card mb-5">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-search me-2"></i>
-                            <h5 class="mb-0">Search Results</h5>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="row g-4">
-                            <div class="col-md-6 col-lg-3">
-                                <div class="criteria-item">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="fas fa-map-marker-alt text-primary me-2"></i>
-                                        <span class="fw-bold text-dark">Pick Up Location</span>
-                                    </div>
-                                    <p class="mb-0 text-muted">@Model.SearchCriteria.PickUpLocation</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="criteria-item">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="fas fa-flag-checkered text-primary me-2"></i>
-                                        <span class="fw-bold text-dark">Drop Off Location</span>
-                                    </div>
-                                    <p class="mb-0 text-muted">@Model.SearchCriteria.DropOffLocation</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="criteria-item">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="fas fa-calendar-alt text-primary me-2"></i>
-                                        <span class="fw-bold text-dark">Pick Up Date</span>
-                                    </div>
-                                    <p class="mb-0 text-muted">@Model.SearchCriteria.PickUpDate.ToString("dd MMM yyyy")</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="criteria-item">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="fas fa-calendar-check text-primary me-2"></i>
-                                        <span class="fw-bold text-dark">Drop Off Date</span>
-                                    </div>
-                                    <p class="mb-0 text-muted">@Model.SearchCriteria.DropOffDate.ToString("dd MMM yyyy")</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        @if (Model.SearchCriteria.Distance > 0 || (!string.IsNullOrEmpty(Model.SearchCriteria.Brand) && !string.IsNullOrEmpty(Model.SearchCriteria.Model)))
-                        {
-                            <hr class="my-4">
-                            <div class="row g-4">
-                                @if (Model.SearchCriteria.Distance > 0)
-                                {
-                                    <div class="col-md-6">
-                                        <div class="criteria-item">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-route text-primary me-2"></i>
-                                                <span class="fw-bold text-dark">Total Distance</span>
-                                            </div>
-                                            <p class="mb-0 text-muted">@Model.SearchCriteria.Distance km</p>
-                                        </div>
-                                    </div>
-                                }
-                                @if (!string.IsNullOrEmpty(Model.SearchCriteria.Brand) && !string.IsNullOrEmpty(Model.SearchCriteria.Model))
-                                {
-                                    <div class="col-md-6">
-                                        <div class="criteria-item">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-car text-primary me-2"></i>
-                                                <span class="fw-bold text-dark">Preferred Vehicle</span>
-                                            </div>
-                                            <p class="mb-0 text-muted">@Model.SearchCriteria.Brand @Model.SearchCriteria.Model</p>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
+	<div class="container py-5">
+		<!-- Search Criteria Display -->
+		@if (Model.SearchCriteria != null && !string.IsNullOrEmpty(Model.SearchCriteria.PickUpLocation))
+		{
+			<div class="search-criteria-card mb-5">
+				<div class="card border-0 shadow-sm">
+					<div class="card-header bg-primary text-white">
+						<div class="d-flex align-items-center">
+							<i class="fas fa-search me-2"></i>
+							<h5 class="mb-0">Search Results</h5>
+						</div>
+					</div>
+					<div class="card-body p-4">
+						<div class="row g-4">
+							<div class="col-md-6 col-lg-3">
+								<div class="criteria-item">
+									<div class="d-flex align-items-center mb-2">
+										<i class="fas fa-map-marker-alt text-primary me-2"></i>
+										<span class="fw-bold text-dark">Pick Up Location</span>
+									</div>
+									<p class="mb-0 text-muted">@Model.SearchCriteria.PickUpLocation</p>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-3">
+								<div class="criteria-item">
+									<div class="d-flex align-items-center mb-2">
+										<i class="fas fa-flag-checkered text-primary me-2"></i>
+										<span class="fw-bold text-dark">Drop Off Location</span>
+									</div>
+									<p class="mb-0 text-muted">@Model.SearchCriteria.DropOffLocation</p>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-3">
+								<div class="criteria-item">
+									<div class="d-flex align-items-center mb-2">
+										<i class="fas fa-calendar-alt text-primary me-2"></i>
+										<span class="fw-bold text-dark">Pick Up Date</span>
+									</div>
+									<p class="mb-0 text-muted">@Model.SearchCriteria.PickUpDate.ToString("dd MMM yyyy")</p>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-3">
+								<div class="criteria-item">
+									<div class="d-flex align-items-center mb-2">
+										<i class="fas fa-calendar-check text-primary me-2"></i>
+										<span class="fw-bold text-dark">Drop Off Date</span>
+									</div>
+									<p class="mb-0 text-muted">@Model.SearchCriteria.DropOffDate.ToString("dd MMM yyyy")</p>
+								</div>
+							</div>
+						</div>
 
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-            <h1 class="display-5 text-capitalize mb-3">Available <span class="text-primary">Vehicles</span></h1>
-            <p class="mb-0">
-                @if (Model.AvailableCars.Any())
-                {
-                    <span>Found @Model.AvailableCars.Count() available vehicles for your search criteria.</span>
-                }
-                else
-                {
-                    <span>No vehicles found matching your search criteria. Please try different dates or locations.</span>
-                }
-            </p>
-        </div>
+						@if (Model.SearchCriteria.Distance > 0 || (!string.IsNullOrEmpty(Model.SearchCriteria.Brand) && !string.IsNullOrEmpty(Model.SearchCriteria.Model)))
+						{
+							<hr class="my-4">
+							<div class="row g-4">
+								@if (Model.SearchCriteria.Distance > 0)
+								{
+									<div class="col-md-6 col-lg-3">
+										<div class="criteria-item">
+											<div class="d-flex align-items-center mb-2">
+												<i class="fas fa-route text-primary me-2"></i>
+												<span class="fw-bold text-dark">Total Distance</span>
+											</div>
+											<p class="mb-0 text-muted">@Model.SearchCriteria.Distance km</p>
+										</div>
+									</div>
+								}
 
-        @if (Model.AvailableCars.Any())
-        {
-            <div class="categories-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
-                @foreach (var car in Model.AvailableCars)
-                {
-                    <div class="categories-item p-4">
-                        <div class="categories-item-inner">
-                            <div class="categories-img rounded-top">
-                                <img src="@car.ImageUrl" class="img-fluid w-100 rounded-top" alt="@car.Brand @car.Model">
-                            </div>
-                            <div class="categories-content rounded-bottom p-4">
-                                <div class="mb-3">
-                                    <h4 class="mb-1">@car.Brand</h4>
-                                    <h5 class="mb-0 text-muted">@car.Model</h5>
-                                </div>
-                                <div class="categories-review mb-4">
-                                    <div class="me-3">@car.ReviewScore.ToString("0.0") Review</div>
-                                    <div class="d-flex justify-content-center text-secondary">
-                                        @for (int i = 1; i <= 5; i++)
-                                        {
-                                            if (i <= car.ReviewScore)
-                                            {
-                                                <i class="fas fa-star text-warning"></i>
-                                            }
-                                            else
-                                            {
-                                                <i class="fas fa-star text-body"></i>
-                                            }
-                                        }
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <h4 class="bg-white text-primary rounded-pill py-2 px-4 mb-0 text-center">
-                                        $@car.DailyPrice.ToString("0.00")/Day
-                                    </h4>
-                                    @if (Model.TotalDays > 1)
-                                    {
-                                        <small class="text-muted text-center d-block mt-1">Total for @Model.TotalDays days: $@((car.DailyPrice * Model.TotalDays).ToString("0.00"))</small>
-                                    }
-                                </div>
-                                <div class="row gy-2 gx-0 text-center mb-4">
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-users text-dark"></i> 
-                                        <span class="text-body ms-1">@car.SeatCount Seat</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-car text-dark"></i> 
-                                        <span class="text-body ms-1">@car.TransmissionType</span>
-                                    </div>
-                                    <div class="col-4">
-                                        <i class="fa fa-gas-pump text-dark"></i> 
-                                        <span class="text-body ms-1">@car.FuelType</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-car text-dark"></i> 
-                                        <span class="text-body ms-1">@car.ModelYear</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-cogs text-dark"></i> 
-                                        <span class="text-body ms-1">@car.GearType</span>
-                                    </div>
-                                    <div class="col-4">
-                                        <i class="fa fa-road text-dark"></i> 
-                                        <span class="text-body ms-1">@(car.Mileage / 1000)K</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <form method="post" action="@Url.Action("ConfirmBooking", "Booking")">
-                                        <input type="hidden" name="CarId" value="@car.CarId" />
-                                        <input type="hidden" name="PickUpLocation" value="@Model.SearchCriteria.PickUpLocation" />
-                                        <input type="hidden" name="DropOffLocation" value="@Model.SearchCriteria.DropOffLocation" />
-                                        <input type="hidden" name="PickUpDate" value="@Model.SearchCriteria.PickUpDate.ToString("yyyy-MM-dd")" />
-                                        <input type="hidden" name="DropOffDate" value="@Model.SearchCriteria.DropOffDate.ToString("yyyy-MM-dd")" />
-                                        <input type="hidden" name="AirportId" value="@Model.SearchCriteria.AirportId" />
-                                        <button type="submit" class="btn btn-primary rounded-pill d-flex justify-content-center py-3 w-100">
-                                            Book This Car
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <div class="text-center py-5">
-                <i class="fas fa-car text-muted" style="font-size: 4rem;"></i>
-                <h4 class="text-muted mt-3">No Available Cars</h4>
-                <p class="text-muted">Please try different search criteria or contact us for assistance.</p>
-                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back to Search</a>
-            </div>
-        }
-    </div>
+								@if (!string.IsNullOrEmpty(Model.SearchCriteria.Brand) && !string.IsNullOrEmpty(Model.SearchCriteria.Model))
+								{
+									<div class="col-md-6 col-lg-3">
+										<div class="criteria-item">
+											<div class="d-flex align-items-center mb-2">
+												<i class="fas fa-car text-primary me-2"></i>
+												<span class="fw-bold text-dark">Preferred Vehicle</span>
+											</div>
+											<p class="mb-0 text-muted">@Model.SearchCriteria.Brand @Model.SearchCriteria.Model</p>
+										</div>
+									</div>
+								}
+
+								<div class="col-md-6 col-lg-3">
+									<div class="criteria-item">
+										<div class="d-flex align-items-center mb-2">
+											<i class="fas fa-gas-pump text-primary me-2"></i>
+											<span class="fw-bold text-dark">Average Fuel Cost</span>
+										</div>
+										<p class="mb-0 text-muted">
+											@(Math.Floor(Model.SearchCriteria.Distance * 3.8 * 100) / 100) Turkish Lira
+										</p>
+									</div>
+								</div>
+
+
+								<div class="col-md-6 col-lg-3">
+									<div class="criteria-item">
+										<div class="d-flex align-items-center mb-2">
+											<i class="fas fa-clock text-primary me-2"></i>
+											<span class="fw-bold text-dark">Average Way Time</span>
+										</div>
+										<p class="mb-0 text-muted">
+											@(Model.SearchCriteria.Distance / 100.0) Hours
+										</p>
+									</div>
+								</div>
+
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+		}
+		<div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+			<h1 class="display-5 text-capitalize mb-3">Available <span class="text-primary">Vehicles</span></h1>
+			<p class="mb-0">
+				@if (Model.AvailableCars.Any())
+				{
+					<span>Found @Model.AvailableCars.Count() available vehicles for your search criteria.</span>
+				}
+				else
+				{
+					<span>No vehicles found matching your search criteria. Please try different dates or locations.</span>
+				}
+			</p>
+		</div>
+
+		@if (Model.AvailableCars.Any())
+		{
+			<div class="categories-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
+				@foreach (var car in Model.AvailableCars)
+				{
+					<div class="categories-item p-4">
+						<div class="categories-item-inner">
+							<div class="categories-img rounded-top">
+								<img src="@car.ImageUrl" class="img-fluid w-100 rounded-top" alt="@car.Brand @car.Model">
+							</div>
+							<div class="categories-content rounded-bottom p-4">
+								<div class="mb-3">
+									<h4 class="mb-1">@car.Brand</h4>
+									<h5 class="mb-0 text-muted">@car.Model</h5>
+								</div>
+								<div class="categories-review mb-4">
+									<div class="me-3">@car.ReviewScore.ToString("0.0") Review</div>
+									<div class="d-flex justify-content-center text-secondary">
+										@for (int i = 1; i <= 5; i++)
+										{
+											if (i <= car.ReviewScore)
+											{
+												<i class="fas fa-star text-warning"></i>
+											}
+											else
+											{
+												<i class="fas fa-star text-body"></i>
+											}
+										}
+									</div>
+								</div>
+								<div class="mb-4">
+									<h4 class="bg-white text-primary rounded-pill py-2 px-4 mb-0 text-center">
+										$@car.DailyPrice.ToString("0.00")/Day
+									</h4>
+									@if (Model.TotalDays > 1)
+									{
+										<small class="text-muted text-center d-block mt-1">Total for @Model.TotalDays days: $@((car.DailyPrice * Model.TotalDays).ToString("0.00"))</small>
+									}
+								</div>
+								<div class="row gy-2 gx-0 text-center mb-4">
+									<div class="col-4 border-end border-white">
+										<i class="fa fa-users text-dark"></i>
+										<span class="text-body ms-1">@car.SeatCount Seat</span>
+									</div>
+									<div class="col-4 border-end border-white">
+										<i class="fa fa-car text-dark"></i>
+										<span class="text-body ms-1">@car.TransmissionType</span>
+									</div>
+									<div class="col-4">
+										<i class="fa fa-gas-pump text-dark"></i>
+										<span class="text-body ms-1">@car.FuelType</span>
+									</div>
+									<div class="col-4 border-end border-white">
+										<i class="fa fa-car text-dark"></i>
+										<span class="text-body ms-1">@car.ModelYear</span>
+									</div>
+									<div class="col-4 border-end border-white">
+										<i class="fa fa-cogs text-dark"></i>
+										<span class="text-body ms-1">@car.GearType</span>
+									</div>
+									<div class="col-4">
+										<i class="fa fa-road text-dark"></i>
+										<span class="text-body ms-1">@(car.Mileage / 1000)K</span>
+									</div>
+								</div>
+								<div>
+									<a href="@Url.Action("BookingConfirmation", "Booking", new {
+                                        carId = car.CarId,
+                                        pickUpLocation = Model.SearchCriteria.PickUpLocation,
+                                        dropOffLocation = Model.SearchCriteria.DropOffLocation,
+                                        pickUpDate = Model.SearchCriteria.PickUpDate,
+                                        dropOffDate = Model.SearchCriteria.DropOffDate,
+                                        airportId = Model.SearchCriteria.AirportId
+                                    })" class="btn btn-primary rounded-pill d-flex justify-content-center py-3 w-100">
+										Book This Car
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		}
+		else
+		{
+			<div class="text-center py-5">
+				<i class="fas fa-car text-muted" style="font-size: 4rem;"></i>
+				<h4 class="text-muted mt-3">No Available Cars</h4>
+				<p class="text-muted">Please try different search criteria or contact us for assistance.</p>
+				<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back to Search</a>
+			</div>
+		}
+	</div>
 </div>
 
