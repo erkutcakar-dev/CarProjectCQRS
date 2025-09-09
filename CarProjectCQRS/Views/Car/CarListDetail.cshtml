@@ -166,6 +166,9 @@
                         <i class="bx bx-car me-2"></i>Available Cars
                         <span class="badge bg-primary ms-2" id="carCount">@Model.Count() Cars Found</span>
                     </h5>
+                    <a href="@Url.Action("AddCar", "Car")" class="btn btn-success">
+                        <i class="bx bx-plus me-2"></i>Add New Car
+                    </a>
                 </div>
                 <div class="card-body">
                     <div id="carResults">
@@ -279,116 +282,230 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            // Search functionality
-            $('#searchBtn').click(function() {
-                filterCars();
-            });
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== DOM READY - JAVASCRIPT LOADED ===');
+            
+            // Check if jQuery is available
+            if (typeof $ !== 'undefined') {
+                console.log('jQuery is available, version:', $.fn.jquery);
+            } else {
+                console.log('jQuery is NOT available, using vanilla JS');
+            }
+            
+            // Test if elements exist
+            var searchBtn = document.getElementById('searchBtn');
+            var resetBtn = document.getElementById('resetBtn');
+            var sortDropdown = document.getElementById('sortByFilter');
+            
+            console.log('Search button exists:', searchBtn !== null);
+            console.log('Reset button exists:', resetBtn !== null);
+            console.log('Sort dropdown exists:', sortDropdown !== null);
+            
+            // Use jQuery only since it's available
+            if (typeof $ !== 'undefined') {
+                $(document).ready(function() {
+                    console.log('jQuery ready - adding event handlers');
+                    
+                    $('#searchBtn').click(function(e) {
+                        e.preventDefault();
+                        console.log('Search button clicked');
+                        performSearch();
+                    });
 
-            // Reset functionality
-            $('#resetBtn').click(function() {
-                $('#searchForm')[0].reset();
-                filterCars();
-            });
-
-            // Auto-search on filter change
-            $('select, input').change(function() {
-                filterCars();
-            });
-
-            function filterCars() {
-                var searchTerm = $('#searchTerm').val().toLowerCase();
-                var brandFilter = $('#brandFilter').val();
-                var fuelTypeFilter = $('#fuelTypeFilter').val();
-                var gearTypeFilter = $('#gearTypeFilter').val();
-                var minSeats = parseInt($('#minSeatsFilter').val()) || 0;
-                var maxSeats = parseInt($('#maxSeatsFilter').val()) || 999;
-                var minPrice = parseFloat($('#minPriceFilter').val()) || 0;
-                var maxPrice = parseFloat($('#maxPriceFilter').val()) || 999999;
-                var minYear = parseInt($('#minYearFilter').val()) || 0;
-                var maxYear = parseInt($('#maxYearFilter').val()) || 9999;
-                var sortBy = $('#sortByFilter').val();
-
-                var visibleCars = $('.car-item').filter(function() {
-                    var $car = $(this);
-                    var brand = $car.data('brand').toLowerCase();
-                    var model = $car.data('model').toLowerCase();
-                    var fuelType = $car.data('fuel-type');
-                    var gearType = $car.data('gear-type');
-                    var seatCount = parseInt($car.data('seat-count'));
-                    var dailyPrice = parseFloat($car.data('daily-price'));
-                    var modelYear = parseInt($car.data('model-year'));
-                    var reviewScore = parseFloat($car.data('review-score'));
-
-                    // Search term filter
-                    if (searchTerm && !brand.includes(searchTerm) && !model.includes(searchTerm)) {
-                        return false;
-                    }
-
-                    // Brand filter
-                    if (brandFilter && brand !== brandFilter.toLowerCase()) {
-                        return false;
-                    }
-
-                    // Fuel type filter
-                    if (fuelTypeFilter && fuelType !== fuelTypeFilter) {
-                        return false;
-                    }
-
-                    // Gear type filter
-                    if (gearTypeFilter && gearType !== gearTypeFilter) {
-                        return false;
-                    }
-
-                    // Seat count filter
-                    if (seatCount < minSeats || seatCount > maxSeats) {
-                        return false;
-                    }
-
-                    // Price filter
-                    if (dailyPrice < minPrice || dailyPrice > maxPrice) {
-                        return false;
-                    }
-
-                    // Year filter
-                    if (modelYear < minYear || modelYear > maxYear) {
-                        return false;
-                    }
-
-                    return true;
+                    $('#resetBtn').click(function(e) {
+                        e.preventDefault();
+                        console.log('Reset button clicked');
+                        $('#searchForm')[0].reset();
+                        showAllCars();
+                    });
                 });
+            } else {
+                // Fallback to vanilla JS if jQuery not available
+                if (searchBtn) {
+                    searchBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        console.log('Search button clicked (vanilla JS)');
+                        performSearch();
+                    });
+                }
+                
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        console.log('Reset button clicked (vanilla JS)');
+                        document.getElementById('searchForm').reset();
+                        showAllCars();
+                    });
+                }
+            }
 
-                // Sort cars
-                var sortedCars = visibleCars.sort(function(a, b) {
-                    var $a = $(a);
-                    var $b = $(b);
+            function performSearch() {
+                console.log('=== SEARCH STARTED ===');
+                
+                // Get filter values
+                var searchTerm = $('#searchTerm').val() || '';
+                var brandFilter = $('#brandFilter').val() || '';
+                var fuelTypeFilter = $('#fuelTypeFilter').val() || '';
+                var gearTypeFilter = $('#gearTypeFilter').val() || '';
+                var minSeats = $('#minSeatsFilter').val() || '';
+                var maxSeats = $('#maxSeatsFilter').val() || '';
+                var minPrice = $('#minPriceFilter').val() || '';
+                var maxPrice = $('#maxPriceFilter').val() || '';
+                var minYear = $('#minYearFilter').val() || '';
+                var maxYear = $('#maxYearFilter').val() || '';
+                var sortBy = $('#sortByFilter').val() || 'brand';
 
-                    switch (sortBy) {
-                        case 'brand':
-                            return $a.data('brand').localeCompare($b.data('brand'));
-                        case 'priceAsc':
-                            return $a.data('daily-price') - $b.data('daily-price');
-                        case 'priceDesc':
-                            return $b.data('daily-price') - $a.data('daily-price');
-                        case 'yearDesc':
-                            return $b.data('model-year') - $a.data('model-year');
-                        case 'yearAsc':
-                            return $a.data('model-year') - $b.data('model-year');
-                        case 'rating':
-                            return $b.data('review-score') - $a.data('review-score');
-                        default:
-                            return 0;
-                    }
+                console.log('Search filters:', {
+                    searchTerm: searchTerm,
+                    brandFilter: brandFilter,
+                    fuelTypeFilter: fuelTypeFilter,
+                    gearTypeFilter: gearTypeFilter,
+                    minSeats: minSeats,
+                    maxSeats: maxSeats,
+                    minPrice: minPrice,
+                    maxPrice: maxPrice,
+                    minYear: minYear,
+                    maxYear: maxYear,
+                    sortBy: sortBy
                 });
 
                 // Hide all cars first
                 $('.car-item').hide();
 
-                // Show filtered cars
-                if (sortedCars.length > 0) {
-                    $('#carResults .row').empty();
-                    $('#carResults .row').append(sortedCars);
-                    sortedCars.show();
+                var visibleCount = 0;
+                var carsToShow = [];
+
+                // Filter each car
+                $('.car-item').each(function() {
+                    var $car = $(this);
+                    var shouldShow = true;
+
+                    // Get car data safely
+                    var brand = $car.attr('data-brand') || '';
+                    var model = $car.attr('data-model') || '';
+                    var fuelType = $car.attr('data-fuel-type') || '';
+                    var gearType = $car.attr('data-gear-type') || '';
+                    var seatCount = parseInt($car.attr('data-seat-count')) || 0;
+                    var dailyPrice = parseFloat($car.attr('data-daily-price')) || 0;
+                    var modelYear = parseInt($car.attr('data-model-year')) || 0;
+
+                    console.log('Checking car:', brand, model);
+
+                    // Search term filter
+                    if (searchTerm && searchTerm.length > 0) {
+                        var searchLower = searchTerm.toLowerCase();
+                        var brandLower = brand.toLowerCase();
+                        var modelLower = model.toLowerCase();
+                        if (!brandLower.includes(searchLower) && !modelLower.includes(searchLower)) {
+                            shouldShow = false;
+                        }
+                    }
+
+                    // Brand filter
+                    if (brandFilter && brandFilter.length > 0) {
+                        if (brand !== brandFilter) {
+                            shouldShow = false;
+                        }
+                    }
+
+                    // Fuel type filter
+                    if (fuelTypeFilter && fuelTypeFilter.length > 0) {
+                        if (fuelType !== fuelTypeFilter) {
+                            shouldShow = false;
+                        }
+                    }
+
+                    // Gear type filter
+                    if (gearTypeFilter && gearTypeFilter.length > 0) {
+                        if (gearType !== gearTypeFilter) {
+                            shouldShow = false;
+                        }
+                    }
+
+                    // Seat count filter
+                    if (minSeats && minSeats.length > 0) {
+                        if (seatCount < parseInt(minSeats)) {
+                            shouldShow = false;
+                        }
+                    }
+                    if (maxSeats && maxSeats.length > 0) {
+                        if (seatCount > parseInt(maxSeats)) {
+                            shouldShow = false;
+                        }
+                    }
+
+                    // Price filter
+                    if (minPrice && minPrice.length > 0) {
+                        if (dailyPrice < parseFloat(minPrice)) {
+                            shouldShow = false;
+                        }
+                    }
+                    if (maxPrice && maxPrice.length > 0) {
+                        if (dailyPrice > parseFloat(maxPrice)) {
+                            shouldShow = false;
+                        }
+                    }
+
+                    // Year filter
+                    if (minYear && minYear.length > 0) {
+                        if (modelYear < parseInt(minYear)) {
+                            shouldShow = false;
+                        }
+                    }
+                    if (maxYear && maxYear.length > 0) {
+                        if (modelYear > parseInt(maxYear)) {
+                            shouldShow = false;
+                        }
+                    }
+
+                    if (shouldShow) {
+                        carsToShow.push($car);
+                        visibleCount++;
+                    }
+                });
+
+                console.log('Found', visibleCount, 'cars matching criteria');
+
+                // Sort cars if needed
+                if (visibleCount > 0 && sortBy && sortBy !== 'brand') {
+                    console.log('Sorting by:', sortBy);
+                    carsToShow.sort(function(a, b) {
+                        var $a = $(a);
+                        var $b = $(b);
+                        
+                        var brandA = $a.attr('data-brand') || '';
+                        var brandB = $b.attr('data-brand') || '';
+                        var priceA = parseFloat($a.attr('data-daily-price')) || 0;
+                        var priceB = parseFloat($b.attr('data-daily-price')) || 0;
+                        var yearA = parseInt($a.attr('data-model-year')) || 0;
+                        var yearB = parseInt($b.attr('data-model-year')) || 0;
+                        var ratingA = parseFloat($a.attr('data-review-score')) || 0;
+                        var ratingB = parseFloat($b.attr('data-review-score')) || 0;
+
+                        switch (sortBy) {
+                            case 'priceAsc':
+                                return priceA - priceB;
+                            case 'priceDesc':
+                                return priceB - priceA;
+                            case 'yearDesc':
+                                return yearB - yearA;
+                            case 'yearAsc':
+                                return yearA - yearB;
+                            case 'rating':
+                                return ratingB - ratingA;
+                            default:
+                                return brandA.localeCompare(brandB);
+                        }
+                    });
+                    console.log('Cars sorted by', sortBy);
+                }
+
+                // Show matching cars
+                if (visibleCount > 0) {
+                    carsToShow.forEach(function($car) {
+                        $car.show();
+                    });
                 } else {
                     $('#carResults').html(`
                         <div class="text-center py-5">
@@ -399,8 +516,14 @@
                     `);
                 }
 
-                // Update car count
-                $('#carCount').text(sortedCars.length + ' Cars Found');
+                // Update count
+                $('#carCount').text(visibleCount + ' Cars Found');
+            }
+
+            function showAllCars() {
+                console.log('Showing all cars');
+                $('.car-item').show();
+                $('#carCount').text($('.car-item').length + ' Cars Found');
             }
         });
     </script>
