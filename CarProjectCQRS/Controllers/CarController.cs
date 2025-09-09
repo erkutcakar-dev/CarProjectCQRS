@@ -227,6 +227,45 @@ namespace CarProjectCQRS.Controllers
             return RedirectToAction("CarList");
         }
 
+        // Detaylı araç arama sayfası - CarListDetail.cshtml ile uyumlu
+        public async Task<IActionResult> CarListDetail()
+        {
+            try
+            {
+                var values = await _getCarQueryHandler.Handle();
+                var cars = values.Select(x => new Car
+                {
+                    CarId = x.CarId,
+                    Brand = x.Brand,
+                    Model = x.Model,
+                    ImageUrl = x.ImageUrl,
+                    ReviewScore = x.ReviewScore,
+                    DailyPrice = x.DailyPrice,
+                    SeatCount = x.SeatCount,
+                    TransmissionType = x.TransmissionType,
+                    FuelType = x.FuelType,
+                    ModelYear = x.ModelYear,
+                    GearType = x.GearType,
+                    Mileage = x.Mileage,
+                    IsAvailable = x.IsAvailable,
+                    CreatedDate = x.CreatedDate
+                }).ToList();
+
+                // Filtreleme için dropdown verilerini hazırla
+                ViewBag.Brands = cars.Select(c => c.Brand).Distinct().OrderBy(b => b).ToList();
+                ViewBag.FuelTypes = cars.Select(c => c.FuelType).Distinct().OrderBy(f => f).ToList();
+                ViewBag.GearTypes = cars.Select(c => c.GearType).Distinct().OrderBy(g => g).ToList();
+                ViewBag.SeatCounts = cars.Select(c => c.SeatCount).Distinct().OrderBy(s => s).ToList();
+
+                return View(cars);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "An error occurred while loading the car list.";
+                return View(new List<Car>());
+            }
+        }
+
         // Test verileri ekleme (geliştirme amaçlı)
         public async Task<IActionResult> AddTestData()
         {

@@ -1,0 +1,407 @@
+﻿@model IEnumerable<CarProjectCQRS.Entities.Car>
+
+@{
+    ViewData["Title"] = "Car Detail Search";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Dashboard / Car Management /</span> Car Detail Search
+    </h4>
+
+    <!-- Search and Filter Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bx bx-filter me-2"></i>Search & Filter Cars
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="searchForm">
+                        <div class="row">
+                            <!-- Search Term -->
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Search</label>
+                                <input type="text" id="searchTerm" class="form-control" placeholder="Brand or Model...">
+                            </div>
+
+                            <!-- Brand Filter -->
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Brand</label>
+                                <select id="brandFilter" class="form-select">
+                                    <option value="">All Brands</option>
+                                    @if (ViewBag.Brands != null)
+                                    {
+                                        @foreach (var brand in ViewBag.Brands)
+                                        {
+                                            <option value="@brand">@brand</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Fuel Type Filter -->
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Fuel Type</label>
+                                <select id="fuelTypeFilter" class="form-select">
+                                    <option value="">All Fuel Types</option>
+                                    @if (ViewBag.FuelTypes != null)
+                                    {
+                                        @foreach (var fuelType in ViewBag.FuelTypes)
+                                        {
+                                            <option value="@fuelType">@fuelType</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Gear Type Filter -->
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Gear Type</label>
+                                <select id="gearTypeFilter" class="form-select">
+                                    <option value="">All Gear Types</option>
+                                    @if (ViewBag.GearTypes != null)
+                                    {
+                                        @foreach (var gearType in ViewBag.GearTypes)
+                                        {
+                                            <option value="@gearType">@gearType</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Seat Count Range -->
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Min Seats</label>
+                                <select id="minSeatsFilter" class="form-select">
+                                    <option value="">Any</option>
+                                    @if (ViewBag.SeatCounts != null)
+                                    {
+                                        @foreach (var seatCount in ViewBag.SeatCounts)
+                                        {
+                                            <option value="@seatCount">@seatCount Seats</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Max Seats</label>
+                                <select id="maxSeatsFilter" class="form-select">
+                                    <option value="">Any</option>
+                                    @if (ViewBag.SeatCounts != null)
+                                    {
+                                        @foreach (var seatCount in ViewBag.SeatCounts)
+                                        {
+                                            <option value="@seatCount">@seatCount Seats</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Price Range -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Price Range ($)</label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="number" id="minPriceFilter" class="form-control" placeholder="Min Price" step="0.01">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" id="maxPriceFilter" class="form-control" placeholder="Max Price" step="0.01">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Year Range -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Model Year Range</label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="number" id="minYearFilter" class="form-control" placeholder="Min Year" min="1990" max="2030">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" id="maxYearFilter" class="form-control" placeholder="Max Year" min="1990" max="2030">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sort By -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Sort By</label>
+                                <select id="sortByFilter" class="form-select">
+                                    <option value="brand">Brand A-Z</option>
+                                    <option value="priceAsc">Price: Low to High</option>
+                                    <option value="priceDesc">Price: High to Low</option>
+                                    <option value="yearDesc">Year: Newest First</option>
+                                    <option value="yearAsc">Year: Oldest First</option>
+                                    <option value="rating">Highest Rating</option>
+                                </select>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="col-md-6 mb-3 d-flex align-items-end">
+                                <button type="button" id="searchBtn" class="btn btn-primary me-2">
+                                    <i class="bx bx-search me-2"></i>Search Cars
+                                </button>
+                                <button type="button" id="resetBtn" class="btn btn-outline-secondary">
+                                    <i class="bx bx-refresh me-2"></i>Reset
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bx bx-car me-2"></i>Available Cars
+                        <span class="badge bg-primary ms-2" id="carCount">@Model.Count() Cars Found</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="carResults">
+                        @if (Model.Any())
+                        {
+                            <div class="row">
+                                @foreach (var car in Model)
+                                {
+                                    <div class="col-md-6 col-lg-4 mb-4 car-item" 
+                                         data-brand="@car.Brand" 
+                                         data-model="@car.Model"
+                                         data-fuel-type="@car.FuelType"
+                                         data-gear-type="@car.GearType"
+                                         data-seat-count="@car.SeatCount"
+                                         data-daily-price="@car.DailyPrice"
+                                         data-model-year="@car.ModelYear"
+                                         data-review-score="@car.ReviewScore">
+                                        <div class="card h-100">
+                                            @if (!string.IsNullOrEmpty(car.ImageUrl))
+                                            {
+                                                <img src="@car.ImageUrl" class="card-img-top" alt="@car.Brand @car.Model" style="height: 200px; object-fit: cover;">
+                                            }
+                                            else
+                                            {
+                                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                                    <i class="bx bx-car text-muted" style="font-size: 3rem;"></i>
+                                                </div>
+                                            }
+                                            
+                                            <div class="card-body d-flex flex-column">
+                                                <h5 class="card-title">@car.Brand @car.Model</h5>
+                                                <p class="card-text text-muted">@car.ModelYear Model</p>
+                                                
+                                                <div class="row mb-3">
+                                                    <div class="col-6">
+                                                        <small class="text-muted">Fuel Type</small>
+                                                        <div class="fw-bold">@car.FuelType</div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <small class="text-muted">Gear Type</small>
+                                                        <div class="fw-bold">@car.GearType</div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mb-3">
+                                                    <div class="col-6">
+                                                        <small class="text-muted">Seats</small>
+                                                        <div class="fw-bold">@car.SeatCount</div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <small class="text-muted">Mileage</small>
+                                                        <div class="fw-bold">@car.Mileage.ToString("N0") km</div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mb-3">
+                                                    <div class="col-6">
+                                                        <small class="text-muted">Daily Price</small>
+                                                        <div class="fw-bold text-primary">$@car.DailyPrice.ToString("F2")</div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <small class="text-muted">Rating</small>
+                                                        <div class="fw-bold">
+                                                            @for (int i = 1; i <= 5; i++)
+                                                            {
+                                                                if (i <= car.ReviewScore)
+                                                                {
+                                                                    <i class="bx bxs-star text-warning"></i>
+                                                                }
+                                                                else if (i - 0.5 <= car.ReviewScore)
+                                                                {
+                                                                    <i class="bx bxs-star-half text-warning"></i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="bx bx-star text-muted"></i>
+                                                                }
+                                                            }
+                                                            <span class="ms-1">@car.ReviewScore.ToString("F1")</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mt-auto">
+                                                    <div class="d-grid gap-2">
+                                                        <a href="@Url.Action("EditCar", "Car", new { id = car.CarId })" class="btn btn-primary">
+                                                            <i class="bx bx-edit me-2"></i>Edit Car
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <i class="bx bx-search-alt text-muted" style="font-size: 4rem;"></i>
+                                <h4 class="text-muted mt-3">No cars found</h4>
+                                <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Search functionality
+            $('#searchBtn').click(function() {
+                filterCars();
+            });
+
+            // Reset functionality
+            $('#resetBtn').click(function() {
+                $('#searchForm')[0].reset();
+                filterCars();
+            });
+
+            // Auto-search on filter change
+            $('select, input').change(function() {
+                filterCars();
+            });
+
+            function filterCars() {
+                var searchTerm = $('#searchTerm').val().toLowerCase();
+                var brandFilter = $('#brandFilter').val();
+                var fuelTypeFilter = $('#fuelTypeFilter').val();
+                var gearTypeFilter = $('#gearTypeFilter').val();
+                var minSeats = parseInt($('#minSeatsFilter').val()) || 0;
+                var maxSeats = parseInt($('#maxSeatsFilter').val()) || 999;
+                var minPrice = parseFloat($('#minPriceFilter').val()) || 0;
+                var maxPrice = parseFloat($('#maxPriceFilter').val()) || 999999;
+                var minYear = parseInt($('#minYearFilter').val()) || 0;
+                var maxYear = parseInt($('#maxYearFilter').val()) || 9999;
+                var sortBy = $('#sortByFilter').val();
+
+                var visibleCars = $('.car-item').filter(function() {
+                    var $car = $(this);
+                    var brand = $car.data('brand').toLowerCase();
+                    var model = $car.data('model').toLowerCase();
+                    var fuelType = $car.data('fuel-type');
+                    var gearType = $car.data('gear-type');
+                    var seatCount = parseInt($car.data('seat-count'));
+                    var dailyPrice = parseFloat($car.data('daily-price'));
+                    var modelYear = parseInt($car.data('model-year'));
+                    var reviewScore = parseFloat($car.data('review-score'));
+
+                    // Search term filter
+                    if (searchTerm && !brand.includes(searchTerm) && !model.includes(searchTerm)) {
+                        return false;
+                    }
+
+                    // Brand filter
+                    if (brandFilter && brand !== brandFilter.toLowerCase()) {
+                        return false;
+                    }
+
+                    // Fuel type filter
+                    if (fuelTypeFilter && fuelType !== fuelTypeFilter) {
+                        return false;
+                    }
+
+                    // Gear type filter
+                    if (gearTypeFilter && gearType !== gearTypeFilter) {
+                        return false;
+                    }
+
+                    // Seat count filter
+                    if (seatCount < minSeats || seatCount > maxSeats) {
+                        return false;
+                    }
+
+                    // Price filter
+                    if (dailyPrice < minPrice || dailyPrice > maxPrice) {
+                        return false;
+                    }
+
+                    // Year filter
+                    if (modelYear < minYear || modelYear > maxYear) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                // Sort cars
+                var sortedCars = visibleCars.sort(function(a, b) {
+                    var $a = $(a);
+                    var $b = $(b);
+
+                    switch (sortBy) {
+                        case 'brand':
+                            return $a.data('brand').localeCompare($b.data('brand'));
+                        case 'priceAsc':
+                            return $a.data('daily-price') - $b.data('daily-price');
+                        case 'priceDesc':
+                            return $b.data('daily-price') - $a.data('daily-price');
+                        case 'yearDesc':
+                            return $b.data('model-year') - $a.data('model-year');
+                        case 'yearAsc':
+                            return $a.data('model-year') - $b.data('model-year');
+                        case 'rating':
+                            return $b.data('review-score') - $a.data('review-score');
+                        default:
+                            return 0;
+                    }
+                });
+
+                // Hide all cars first
+                $('.car-item').hide();
+
+                // Show filtered cars
+                if (sortedCars.length > 0) {
+                    $('#carResults .row').empty();
+                    $('#carResults .row').append(sortedCars);
+                    sortedCars.show();
+                } else {
+                    $('#carResults').html(`
+                        <div class="text-center py-5">
+                            <i class="bx bx-search-alt text-muted" style="font-size: 4rem;"></i>
+                            <h4 class="text-muted mt-3">No cars found</h4>
+                            <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                        </div>
+                    `);
+                }
+
+                // Update car count
+                $('#carCount').text(sortedCars.length + ' Cars Found');
+            }
+        });
+    </script>
+}
