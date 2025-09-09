@@ -10,7 +10,7 @@
         <span class="text-muted fw-light">Dashboard /</span> AI Car Search & Recommendation
     </h4>
 
-    <!-- AI Recommendation Section -->
+    <!-- AI Recommendation Section - Always Visible -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
@@ -46,347 +46,85 @@
         </div>
     </div>
 
-    <!-- Search and Filter Section -->
-    <div class="row mb-4">
+    <!-- Search and Filter Section - Hidden Initially -->
+    <div class="row mb-4" id="searchFilterSection" style="display: none;">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">
-                        <i class="bx bx-filter me-2"></i>Search & Filter Cars
+                        <i class="bx bx-filter me-2"></i>Filter Recommended Cars
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form asp-action="SearchCars" method="post" id="searchForm">
-                        <div class="row">
-                            <!-- Search Term -->
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Search</label>
-                                <input type="text" name="searchTerm" class="form-control" 
-                                    value="@ViewBag.SearchTerm" placeholder="Brand or Model...">
-                            </div>
-
-                            <!-- Brand Filter -->
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Brand</label>
-                                <select name="brand" class="form-select">
-                                    <option value="">All Brands</option>
-                                    @if (ViewBag.Brands != null)
-                                    {
-                                        @foreach (var brand in ViewBag.Brands)
-                                        {
-                                            @if (ViewBag.SelectedBrand == brand)
-                                            {
-                                                <option value="@brand" selected>@brand</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@brand">@brand</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                            </div>
-
-                            <!-- Fuel Type Filter -->
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Fuel Type</label>
-                                <select name="fuelType" class="form-select">
-                                    <option value="">All Fuel Types</option>
-                                    @if (ViewBag.FuelTypes != null)
-                                    {
-                                        @foreach (var fuelType in ViewBag.FuelTypes)
-                                        {
-                                            @if (ViewBag.SelectedFuelType == fuelType)
-                                            {
-                                                <option value="@fuelType" selected>@fuelType</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@fuelType">@fuelType</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                            </div>
-
-                            <!-- Gear Type Filter -->
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Gear Type</label>
-                                <select name="gearType" class="form-select">
-                                    <option value="">All Gear Types</option>
-                                    @if (ViewBag.GearTypes != null)
-                                    {
-                                        @foreach (var gearType in ViewBag.GearTypes)
-                                        {
-                                            @if (ViewBag.SelectedGearType == gearType)
-                                            {
-                                                <option value="@gearType" selected>@gearType</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@gearType">@gearType</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                            </div>
-
-                            <!-- Seat Count Range -->
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Min Seats</label>
-                                <select name="minSeats" class="form-select">
-                                    <option value="">Any</option>
-                                    @if (ViewBag.SeatCounts != null)
-                                    {
-                                        @foreach (var seatCount in ViewBag.SeatCounts)
-                                        {
-                                            @if (ViewBag.MinSeats == seatCount)
-                                            {
-                                                <option value="@seatCount" selected>@seatCount Seats</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@seatCount">@seatCount Seats</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Max Seats</label>
-                                <select name="maxSeats" class="form-select">
-                                    <option value="">Any</option>
-                                    @if (ViewBag.SeatCounts != null)
-                                    {
-                                        @foreach (var seatCount in ViewBag.SeatCounts)
-                                        {
-                                            @if (ViewBag.MaxSeats == seatCount)
-                                            {
-                                                <option value="@seatCount" selected>@seatCount Seats</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@seatCount">@seatCount Seats</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                            </div>
-
-                            <!-- Price Range -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Price Range ($)</label>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <input type="number" name="minPrice" class="form-control" 
-                                            value="@ViewBag.MinPrice" placeholder="Min Price" step="0.01">
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="number" name="maxPrice" class="form-control" 
-                                            value="@ViewBag.MaxPrice" placeholder="Max Price" step="0.01">
-                                    </div>
+                    <div class="row">
+                        <!-- Price Range -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Price Range ($)</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="number" id="minPriceFilter" class="form-control" placeholder="Min Price" step="0.01">
                                 </div>
-                            </div>
-
-                            <!-- Year Range -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Model Year Range</label>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <input type="number" name="minYear" class="form-control" 
-                                            value="@ViewBag.MinYear" placeholder="Min Year" min="1990" max="2030">
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="number" name="maxYear" class="form-control" 
-                                            value="@ViewBag.MaxYear" placeholder="Max Year" min="1990" max="2030">
-                                    </div>
+                                <div class="col-6">
+                                    <input type="number" id="maxPriceFilter" class="form-control" placeholder="Max Price" step="0.01">
                                 </div>
-                            </div>
-
-                            <!-- Sort By -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Sort By</label>
-                                <select name="sortBy" class="form-select">
-                                    @if (ViewBag.SortBy == "Brand")
-                                    {
-                                        <option value="Brand" selected>Brand A-Z</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="Brand">Brand A-Z</option>
-                                    }
-                                    
-                                    @if (ViewBag.SortBy == "PriceAsc")
-                                    {
-                                        <option value="PriceAsc" selected>Price: Low to High</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="PriceAsc">Price: Low to High</option>
-                                    }
-                                    
-                                    @if (ViewBag.SortBy == "PriceDesc")
-                                    {
-                                        <option value="PriceDesc" selected>Price: High to Low</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="PriceDesc">Price: High to Low</option>
-                                    }
-                                    
-                                    @if (ViewBag.SortBy == "YearDesc")
-                                    {
-                                        <option value="YearDesc" selected>Year: Newest First</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="YearDesc">Year: Newest First</option>
-                                    }
-                                    
-                                    @if (ViewBag.SortBy == "YearAsc")
-                                    {
-                                        <option value="YearAsc" selected>Year: Oldest First</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="YearAsc">Year: Oldest First</option>
-                                    }
-                                    
-                                    @if (ViewBag.SortBy == "Rating")
-                                    {
-                                        <option value="Rating" selected>Highest Rating</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="Rating">Highest Rating</option>
-                                    }
-                                </select>
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <div class="col-md-6 mb-3 d-flex align-items-end">
-                                <button type="submit" class="btn btn-primary me-2">
-                                    <i class="bx bx-search me-2"></i>Search Cars
-                                </button>
-                                <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
-                                    <i class="bx bx-refresh me-2"></i>Reset
-                                </a>
                             </div>
                         </div>
-                    </form>
+
+                        <!-- Year Range -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Model Year Range</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="number" id="minYearFilter" class="form-control" placeholder="Min Year" min="1990" max="2030">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" id="maxYearFilter" class="form-control" placeholder="Max Year" min="1990" max="2030">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sort By -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Sort By</label>
+                            <select id="sortByFilter" class="form-select">
+                                <option value="brand">Brand A-Z</option>
+                                <option value="priceAsc">Price: Low to High</option>
+                                <option value="priceDesc">Price: High to Low</option>
+                                <option value="yearDesc">Year: Newest First</option>
+                                <option value="yearAsc">Year: Oldest First</option>
+                                <option value="rating">Highest Rating</option>
+                            </select>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="col-md-6 mb-3 d-flex align-items-end">
+                            <button type="button" id="filterBtn" class="btn btn-primary me-2">
+                                <i class="bx bx-filter me-2"></i>Apply Filters
+                            </button>
+                            <button type="button" id="resetBtn" class="btn btn-outline-secondary">
+                                <i class="bx bx-refresh me-2"></i>Reset
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Results Section -->
-    <div class="row">
+    <!-- Results Section - Hidden Initially -->
+    <div class="row" id="resultsSection" style="display: none;">
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
-                        <i class="bx bx-car me-2"></i>Available Cars
-                        <span class="badge bg-primary ms-2">@Model.Count() Cars Found</span>
+                        <i class="bx bx-car me-2"></i>Recommended Cars
+                        <span class="badge bg-primary ms-2" id="carCount">0 Cars Found</span>
                     </h5>
                 </div>
                 <div class="card-body">
-                    @if (Model.Any())
-                    {
-                        <div class="row">
-                            @foreach (var car in Model)
-                            {
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card h-100">
-                                        @if (!string.IsNullOrEmpty(car.ImageUrl))
-                                        {
-                                            <img src="@car.ImageUrl" class="card-img-top" alt="@car.Brand @car.Model" style="height: 200px; object-fit: cover;">
-                                        }
-                                        else
-                                        {
-                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                                <i class="bx bx-car text-muted" style="font-size: 3rem;"></i>
-                                            </div>
-                                        }
-                                        
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title">@car.Brand @car.Model</h5>
-                                            <p class="card-text text-muted">@car.ModelYear Model</p>
-                                            
-                                            <div class="row mb-3">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Fuel Type</small>
-                                                    <div class="fw-bold">@car.FuelType</div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Gear Type</small>
-                                                    <div class="fw-bold">@car.GearType</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row mb-3">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Seats</small>
-                                                    <div class="fw-bold">@car.SeatCount</div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Mileage</small>
-                                                    <div class="fw-bold">@car.Mileage.ToString("N0") km</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row mb-3">
-                                                <div class="col-6">
-                                                    <small class="text-muted">Daily Price</small>
-                                                    <div class="fw-bold text-primary">$@car.DailyPrice.ToString("F2")</div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <small class="text-muted">Rating</small>
-                                                    <div class="fw-bold">
-                                                        @for (int i = 1; i <= 5; i++)
-                                                        {
-                                                            if (i <= car.ReviewScore)
-                                                            {
-                                                                <i class="bx bxs-star text-warning"></i>
-                                                            }
-                                                            else if (i - 0.5 <= car.ReviewScore)
-                                                            {
-                                                                <i class="bx bxs-star-half text-warning"></i>
-                                                            }
-                                                            else
-                                                            {
-                                                                <i class="bx bx-star text-muted"></i>
-                                                            }
-                                                        }
-                                                        <span class="ms-1">@car.ReviewScore.ToString("F1")</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="mt-auto">
-                                                <div class="d-grid gap-2">
-                                                    <button class="btn btn-primary" onclick="selectCar(@car.CarId)">
-                                                        <i class="bx bx-check me-2"></i>Select This Car
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="text-center py-5">
-                            <i class="bx bx-search-alt text-muted" style="font-size: 4rem;"></i>
-                            <h4 class="text-muted mt-3">No cars found</h4>
-                            <p class="text-muted">Try adjusting your search criteria or filters.</p>
-                            <a href="@Url.Action("Index")" class="btn btn-primary">
-                                <i class="bx bx-refresh me-2"></i>Reset Filters
-                            </a>
-                        </div>
-                    }
+                    <div id="carResults">
+                        <!-- Results will be populated here -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -396,6 +134,23 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
+            // Store all cars data
+            var allCars = @Html.Raw(Json.Serialize(Model.Select(c => new {
+                CarId = c.CarId,
+                Brand = c.Brand,
+                Model = c.Model,
+                ImageUrl = c.ImageUrl,
+                ReviewScore = c.ReviewScore,
+                DailyPrice = c.DailyPrice,
+                SeatCount = c.SeatCount,
+                TransmissionType = c.TransmissionType,
+                FuelType = c.FuelType,
+                ModelYear = c.ModelYear,
+                GearType = c.GearType,
+                Mileage = c.Mileage,
+                IsAvailable = c.IsAvailable
+            })));
+
             // AI Recommendation functionality
             $('#getRecommendation').click(function() {
                 var requirements = $('#aiRequirements').val().trim();
@@ -418,6 +173,13 @@
                         if (response.success) {
                             $('#recommendationText').html(response.recommendation);
                             $('#aiRecommendation').show();
+                            
+                            // Show search and results sections after AI recommendation
+                            $('#searchFilterSection').slideDown();
+                            $('#resultsSection').slideDown();
+                            
+                            // Display all cars initially
+                            displayCars(allCars);
                         } else {
                             alert(response.message);
                         }
@@ -432,19 +194,159 @@
                 });
             });
             
+            // Filter functionality
+            $('#filterBtn').click(function() {
+                filterCars();
+            });
+
+            // Reset functionality
+            $('#resetBtn').click(function() {
+                $('#minPriceFilter, #maxPriceFilter, #minYearFilter, #maxYearFilter').val('');
+                $('#sortByFilter').val('brand');
+                displayCars(allCars);
+            });
+
+            // Auto-filter on input change
+            $('#minPriceFilter, #maxPriceFilter, #minYearFilter, #maxYearFilter, #sortByFilter').change(function() {
+                filterCars();
+            });
+
+            function filterCars() {
+                var minPrice = parseFloat($('#minPriceFilter').val()) || 0;
+                var maxPrice = parseFloat($('#maxPriceFilter').val()) || 999999;
+                var minYear = parseInt($('#minYearFilter').val()) || 0;
+                var maxYear = parseInt($('#maxYearFilter').val()) || 9999;
+                var sortBy = $('#sortByFilter').val();
+
+                var filteredCars = allCars.filter(function(car) {
+                    return car.DailyPrice >= minPrice && 
+                           car.DailyPrice <= maxPrice && 
+                           car.ModelYear >= minYear && 
+                           car.ModelYear <= maxYear;
+                });
+
+                // Sort cars
+                filteredCars.sort(function(a, b) {
+                    switch (sortBy) {
+                        case 'brand':
+                            return a.Brand.localeCompare(b.Brand);
+                        case 'priceAsc':
+                            return a.DailyPrice - b.DailyPrice;
+                        case 'priceDesc':
+                            return b.DailyPrice - a.DailyPrice;
+                        case 'yearDesc':
+                            return b.ModelYear - a.ModelYear;
+                        case 'yearAsc':
+                            return a.ModelYear - b.ModelYear;
+                        case 'rating':
+                            return b.ReviewScore - a.ReviewScore;
+                        default:
+                            return 0;
+                    }
+                });
+
+                displayCars(filteredCars);
+            }
+
+            function displayCars(cars) {
+                $('#carCount').text(cars.length + ' Cars Found');
+                
+                if (cars.length > 0) {
+                    var html = '<div class="row">';
+                    
+                    cars.forEach(function(car) {
+                        var stars = '';
+                        for (var i = 1; i <= 5; i++) {
+                            if (i <= car.ReviewScore) {
+                                stars += '<i class="bx bxs-star text-warning"></i>';
+                            } else if (i - 0.5 <= car.ReviewScore) {
+                                stars += '<i class="bx bxs-star-half text-warning"></i>';
+                            } else {
+                                stars += '<i class="bx bx-star text-muted"></i>';
+                            }
+                        }
+                        
+                        var imageHtml = car.ImageUrl ? 
+                            `<img src="${car.ImageUrl}" class="card-img-top" alt="${car.Brand} ${car.Model}" style="height: 200px; object-fit: cover;">` :
+                            `<div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;"><i class="bx bx-car text-muted" style="font-size: 3rem;"></i></div>`;
+                        
+                        html += `
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card h-100">
+                                    ${imageHtml}
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">${car.Brand} ${car.Model}</h5>
+                                        <p class="card-text text-muted">${car.ModelYear} Model</p>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Fuel Type</small>
+                                                <div class="fw-bold">${car.FuelType}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Gear Type</small>
+                                                <div class="fw-bold">${car.GearType}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Seats</small>
+                                                <div class="fw-bold">${car.SeatCount}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Mileage</small>
+                                                <div class="fw-bold">${car.Mileage.toLocaleString()} km</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Daily Price</small>
+                                                <div class="fw-bold text-primary">$${car.DailyPrice.toFixed(2)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Rating</small>
+                                                <div class="fw-bold">
+                                                    ${stars}
+                                                    <span class="ms-1">${car.ReviewScore.toFixed(1)}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-auto">
+                                            <div class="d-grid gap-2">
+                                                <button class="btn btn-primary" onclick="selectCar(${car.CarId})">
+                                                    <i class="bx bx-check me-2"></i>Select This Car
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    $('#carResults').html(html);
+                } else {
+                    $('#carResults').html(`
+                        <div class="text-center py-5">
+                            <i class="bx bx-search-alt text-muted" style="font-size: 4rem;"></i>
+                            <h4 class="text-muted mt-3">No cars found</h4>
+                            <p class="text-muted">Try adjusting your filter criteria.</p>
+                        </div>
+                    `);
+                }
+            }
+            
             // Car selection functionality
             window.selectCar = function(carId) {
                 if (confirm('Are you sure you want to select this car?')) {
-                    // Here you can add logic to redirect to booking or show more details
                     alert('Car selected! Car ID: ' + carId);
                     // Example: window.location.href = '@Url.Action("BookCar", "Booking")' + '?carId=' + carId;
                 }
             };
-            
-            // Auto-submit form on filter change
-            $('select[name="brand"], select[name="fuelType"], select[name="gearType"], select[name="sortBy"]').change(function() {
-                $('#searchForm').submit();
-            });
         });
     </script>
 }
