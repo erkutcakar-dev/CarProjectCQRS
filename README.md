@@ -113,65 +113,6 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 - **Gelişmiş Filtreleme**: Çoklu kriter arama ve sıralama işlevselliği
 - **Veri Görselleştirme**: İş içgörüleri için grafikler ve istatistikler
 
-## 🚀 Başlangıç
-
-### Ön Gereksinimler
-- .NET 9.0 SDK
-- SQL Server (LocalDB veya Tam Örnek)
-- Visual Studio 2022 veya VS Code
-- Git
-
-### Kurulum Adımları
-
-1. **Depoyu Klonlayın**
-   ```bash
-   git clone https://github.com/kullaniciadi/CarProjectCQRS.git
-   cd CarProjectCQRS
-   ```
-
-2. **Veritabanı Kurulumu**
-   ```bash
-   # appsettings.json'da bağlantı dizesini güncelleyin
-   # Migration'ları çalıştırın
-   dotnet ef database update
-   ```
-
-3. **API Konfigürasyonu**
-   ```json
-   // appsettings.json'ı API anahtarlarınızla güncelleyin
-   {
-     "EmailSettings": {
-       "FromEmail": "emailiniz@gmail.com",
-       "SmtpServer": "smtp.gmail.com",
-       "Port": "465",
-       "Username": "emailiniz@gmail.com",
-       "Password": "uygulama-sifreniz"
-     }
-   }
-   ```
-
-4. **Uygulamayı Çalıştırın**
-   ```bash
-   dotnet run
-   ```
-
-5. **Uygulamaya Erişin**
-   - Ana Website: `https://localhost:5001`
-   - Admin Panel: `https://localhost:5001/Admin`
-
-## 🔧 Konfigürasyon
-
-### API Anahtarları Kurulumu
-1. **Groq AI API**: [Groq Console](https://console.groq.com/)'dan API anahtarı alın
-2. **EIA API**: [EIA API](https://www.eia.gov/opendata/)'da kayıt olun
-3. **WeatherAPI**: [WeatherAPI](https://www.weatherapi.com/)'den anahtar alın
-4. **ExchangeRate-API**: [ExchangeRate-API](https://www.exchangerate-api.com/)'da kayıt olun
-
-### E-posta Konfigürasyonu
-- `appsettings.json`'da SMTP ayarlarını yapılandırın
-- Kimlik doğrulama için Gmail Uygulama Şifresi kullanın
-- Gmail hesabında 2FA'yı etkinleştirin
-
 ## 📱 Detaylı Özellikler
 
 ### Araç Arama ve Rezervasyon
@@ -201,7 +142,6 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 - **Komutlar**: Oluşturma, Güncelleme, Silme işlemleri
 - **Sorgular**: Optimize edilmiş veri alımı ile okuma işlemleri
 - **İşleyiciler**: Ayrı komut ve sorgu işleyicileri
-
 
 ### Kod Organizasyonu
 - **Varlıklar**: Domain modelleri
@@ -243,7 +183,7 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 - Müşteri geri bildirim analizi
 - Hizmet performans metrikleri
 
-## 🌟 Benzersiz Satış Noktaları
+## 🌟 Benzersiz Noktalar
 
 1. **AI Destekli Öneriler**: Araç kiralama alanında ilk türünden AI entegrasyonu
 2. **Gerçek Zamanlı Veri Entegrasyonu**: Canlı yakıt fiyatları, hava durumu ve döviz kurları
@@ -260,10 +200,6 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 3. Değişikliklerinizi commit edin (`git commit -m 'HarikaOzellik ekle'`)
 4. Dalı push edin (`git push origin feature/HarikaOzellik`)
 5. Pull Request açın
-
-## 📄 Lisans
-
-Bu proje MIT Lisansı altında lisanslanmıştır - detaylar için [LICENSE](LICENSE) dosyasına bakın.
 
 ## 👨‍💻 Yazar
 
