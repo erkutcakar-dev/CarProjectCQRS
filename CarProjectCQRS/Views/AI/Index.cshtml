@@ -49,6 +49,14 @@
                             <div id="carsList"></div>
                         </div>
                     </div>
+                    
+                    <!-- AI Recommendation Summary - Hidden Initially -->
+                    <div id="aiRecommendationSummary" class="mt-3" style="display: none;">
+                        <div class="alert alert-warning">
+                            <h6><i class="bx bx-info-circle me-2"></i>AI Analysis Summary:</h6>
+                            <div id="recommendationSummary"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -104,6 +112,10 @@
                             var recommendedCars = parseAIRecommendation(response.recommendation);
                             displayRecommendedCarsList(recommendedCars);
                             $('#recommendedCarsList').show();
+                            
+                            // Show AI summary at the bottom
+                            $('#recommendationSummary').html(response.recommendation);
+                            $('#aiRecommendationSummary').show();
                         } else {
                             alert(response.message);
                         }
@@ -123,21 +135,81 @@
                 var recommendedCars = [];
                 var text = recommendationText.toLowerCase();
                 
-                // Look for car brands and models in the AI text
-                allCars.forEach(function(car) {
-                    var brandModel = (car.Brand + ' ' + car.Model).toLowerCase();
-                    var brandOnly = car.Brand.toLowerCase();
-                    var modelOnly = car.Model.toLowerCase();
+                // Enhanced parsing - look for numbered lists and specific car mentions
+                var lines = recommendationText.split('\n');
+                var carMatches = [];
+                
+                // Look for patterns like "1. Toyota Corolla", "2. Honda Civic", etc.
+                lines.forEach(function(line) {
+                    var lineLower = line.toLowerCase();
                     
-                    // Check if AI mentioned this car
-                    if (text.includes(brandModel) || 
-                        (text.includes(brandOnly) && text.includes(modelOnly)) ||
-                        text.includes(car.Brand.toLowerCase()) ||
-                        text.includes(car.Model.toLowerCase())) {
-                        console.log('Found matching car:', car.Brand, car.Model);
-                        recommendedCars.push(car);
+                    // Check for numbered patterns
+                    var numberedMatch = lineLower.match(/(\d+)\.\s*([a-z\s]+)/);
+                    if (numberedMatch) {
+                        var carName = numberedMatch[2].trim();
+                        carMatches.push(carName);
+                    }
+                    
+                    // Check for bullet points or dashes
+                    var bulletMatch = lineLower.match(/[-•]\s*([a-z\s]+)/);
+                    if (bulletMatch) {
+                        var carName = bulletMatch[1].trim();
+                        carMatches.push(carName);
                     }
                 });
+                
+                console.log('Car matches found:', carMatches);
+                
+                // Try to match car names with database cars
+                carMatches.forEach(function(carName) {
+                    allCars.forEach(function(car) {
+                        var brandModel = (car.Brand + ' ' + car.Model).toLowerCase();
+                        var brandOnly = car.Brand.toLowerCase();
+                        var modelOnly = car.Model.toLowerCase();
+                        
+                        // Check various matching patterns
+                        if (carName.includes(brandModel) || 
+                            carName.includes(brandOnly) || 
+                            carName.includes(modelOnly) ||
+                            brandModel.includes(carName) ||
+                            brandOnly.includes(carName) ||
+                            modelOnly.includes(carName)) {
+                            
+                            // Avoid duplicates
+                            var exists = recommendedCars.some(function(existing) {
+                                return existing.CarId === car.CarId;
+                            });
+                            
+                            if (!exists) {
+                                console.log('Found matching car:', car.Brand, car.Model);
+                                recommendedCars.push(car);
+                            }
+                        }
+                    });
+                });
+                
+                // If still no matches, try broader search
+                if (recommendedCars.length === 0) {
+                    allCars.forEach(function(car) {
+                        var brandModel = (car.Brand + ' ' + car.Model).toLowerCase();
+                        var brandOnly = car.Brand.toLowerCase();
+                        var modelOnly = car.Model.toLowerCase();
+                        
+                        if (text.includes(brandModel) || 
+                            text.includes(brandOnly) || 
+                            text.includes(modelOnly)) {
+                            
+                            var exists = recommendedCars.some(function(existing) {
+                                return existing.CarId === car.CarId;
+                            });
+                            
+                            if (!exists) {
+                                console.log('Found matching car (broad search):', car.Brand, car.Model);
+                                recommendedCars.push(car);
+                            }
+                        }
+                    });
+                }
                 
                 console.log('Recommended cars found:', recommendedCars.length);
                 
