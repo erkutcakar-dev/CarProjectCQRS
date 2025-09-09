@@ -34,7 +34,7 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 
 ### Frontend Teknolojileri
 - **UI Framework**: Bootstrap 5.3.3
-- **Tema**: Cental Araç Kiralama Şablonu + Sneat Admin Şablonu
+- **Tema**: Cental Araç Kiralama Şablonu + Admin Şablonu
 - **İkonlar**: Font Awesome 5.15.4, Bootstrap Icons
 - **Fontlar**: Google Fonts (Lato, Montserrat)
 - **JavaScript**: jQuery, Owl Carousel, Animate.css
