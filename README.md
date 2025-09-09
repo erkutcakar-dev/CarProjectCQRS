@@ -201,7 +201,7 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 - **Komutlar**: Oluşturma, Güncelleme, Silme işlemleri
 - **Sorgular**: Optimize edilmiş veri alımı ile okuma işlemleri
 - **İşleyiciler**: Ayrı komut ve sorgu işleyicileri
-- **MediatR**: Gevşek bağlantı için mediator deseni
+
 
 ### Kod Organizasyonu
 - **Varlıklar**: Domain modelleri
