@@ -41,69 +41,12 @@
                             <div id="recommendationText"></div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Search and Filter Section - Hidden Initially -->
-    <div class="row mb-4" id="searchFilterSection" style="display: none;">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="bx bx-filter me-2"></i>Filter Recommended Cars
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Price Range -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Price Range ($)</label>
-                            <div class="row">
-                                <div class="col-6">
-                                    <input type="number" id="minPriceFilter" class="form-control" placeholder="Min Price" step="0.01">
-                                </div>
-                                <div class="col-6">
-                                    <input type="number" id="maxPriceFilter" class="form-control" placeholder="Max Price" step="0.01">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Year Range -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Model Year Range</label>
-                            <div class="row">
-                                <div class="col-6">
-                                    <input type="number" id="minYearFilter" class="form-control" placeholder="Min Year" min="1990" max="2030">
-                                </div>
-                                <div class="col-6">
-                                    <input type="number" id="maxYearFilter" class="form-control" placeholder="Max Year" min="1990" max="2030">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sort By -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Sort By</label>
-                            <select id="sortByFilter" class="form-select">
-                                <option value="brand">Brand A-Z</option>
-                                <option value="priceAsc">Price: Low to High</option>
-                                <option value="priceDesc">Price: High to Low</option>
-                                <option value="yearDesc">Year: Newest First</option>
-                                <option value="yearAsc">Year: Oldest First</option>
-                                <option value="rating">Highest Rating</option>
-                            </select>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="col-md-6 mb-3 d-flex align-items-end">
-                            <button type="button" id="filterBtn" class="btn btn-primary me-2">
-                                <i class="bx bx-filter me-2"></i>Apply Filters
-                            </button>
-                            <button type="button" id="resetBtn" class="btn btn-outline-secondary">
-                                <i class="bx bx-refresh me-2"></i>Reset
-                            </button>
+                    
+                    <!-- Recommended Cars List - Hidden Initially -->
+                    <div id="recommendedCarsList" class="mt-3" style="display: none;">
+                        <div class="alert alert-success">
+                            <h6><i class="bx bx-car me-2"></i>Recommended Cars:</h6>
+                            <div id="carsList"></div>
                         </div>
                     </div>
                 </div>
@@ -111,24 +54,7 @@
         </div>
     </div>
 
-    <!-- Results Section - Hidden Initially -->
-    <div class="row" id="resultsSection" style="display: none;">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">
-                        <i class="bx bx-car me-2"></i>Recommended Cars
-                        <span class="badge bg-primary ms-2" id="carCount">0 Cars Found</span>
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div id="carResults">
-                        <!-- Results will be populated here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 @section Scripts {
@@ -174,12 +100,10 @@
                             $('#recommendationText').html(response.recommendation);
                             $('#aiRecommendation').show();
                             
-                            // Show search and results sections after AI recommendation
-                            $('#searchFilterSection').slideDown();
-                            $('#resultsSection').slideDown();
-                            
-                            // Display all cars initially
-                            displayCars(allCars);
+                            // Parse AI recommendation and show recommended cars list
+                            var recommendedCars = parseAIRecommendation(response.recommendation);
+                            displayRecommendedCarsList(recommendedCars);
+                            $('#recommendedCarsList').show();
                         } else {
                             alert(response.message);
                         }
@@ -193,68 +117,47 @@
                     }
                 });
             });
-            
-            // Filter functionality
-            $('#filterBtn').click(function() {
-                filterCars();
-            });
 
-            // Reset functionality
-            $('#resetBtn').click(function() {
-                $('#minPriceFilter, #maxPriceFilter, #minYearFilter, #maxYearFilter').val('');
-                $('#sortByFilter').val('brand');
-                displayCars(allCars);
-            });
-
-            // Auto-filter on input change
-            $('#minPriceFilter, #maxPriceFilter, #minYearFilter, #maxYearFilter, #sortByFilter').change(function() {
-                filterCars();
-            });
-
-            function filterCars() {
-                var minPrice = parseFloat($('#minPriceFilter').val()) || 0;
-                var maxPrice = parseFloat($('#maxPriceFilter').val()) || 999999;
-                var minYear = parseInt($('#minYearFilter').val()) || 0;
-                var maxYear = parseInt($('#maxYearFilter').val()) || 9999;
-                var sortBy = $('#sortByFilter').val();
-
-                var filteredCars = allCars.filter(function(car) {
-                    return car.DailyPrice >= minPrice && 
-                           car.DailyPrice <= maxPrice && 
-                           car.ModelYear >= minYear && 
-                           car.ModelYear <= maxYear;
-                });
-
-                // Sort cars
-                filteredCars.sort(function(a, b) {
-                    switch (sortBy) {
-                        case 'brand':
-                            return a.Brand.localeCompare(b.Brand);
-                        case 'priceAsc':
-                            return a.DailyPrice - b.DailyPrice;
-                        case 'priceDesc':
-                            return b.DailyPrice - a.DailyPrice;
-                        case 'yearDesc':
-                            return b.ModelYear - a.ModelYear;
-                        case 'yearAsc':
-                            return a.ModelYear - b.ModelYear;
-                        case 'rating':
-                            return b.ReviewScore - a.ReviewScore;
-                        default:
-                            return 0;
+            function parseAIRecommendation(recommendationText) {
+                console.log('AI Recommendation Text:', recommendationText);
+                var recommendedCars = [];
+                var text = recommendationText.toLowerCase();
+                
+                // Look for car brands and models in the AI text
+                allCars.forEach(function(car) {
+                    var brandModel = (car.Brand + ' ' + car.Model).toLowerCase();
+                    var brandOnly = car.Brand.toLowerCase();
+                    var modelOnly = car.Model.toLowerCase();
+                    
+                    // Check if AI mentioned this car
+                    if (text.includes(brandModel) || 
+                        (text.includes(brandOnly) && text.includes(modelOnly)) ||
+                        text.includes(car.Brand.toLowerCase()) ||
+                        text.includes(car.Model.toLowerCase())) {
+                        console.log('Found matching car:', car.Brand, car.Model);
+                        recommendedCars.push(car);
                     }
                 });
-
-                displayCars(filteredCars);
+                
+                console.log('Recommended cars found:', recommendedCars.length);
+                
+                // If no specific cars found, return top 3 cars by rating
+                if (recommendedCars.length === 0) {
+                    console.log('No specific cars found, showing top 3 by rating');
+                    recommendedCars = allCars
+                        .sort(function(a, b) { return b.ReviewScore - a.ReviewScore; })
+                        .slice(0, 3);
+                }
+                
+                // Limit to 3 cars maximum
+                return recommendedCars.slice(0, 3);
             }
 
-            function displayCars(cars) {
-                $('#carCount').text(cars.length + ' Cars Found');
-                
+            function displayRecommendedCarsList(cars) {
                 if (cars.length > 0) {
                     var html = '<div class="row">';
                     
-                    cars.forEach(function(car) {
+                    cars.forEach(function(car, index) {
                         var stars = '';
                         for (var i = 1; i <= 5; i++) {
                             if (i <= car.ReviewScore) {
@@ -271,11 +174,11 @@
                             `<div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;"><i class="bx bx-car text-muted" style="font-size: 3rem;"></i></div>`;
                         
                         html += `
-                            <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="col-md-6 col-lg-4 mb-4 car-item" data-brand="${car.Brand}" data-model="${car.Model}" data-fuel-type="${car.FuelType}" data-gear-type="${car.GearType}" data-seat-count="${car.SeatCount}" data-daily-price="${car.DailyPrice}" data-model-year="${car.ModelYear}" data-review-score="${car.ReviewScore}">
                                 <div class="card h-100">
                                     ${imageHtml}
                                     <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title">${car.Brand} ${car.Model}</h5>
+                                        <h5 class="card-title">${index + 1}. ${car.Brand} ${car.Model}</h5>
                                         <p class="card-text text-muted">${car.ModelYear} Model</p>
                                         
                                         <div class="row mb-3">
@@ -316,9 +219,9 @@
                                         
                                         <div class="mt-auto">
                                             <div class="d-grid gap-2">
-                                                <button class="btn btn-primary" onclick="selectCar(${car.CarId})">
-                                                    <i class="bx bx-check me-2"></i>Select This Car
-                                                </button>
+                                                <a href="/Car/EditCar/${car.CarId}" class="btn btn-primary">
+                                                    <i class="bx bx-edit me-2"></i>Edit Car
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -328,13 +231,12 @@
                     });
                     
                     html += '</div>';
-                    $('#carResults').html(html);
+                    $('#carsList').html(html);
                 } else {
-                    $('#carResults').html(`
-                        <div class="text-center py-5">
-                            <i class="bx bx-search-alt text-muted" style="font-size: 4rem;"></i>
-                            <h4 class="text-muted mt-3">No cars found</h4>
-                            <p class="text-muted">Try adjusting your filter criteria.</p>
+                    $('#carsList').html(`
+                        <div class="text-center py-3">
+                            <i class="bx bx-car text-muted" style="font-size: 2rem;"></i>
+                            <p class="text-muted mt-2">No specific cars found in AI recommendation.</p>
                         </div>
                     `);
                 }
