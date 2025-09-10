@@ -235,9 +235,7 @@ CarProjectCQRS/
 - **Service Layer**: AI ve Mail servisleri
 - **ViewComponents**: Modüler UI bileşenleri
 - **External APIs**: Groq AI, EIA, WeatherAPI, ExchangeRate-API entegrasyonları
-=======
 
->>>>>>> fb1a144626be7d88675d3c8d93697b17a651b045
 
 ### Temel Varlıklar
 - **Cars**: Fiyatlandırma, özellikler ve kullanılabilirlik ile araç bilgileri
@@ -283,7 +281,7 @@ CarProjectCQRS/
 - **Gelişmiş Filtreleme**: Çoklu kriter arama ve sıralama işlevselliği
 - **Veri Görselleştirme**: İş içgörüleri için grafikler ve istatistikler
 
-<<<<<<< HEAD
+
 ## 🔧 Konfigürasyon
 
 ### API Anahtarları Kurulumu
@@ -330,8 +328,7 @@ CarProjectCQRS/
 - **İşleyiciler**: Ayrı komut ve sorgu işleyicileri
 <<<<<<< HEAD
 
-=======
->>>>>>> fb1a144626be7d88675d3c8d93697b17a651b045
+
 
 ### Kod Organizasyonu
 - **Varlıklar**: Domain modelleri
