@@ -28,11 +28,7 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 - **Framework**: ASP.NET Core 9.0
 - **Desen**: CQRS (Command Query Responsibility Segregation)
 - **ORM**: Entity Framework Core 9.0.8
-<<<<<<< HEAD
 - **Veritabanı**: SQL Server-
-=======
-- **Veritabanı**: SQL Server- 
->>>>>>> fb1a144626be7d88675d3c8d93697b17a651b045
 - **E-posta Servisi**: MailKit 4.13.0
 
 ### Frontend Teknolojileri
