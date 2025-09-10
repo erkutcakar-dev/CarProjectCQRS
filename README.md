@@ -406,3 +406,50 @@ Destek için erkutcakar.dev@gmail.com adresine e-posta gönderin.
 ---
 
 **ASP.NET Core 9.0 ve modern web teknolojileri ile ❤️ ile geliştirilmiştir**
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013622" src="https://github.com/user-attachments/assets/713ac950-e9ae-4684-91a9-46842f2af696" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013630" src="https://github.com/user-attachments/assets/41c119ab-8546-4991-b47d-ae6adcb80475" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013636" src="https://github.com/user-attachments/assets/72746d2a-65ba-4c91-aa25-e67101b0d584" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013640" src="https://github.com/user-attachments/assets/c14e7cf0-5b7a-472a-aef3-e57b48303c4c" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013654" src="https://github.com/user-attachments/assets/d63f1b43-8a90-45ec-8076-958eef7e63f6" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013700" src="https://github.com/user-attachments/assets/dfd70a3c-043e-480c-8310-ecc2048663e1" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013707" src="https://github.com/user-attachments/assets/e9563617-217e-4177-8afe-f4bea4634753" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013710" src="https://github.com/user-attachments/assets/c5e42882-34d7-4335-975a-72f2d463b19e" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013713" src="https://github.com/user-attachments/assets/3ee94dc3-130b-4e13-b5eb-e3a82d65cd62" 
+  ❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013723" src="https://github.com/user-attachments/assets/8a3b16ba-bb51-4cb9-a3e7-874d7c074b40" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 013728" src="https://github.com/user-attachments/assets/f0afde6a-9426-4e01-ba2c-6663e5a8453c" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 014024" src="https://github.com/user-attachments/assets/b96e7b66-66ab-4b58-8530-38dde08eae62" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 014043" src="https://github.com/user-attachments/assets/26e7121d-31d4-42b2-a341-cad143348a51" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 014150" src="https://github.com/user-attachments/assets/032a9ac8-e87f-4f59-90bd-2213bd58bcf4" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 014255" src="https://github.com/user-attachments/assets/6f563d8b-227a-4a1c-8dc5-0b5782baefb3" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 014336" src="https://github.com/user-attachments/assets/ff9387a7-d58b-4678-a719-9d86576458ff" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 021834" src="https://github.com/user-attachments/assets/d2003e9f-efbb-4415-987f-37a87432e1d3" />
+❤️
+<img width="1920" height="1080" alt="Screenshot 2025-09-10 021909" src="https://github.com/user-attachments/assets/ccbf925c-5a00-4b5c-a250-a71065c6573a" />
+❤️
+<img width="1155" height="1080" alt="Screenshot 2025-09-10 021920" src="https://github.com/user-attachments/assets/3ddac8d8-b9d4-4ff4-a6c6-51db6ecd05a0" />
+❤️
+<img width="1168" height="1080" alt="Screenshot 2025-09-10 021933" src="https://github.com/user-attachments/assets/0a08dc6e-82d0-4276-9566-3c401bc781c1" />
+❤️
+<img width="452" height="554" alt="Screenshot 2025-09-10 022057" src="https://github.com/user-attachments/assets/ef0d791c-8967-4da4-8fc9-ade44fd75291" />
+❤️
+<img width="1644" height="869" alt="Screenshot 2025-09-10 022301" src="https://github.com/user-attachments/assets/b0206fe6-c3f0-45fc-8af4-10c80c7c0fe7" />
+❤️
+
+<img width="1644" height="869" alt="Screenshot 2025-09-10 022301" src="https://github.com/user-attachments/assets/5c888b0a-3e4c-468d-ad1b-ce328f4f1a43" />
