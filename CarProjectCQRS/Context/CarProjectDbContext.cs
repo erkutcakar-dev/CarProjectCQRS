@@ -17,7 +17,7 @@ namespace CarProjectCQRS.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-LJIBOKJ;Database=CarProject;Trusted_Connection=True;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=-;Database=CarProject;Trusted_Connection=True;TrustServerCertificate=True;");
             }
         }
         
