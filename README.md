@@ -295,8 +295,6 @@ CarProjectCQRS/
 - Kimlik doğrulama için Gmail Uygulama Şifresi kullanın
 - Gmail hesabında 2FA'yı etkinleştirin
 
-=======
->>>>>>> fb1a144626be7d88675d3c8d93697b17a651b045
 ## 📱 Detaylı Özellikler
 
 ### Araç Arama ve Rezervasyon
@@ -326,8 +324,6 @@ CarProjectCQRS/
 - **Komutlar**: Oluşturma, Güncelleme, Silme işlemleri
 - **Sorgular**: Optimize edilmiş veri alımı ile okuma işlemleri
 - **İşleyiciler**: Ayrı komut ve sorgu işleyicileri
-<<<<<<< HEAD
-
 
 
 ### Kod Organizasyonu
