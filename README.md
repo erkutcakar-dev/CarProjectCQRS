@@ -69,7 +69,7 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 
 ## 📊 Veritabanı Şeması
 
-<<<<<<< HEAD
+
 ## 📁 Proje Klasör Yapısı
 
 ```
