@@ -9,7 +9,7 @@ namespace CarProjectCQRS.Services
     public class AIService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiKey = "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";
+        private readonly string _apiKey = "-";
 
         public AIService()
         {
