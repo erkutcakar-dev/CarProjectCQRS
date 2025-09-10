@@ -28,7 +28,11 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 - **Framework**: ASP.NET Core 9.0
 - **Desen**: CQRS (Command Query Responsibility Segregation)
 - **ORM**: Entity Framework Core 9.0.8
+<<<<<<< HEAD
+- **Veritabanı**: SQL Server-
+=======
 - **Veritabanı**: SQL Server- 
+>>>>>>> fb1a144626be7d88675d3c8d93697b17a651b045
 - **E-posta Servisi**: MailKit 4.13.0
 
 ### Frontend Teknolojileri
@@ -69,7 +73,175 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 
 ## 📊 Veritabanı Şeması
 
+<<<<<<< HEAD
+## 📁 Proje Klasör Yapısı
 
+```
+CarProjectCQRS/
+├── 📁 Controllers/                    # MVC Controller'ları
+│   ├── AboutController.cs
+│   ├── AdminController.cs
+│   ├── AdminMessageController.cs
+│   ├── AIController.cs
+│   ├── BookingController.cs
+│   ├── CarController.cs
+│   ├── DistanceController.cs
+│   ├── EmployeeController.cs
+│   ├── FeatureController.cs
+│   ├── MainUiController.cs
+│   ├── MessageController.cs
+│   ├── ReservationController.cs
+│   ├── ServiceController.cs
+│   ├── SliderController.cs
+│   ├── TestimonialController.cs
+│   └── TurkeyAirportController.cs
+│
+├── 📁 Context/                        # Entity Framework DbContext
+│   └── CarProjectDbContext.cs
+│
+├── 📁 CQRSPattern/                    # CQRS Pattern Implementasyonu
+│   ├── 📁 Commands/                   # Command Sınıfları
+│   │   ├── 📁 AboutCommands/
+│   │   ├── 📁 CarCommands/
+│   │   ├── 📁 DistanceCommands/
+│   │   ├── 📁 EmployeeCommands/
+│   │   ├── 📁 FeatureCommands/
+│   │   ├── 📁 MessageCommands/
+│   │   ├── 📁 ReservationCommands/
+│   │   ├── 📁 ServiceCommands/
+│   │   ├── 📁 SliderCommands/
+│   │   ├── 📁 TestimonialCommands/
+│   │   └── 📁 TurkeyAirportCommands/
+│   │
+│   ├── 📁 Handlers/                   # Handler Sınıfları
+│   │   ├── 📁 AboutHandlers/
+│   │   ├── 📁 CarHandlers/
+│   │   ├── 📁 DistanceHandlers/
+│   │   ├── 📁 EmployeeHandlers/
+│   │   ├── 📁 FeatureHandlers/
+│   │   ├── 📁 MessageHandlers/
+│   │   ├── 📁 ReservationHandlers/
+│   │   ├── 📁 ServiceHandlers/
+│   │   ├── 📁 SliderHandlers/
+│   │   ├── 📁 TestimonialHandlers/
+│   │   └── 📁 TurkeyAirportHandlers/
+│   │
+│   ├── 📁 Queries/                    # Query Sınıfları
+│   │   ├── 📁 AboutQueries/
+│   │   ├── 📁 CarQueries/
+│   │   ├── 📁 DistanceQueries/
+│   │   ├── 📁 EmployeeQueries/
+│   │   ├── 📁 FeatureQueries/
+│   │   ├── 📁 MessageQueries/
+│   │   ├── 📁 ReservationQueries/
+│   │   ├── 📁 ServiceQueries/
+│   │   ├── 📁 SliderQueries/
+│   │   ├── 📁 TestimonialQueries/
+│   │   └── 📁 TurkeyAirportQueries/
+│   │
+│   └── 📁 Results/                    # Result DTO'ları
+│       ├── 📁 About/
+│       ├── 📁 Car/
+│       ├── 📁 Distance/
+│       ├── 📁 Employee/
+│       ├── 📁 Feature/
+│       ├── 📁 Message/
+│       ├── 📁 Reservation/
+│       ├── 📁 Service/
+│       ├── 📁 Slider/
+│       ├── 📁 Testimonial/
+│       └── 📁 TurkeyAirport/
+│
+├── 📁 Entities/                       # Domain Modelleri
+│   ├── About.cs
+│   ├── Car.cs
+│   ├── Distance.cs
+│   ├── Employee.cs
+│   ├── Feature.cs
+│   ├── Message.cs
+│   ├── Reservation.cs
+│   ├── Service.cs
+│   ├── Slider.cs
+│   ├── Testimonial.cs
+│   └── TurkeyAirport.cs
+│
+├── 📁 Migrations/                      # Entity Framework Migrations
+│   ├── 20250830111322_mig_firstmig.cs
+│   ├── 20250830111322_mig_firstmig.Designer.cs
+│   ├── 20250907181410_AddMessageTable.cs
+│   ├── 20250907181410_AddMessageTable.Designer.cs
+│   └── CarProjectDbContextModelSnapshot.cs
+│
+├── 📁 Models/                         # View Modelleri ve DTO'lar
+│   ├── CarBookingModels.cs
+│   ├── CarouselViewModel.cs
+│   ├── DashboardViewModel.cs
+│   ├── EiaGasPriceResponse.cs
+│   └── ErrorViewModel.cs
+│
+├── 📁 Services/                       # Business Logic Servisleri
+│   ├── AIService.cs                   # Groq AI API Entegrasyonu
+│   └── MailService.cs                 # E-posta Gönderim Servisi
+│
+├── 📁 ViewComponents/                 # Yeniden Kullanılabilir UI Bileşenleri
+│   ├── 📁 AdminViewComponents/
+│   │   ├── AdminFooterComponentPartial.cs
+│   │   ├── AdminHeadComponentPartial.cs
+│   │   ├── AdminNavbarComponentPartial.cs
+│   │   └── AdminSidebarComponentPartial.cs
+│   └── 📁 MainUiViewComponents/
+│       └── [17 adet ViewComponent]
+│
+├── 📁 Views/                          # Razor View Dosyaları
+│   ├── 📁 About/
+│   ├── 📁 Admin/
+│   ├── 📁 AdminMessage/
+│   ├── 📁 AI/
+│   ├── 📁 Booking/
+│   ├── 📁 Car/
+│   ├── 📁 Distance/
+│   ├── 📁 Employee/
+│   ├── 📁 Feature/
+│   ├── 📁 MainUi/
+│   ├── 📁 Reservation/
+│   ├── 📁 Service/
+│   ├── 📁 Shared/
+│   ├── 📁 Slider/
+│   ├── 📁 Testimonial/
+│   ├── 📁 TurkeyAirport/
+│   ├── _ViewImports.cshtml
+│   └── _ViewStart.cshtml
+│
+├── 📁 wwwroot/                        # Statik Dosyalar
+│   ├── 📁 Cental-1.0.0/              # Ana Website Teması
+│   ├── 📁 css/
+│   ├── 📁 js/
+│   ├── 📁 lib/                        # JavaScript Kütüphaneleri
+│   ├── 📁 sneat-1.0.0/               # Admin Panel Teması
+│   └── favicon.ico
+│
+├── 📁 Properties/
+│   └── launchSettings.json
+│
+├── appsettings.json                   # Uygulama Konfigürasyonu
+├── appsettings.Development.json
+├── CarProjectCQRS.csproj             # Proje Dosyası
+├── Program.cs                        # Uygulama Giriş Noktası
+├── README.md                         # Proje Dokümantasyonu
+└── READMEeng.md                         # Proje Dokümantasyonu
+
+```
+
+**Ana Özellikler:**
+- **CQRS Pattern**: Commands, Queries, Handlers ve Results klasörleri
+- **Entity Framework**: Migrations ve DbContext
+- **Dual Theme**: Cental (Ana Site) + Sneat (Admin Panel)
+- **Service Layer**: AI ve Mail servisleri
+- **ViewComponents**: Modüler UI bileşenleri
+- **External APIs**: Groq AI, EIA, WeatherAPI, ExchangeRate-API entegrasyonları
+=======
+
+>>>>>>> fb1a144626be7d88675d3c8d93697b17a651b045
 
 ### Temel Varlıklar
 - **Cars**: Fiyatlandırma, özellikler ve kullanılabilirlik ile araç bilgileri
@@ -115,6 +287,22 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 - **Gelişmiş Filtreleme**: Çoklu kriter arama ve sıralama işlevselliği
 - **Veri Görselleştirme**: İş içgörüleri için grafikler ve istatistikler
 
+<<<<<<< HEAD
+## 🔧 Konfigürasyon
+
+### API Anahtarları Kurulumu
+1. **Groq AI API**: [Groq Console](https://console.groq.com/)'dan API anahtarı alın
+2. **EIA API**: [EIA API](https://www.eia.gov/opendata/)'da kayıt olun
+3. **WeatherAPI**: [WeatherAPI](https://www.weatherapi.com/)'den anahtar alın
+4. **ExchangeRate-API**: [ExchangeRate-API](https://www.exchangerate-api.com/)'da kayıt olun
+
+### E-posta Konfigürasyonu
+- `appsettings.json`'da SMTP ayarlarını yapılandırın
+- Kimlik doğrulama için Gmail Uygulama Şifresi kullanın
+- Gmail hesabında 2FA'yı etkinleştirin
+
+=======
+>>>>>>> fb1a144626be7d88675d3c8d93697b17a651b045
 ## 📱 Detaylı Özellikler
 
 ### Araç Arama ve Rezervasyon
@@ -144,6 +332,10 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 - **Komutlar**: Oluşturma, Güncelleme, Silme işlemleri
 - **Sorgular**: Optimize edilmiş veri alımı ile okuma işlemleri
 - **İşleyiciler**: Ayrı komut ve sorgu işleyicileri
+<<<<<<< HEAD
+
+=======
+>>>>>>> fb1a144626be7d88675d3c8d93697b17a651b045
 
 ### Kod Organizasyonu
 - **Varlıklar**: Domain modelleri
@@ -220,7 +412,7 @@ Car Project CQRS, ASP.NET Core 9.0 ile geliştirilmiş, CQRS (Command Query Resp
 
 ## 📞 Destek
 
-Destek için erkutcakar.dev@gmail.com adresine e-posta gönderin veya depoda bir issue oluşturun.
+Destek için erkutcakar.dev@gmail.com adresine e-posta gönderin.
 
 ---
 
