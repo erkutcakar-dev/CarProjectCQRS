@@ -36,19 +36,19 @@ namespace CarProjectCQRS.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Car tablosu konfigürasyonu
+          
             modelBuilder.Entity<Car>(entity =>
             {
                 entity.Property(e => e.DailyPrice).HasColumnType("decimal(18, 2)");
             });
 
-            // Reservation tablosu konfigürasyonu
+            
             modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.Property(e => e.airport).HasColumnName("airport");
             });
 
-            // TurkeyAirport tablosu konfigürasyonu
+            
             modelBuilder.Entity<TurkeyAirport>(entity =>
             {
                 entity.HasNoKey().ToTable("TurkeyAirport");
@@ -56,7 +56,7 @@ namespace CarProjectCQRS.Context
                 entity.Property(e => e.Province).HasMaxLength(50);
             });
 
-            // Distance tablosu konfigürasyonu
+            
             modelBuilder.Entity<Distance>(entity =>
             {
                 entity.ToTable("Distances");
