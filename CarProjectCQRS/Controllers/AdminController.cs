@@ -12,9 +12,9 @@ namespace CarProjectCQRS.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly CarProjectDbContext _context;
-        private readonly string _eiaApiKey = "pYg323LIQgLqTXBozpGHkGJSgbhkw3XOFkmdAp2N";
-        private readonly string _weatherApiKey = "d4474084274c49e5a69205838250609";
-        private readonly string _exchangeApiKey = "0d19f0ca62150e41549a0688"; 
+        private readonly string _eiaApiKey = "_";
+        private readonly string _weatherApiKey = "_";
+        private readonly string _exchangeApiKey = "_"; 
 
         public AdminController(HttpClient httpClient, CarProjectDbContext context)
         {
